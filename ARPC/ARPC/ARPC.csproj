@@ -151,6 +151,7 @@
     <Compile Include="DAL\ZILE.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DTOModule.cs" />
     <Compile Include="Entities\DTOGenerare.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

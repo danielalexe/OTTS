@@ -63,8 +63,8 @@ namespace ARPC
 
         /// <summary>
         /// Probleme curente in planificator:
-        /// 1. Restrictiile de zile ale profesorilor nu sunt aplicate
-        /// 2. Restrictiile de module ale profesorilor nu sunt aplicate
+        /// DONE 1. Restrictiile de zile ale profesorilor nu sunt aplicate
+        /// DONE 2. Restrictiile de module ale profesorilor nu sunt aplicate
         /// DONE 3. Programul pe semigrupe nu este functional (Laboratoare/Seminarii) (curs comun)
         /// DONE 4. Planificarea nu se face la fel pentru grupele din acelasi an (curs comun)
         /// DONE 5. Numarul de ore necesare pentru curs/seminar/laborator nu sunt luate in considerare (2 ore std)
@@ -228,13 +228,43 @@ namespace ARPC
                             var getPrioritatiZileProfesor = db.PREFERINTE_PROFESORI_ZILE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
                             var getPrioritatiModuleProfesor = db.PREFERINTE_PROFESORI_MODULE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
 
-                            var getZile = (from u in getPrioritatiZileProfesor
-                                           from z in getZileGenerale
-                                           where u.ID_ZI==z.ID_ZI
-                                           select z).OrderBy(u => u.PRIORITATE);
+                            List<ZILE> getZile = new List<ZILE>();
+                            foreach (var zi in getZileGenerale)
+                            {
+                                ZILE dto = new ZILE();
+                                dto.ID_ZI = zi.ID_ZI;
+                                dto.PRIORITATE = zi.PRIORITATE;
+                                dto.DENUMIRE = zi.DENUMIRE;
+                                getZile.Add(dto);
+                            }
+                            foreach (var item in getPrioritatiZileProfesor)
+                            {
+                                var getZi = getZile.FirstOrDefault(z => z.ID_ZI == item.ID_ZI);
+                                if (getZi!=null)
+                                {
+                                    getZi.PRIORITATE = item.PRIORITATE;
+                                }
+                            }
+                            getZile = getZile.OrderBy(z => z.PRIORITATE).ToList();
 
-                            getZile;
-                            getModule;
+                            List<DTOModule> getModule = new List<DTOModule>();
+                            foreach (var modul in getModuleGenerale)
+                            {
+                                DTOModule dto = new DTOModule();
+                                dto.iID_LINK_MODULE_GRUPE = modul.ID_LINK_MODULE_GRUPE;
+                                dto.iID_MODUL = modul.ID_MODUL;
+                                dto.iPRIORITATE = 10;
+                                getModule.Add(dto);
+                            }
+                            foreach (var item in getPrioritatiModuleProfesor)
+                            {
+                                var getModul = getModule.FirstOrDefault(z => z.iID_MODUL == item.ID_MODUL);
+                                if (getModul!=null)
+                                {
+                                    getModul.iPRIORITATE = item.PRIORITATE;
+                                }
+                            }
+                            getModule = getModule.OrderBy(z => z.iPRIORITATE).ThenByDescending(z=>z.iID_MODUL).ToList();
 
 
                             //se planifica tot in functie de numarul de ore necesare
@@ -247,7 +277,7 @@ namespace ARPC
                                 #region Variabile Blocker utilizate pentru a da skip la anumite componente care nu pot fi utilizate in programare
                                 List<LINK_PROFESORI_PRELEGERI> ProfesoriBlocati = new List<LINK_PROFESORI_PRELEGERI>();
                                 List<ZILE> ZileBlocate = new List<ZILE>();
-                                List<LINK_MODULE_GRUPE> ModuleBlocate = new List<LINK_MODULE_GRUPE>();
+                                List<DTOModule> ModuleBlocate = new List<DTOModule>();
                                 #endregion
                                 bool Planificat = false;
                                 #region Se verifica daca materia in cauza a fost deja planificata
@@ -296,7 +326,7 @@ namespace ARPC
                                                            select u).ToList().FirstOrDefault();
 
                                     var ModuleDisponibile = (from u in getModule
-                                                             where !ModuleBlocate.Any(z => z.ID_LINK_MODULE_GRUPE == u.ID_LINK_MODULE_GRUPE)
+                                                             where !ModuleBlocate.Any(z => z.iID_LINK_MODULE_GRUPE == u.iID_LINK_MODULE_GRUPE)
                                                              select u).ToList().FirstOrDefault();
                                     if (ZileDisponibile != null && ModuleDisponibile != null)
                                     {
@@ -319,7 +349,7 @@ namespace ARPC
                                         var VerificaSuprapunere = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
                                         z.ID_ZI == ZileDisponibile.ID_ZI
                                         &&
-                                        z.ID_MODUL == ModuleDisponibile.ID_MODUL
+                                        z.ID_MODUL == ModuleDisponibile.iID_MODUL
                                         &&
                                         ((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR) || (z.ID_PROFESOR != ProfesorCurent.ID_PROFESOR && z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA))
                                         //&&
@@ -356,7 +386,7 @@ namespace ARPC
                                                         &&
                                                         z.ID_ZI == ZileDisponibile.ID_ZI
                                                         &&
-                                                        z.ID_MODUL == ModuleDisponibile.ID_MODUL
+                                                        z.ID_MODUL == ModuleDisponibile.iID_MODUL
                                                         &&
                                                         z.ID_SEMIGRUPA == semigrupa.ID_SEMIGRUPA
                                                         );
@@ -372,7 +402,7 @@ namespace ARPC
                                                     Planificat = true;
                                                     PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
                                                     orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
-                                                    orarplan.ID_MODUL = ModuleDisponibile.ID_MODUL;
+                                                    orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
                                                     orarplan.ID_ZI = ZileDisponibile.ID_ZI;
                                                     orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
                                                     orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
@@ -396,7 +426,7 @@ namespace ARPC
                                                     {
                                                         orarplan = new PLANIFICARE_ORAR();
                                                         orarplan.ID_SEMIGRUPA = semigrupa.ID_SEMIGRUPA;
-                                                        orarplan.ID_MODUL = ModuleDisponibile.ID_MODUL;
+                                                        orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
                                                         orarplan.ID_ZI = ZileDisponibile.ID_ZI;
                                                         orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
                                                         orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
@@ -427,7 +457,7 @@ namespace ARPC
                                                 Planificat = true;
                                                 PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
                                                 orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
-                                                orarplan.ID_MODUL = ModuleDisponibile.ID_MODUL;
+                                                orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
                                                 orarplan.ID_ZI = ZileDisponibile.ID_ZI;
                                                 orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
                                                 orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
