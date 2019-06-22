@@ -35,6 +35,9 @@
             this.labelSemiGrupa = new System.Windows.Forms.Label();
             this.comboBoxSemiGrupa = new System.Windows.Forms.ComboBox();
             this.gridViewPlanificare = new System.Windows.Forms.DataGridView();
+            this.labelNumarGenerari = new System.Windows.Forms.Label();
+            this.checkBoxGenerareMultipla = new System.Windows.Forms.CheckBox();
+            this.textBoxNumarGenerari = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPlanificare)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,11 +72,11 @@
             // labelGenerare
             // 
             this.labelGenerare.AutoSize = true;
-            this.labelGenerare.Location = new System.Drawing.Point(261, 17);
+            this.labelGenerare.Location = new System.Drawing.Point(208, 17);
             this.labelGenerare.Name = "labelGenerare";
-            this.labelGenerare.Size = new System.Drawing.Size(51, 13);
+            this.labelGenerare.Size = new System.Drawing.Size(104, 13);
             this.labelGenerare.TabIndex = 3;
-            this.labelGenerare.Text = "Generare";
+            this.labelGenerare.Text = "Vizualizare Generare";
             // 
             // labelSemiGrupa
             // 
@@ -105,11 +108,40 @@
             this.gridViewPlanificare.Size = new System.Drawing.Size(776, 378);
             this.gridViewPlanificare.TabIndex = 6;
             // 
+            // labelNumarGenerari
+            // 
+            this.labelNumarGenerari.AutoSize = true;
+            this.labelNumarGenerari.Location = new System.Drawing.Point(93, 32);
+            this.labelNumarGenerari.Name = "labelNumarGenerari";
+            this.labelNumarGenerari.Size = new System.Drawing.Size(47, 13);
+            this.labelNumarGenerari.TabIndex = 8;
+            this.labelNumarGenerari.Text = "Nr. Gen.";
+            // 
+            // checkBoxGenerareMultipla
+            // 
+            this.checkBoxGenerareMultipla.AutoSize = true;
+            this.checkBoxGenerareMultipla.Location = new System.Drawing.Point(96, 12);
+            this.checkBoxGenerareMultipla.Name = "checkBoxGenerareMultipla";
+            this.checkBoxGenerareMultipla.Size = new System.Drawing.Size(112, 17);
+            this.checkBoxGenerareMultipla.TabIndex = 9;
+            this.checkBoxGenerareMultipla.Text = "Generare Multipla ";
+            this.checkBoxGenerareMultipla.UseVisualStyleBackColor = true;
+            // 
+            // textBoxNumarGenerari
+            // 
+            this.textBoxNumarGenerari.Location = new System.Drawing.Point(146, 29);
+            this.textBoxNumarGenerari.Name = "textBoxNumarGenerari";
+            this.textBoxNumarGenerari.Size = new System.Drawing.Size(56, 20);
+            this.textBoxNumarGenerari.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBoxNumarGenerari);
+            this.Controls.Add(this.checkBoxGenerareMultipla);
+            this.Controls.Add(this.labelNumarGenerari);
             this.Controls.Add(this.gridViewPlanificare);
             this.Controls.Add(this.labelSemiGrupa);
             this.Controls.Add(this.comboBoxSemiGrupa);
@@ -135,6 +167,9 @@
         private System.Windows.Forms.Label labelSemiGrupa;
         private System.Windows.Forms.ComboBox comboBoxSemiGrupa;
         private System.Windows.Forms.DataGridView gridViewPlanificare;
+        private System.Windows.Forms.Label labelNumarGenerari;
+        private System.Windows.Forms.CheckBox checkBoxGenerareMultipla;
+        private System.Windows.Forms.TextBox textBoxNumarGenerari;
     }
 }
 

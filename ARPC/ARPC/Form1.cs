@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -60,6 +61,23 @@ namespace ARPC
             }
         }
 
+        private void Shuffle<T>(IList<T> list)
+        {
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            int n = list.Count;
+            while (n > 1)
+            {
+                byte[] box = new byte[1];
+                do provider.GetBytes(box);
+                while (!(box[0] < n * (Byte.MaxValue / n)));
+                int k = (box[0] % n);
+                n--;
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
 
         /// <summary>
         /// Probleme curente in planificator:
@@ -71,7 +89,9 @@ namespace ARPC
         /// DONE 6. Planificarea semi-modul/Saptamanala nu functioneaza
         /// DONE 7. Restrictia de 4 module / zi nu e luata in considerare
         /// 8. Nu se aloca salile in functie de numarul de studenti (Temp disabled)
-        /// 9.
+        /// 9. Alocare Zile prioritati profesori in baza de date
+        /// 10. utilizare rng crypto pentru creere functie shuffle zile cu aceleasi prioritati
+        /// 11. Implementare posibilitate selectie numar generari de efectuat (Prima va fi standard, restul cu shuffle)
         /// TODO:
         /// DONE 1. Preferintele de zile trebuie sa aiba o prioritate
         /// DONE 2. Preferintele de module trebuie sa aiba o prioritate
@@ -90,315 +110,377 @@ namespace ARPC
         private void ButtonGenerare_Click(object sender, EventArgs e)
         {
             int NoTimeCounter = 0;
-
-            using (var db = new ARPCContext())
+            var GenerareMultipla = checkBoxGenerareMultipla.Checked;
+            if (GenerareMultipla==false)
             {
-
-                #region Selectare SemiGrupe Master si Licenta
-                //var getGrupeLicenta = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 1).OrderByDescending(z=>z.ID_GRUPA).ToList();
-                //var getGrupeMaster = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 2).OrderByDescending(z=>z.ID_GRUPA).ToList();
-                var getSemiGrupe = db.SEMIGRUPEs.OrderBy(z=>z.PRIORITATE).ToList();
-                #endregion
-
-                #region Selectare Numar Generare
-                int Numar_Generare = 1;
-                var getSetare = db.SETARIs.FirstOrDefault(z => z.CHEIE == 1337);
-                if (getSetare!=null)
+                using (var db = new ARPCContext())
                 {
-                    Numar_Generare = getSetare.VALOARE;
-                }
-                #endregion
 
-                #region Stabilire Ordine de generare a grupelor Master2=>Licenta3=>Master1=>Licenta2=>Licenta1 in functie de prioritate
-                List<SEMIGRUPE> OrdineSemiGrupe = new List<SEMIGRUPE>();
-                OrdineSemiGrupe.AddRange(getSemiGrupe);
-                //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
-                //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 3 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
-                //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
-                //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
-                //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
-                //foreach (var item in getGrupeMaster)
-                //{
-                //    if (item != getGrupeMaster.FirstOrDefault())
-                //    {
-                //        OrdineGrupe.Add(item);
-                //    }
-                //}
-                //foreach (var item in getGrupeLicenta)
-                //{
-                //    if (item != getGrupeLicenta.FirstOrDefault())
-                //    {
-                //        OrdineGrupe.Add(item);
-                //    }
-                //}
-                #endregion
+                    #region Selectare SemiGrupe Master si Licenta
+                    //var getGrupeLicenta = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 1).OrderByDescending(z=>z.ID_GRUPA).ToList();
+                    //var getGrupeMaster = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 2).OrderByDescending(z=>z.ID_GRUPA).ToList();
+                    var getSemiGrupe = db.SEMIGRUPEs.OrderBy(z => z.PRIORITATE).ToList();
+                    #endregion
 
-                #region Se Proceseaza Fiecare Grupa in Parte
-                foreach (var parsedsemigrupa in OrdineSemiGrupe)
-                {
-                    #region Se Selecteaza zilele disponibile din sistem in functie de prioritate
-                    var getZileGenerale = db.ZILEs.OrderBy(z=>z.PRIORITATE).ToList();
-                    #endregion
-                    #region Se Selecteaza modulele care sunt permise pentru a se plasa ore pentru grupa selectata in ordine descrescatoare a modulelor (Se pot seta prioritat)
-                    var getModuleGenerale = db.LINK_MODULE_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).OrderByDescending(z=>z.ID_MODUL).ToList();
-                    #endregion
-                    #region Se selecteaza prelegerile ce trebuie parcurse de grupa (Se pot seta prioritati si la acestea)
-                    var getPrelegeriNecesare = db.LINK_PRELEGERI_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).ToList();
-                    #endregion
-                    #region Se proceseaza fiecare prelegere in parte
-                    foreach (var prelegere in getPrelegeriNecesare)
+                    #region Selectare Numar Generare
+                    int Numar_Generare = 1;
+                    var getSetare = db.SETARIs.FirstOrDefault(z => z.CHEIE == 1337);
+                    if (getSetare != null)
                     {
-                        #region Se selecteaza profesorul eligibil pentru curs/seminar/laborator daca sunt mai multi se selecteaza random
-                        LINK_PROFESORI_PRELEGERI ProfesorCurs = null;
-                        LINK_PROFESORI_PRELEGERI ProfesorSeminar = null;
-                        LINK_PROFESORI_PRELEGERI ProfesorLaborator = null;
+                        Numar_Generare = getSetare.VALOARE;
+                    }
+                    #endregion
 
-                        var getProfesoriEligibiliCurs = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE==1).ToList();
-                        if (getProfesoriEligibiliCurs.Count!=0)
-                        {
-                            if (getProfesoriEligibiliCurs.Count == 1)
-                            {
-                                //doar ala
-                                ProfesorCurs = getProfesoriEligibiliCurs.FirstOrDefault();
-                            }
-                            else
-                            {
-                                //alegem unul din ei
-                                Random rand = new Random();
-                                var ales = rand.Next(0, getProfesoriEligibiliCurs.Count);
-                                ProfesorCurs = getProfesoriEligibiliCurs[ales];
-                            }
-                        }
+                    #region Stabilire Ordine de generare a grupelor Master2=>Licenta3=>Master1=>Licenta2=>Licenta1 in functie de prioritate
+                    List<SEMIGRUPE> OrdineSemiGrupe = new List<SEMIGRUPE>();
+                    OrdineSemiGrupe.AddRange(getSemiGrupe);
+                    //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
+                    //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 3 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                    //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
+                    //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                    //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                    //foreach (var item in getGrupeMaster)
+                    //{
+                    //    if (item != getGrupeMaster.FirstOrDefault())
+                    //    {
+                    //        OrdineGrupe.Add(item);
+                    //    }
+                    //}
+                    //foreach (var item in getGrupeLicenta)
+                    //{
+                    //    if (item != getGrupeLicenta.FirstOrDefault())
+                    //    {
+                    //        OrdineGrupe.Add(item);
+                    //    }
+                    //}
+                    #endregion
 
-                        var getProfesoriEligibiliSeminar = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE==2).ToList();
-                        if (getProfesoriEligibiliSeminar.Count!=0)
-                        {
-                            if (getProfesoriEligibiliSeminar.Count == 1)
-                            {
-                                //doar ala
-                                ProfesorSeminar = getProfesoriEligibiliSeminar.FirstOrDefault();
-                            }
-                            else
-                            {
-                                //alegem unul din ei
-                                Random rand = new Random();
-                                var ales = rand.Next(0, getProfesoriEligibiliSeminar.Count);
-                                ProfesorSeminar = getProfesoriEligibiliSeminar[ales];
-                            }
-                        }
-
-                        var getProfesoriEligibiliLaborator = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE==3).ToList();
-                        if (getProfesoriEligibiliLaborator.Count!=0)
-                        {
-                            if (getProfesoriEligibiliLaborator.Count == 1)
-                            {
-                                //doar ala
-                                ProfesorLaborator = getProfesoriEligibiliLaborator.FirstOrDefault();
-                            }
-                            else
-                            {
-                                //alegem unul din ei
-                                Random rand = new Random();
-                                var ales = rand.Next(0, getProfesoriEligibiliLaborator.Count);
-                                ProfesorLaborator = getProfesoriEligibiliLaborator[ales];
-                            }
-                        }
+                    #region Se Proceseaza Fiecare Grupa in Parte
+                    foreach (var parsedsemigrupa in OrdineSemiGrupe)
+                    {
+                        #region Se Selecteaza zilele disponibile din sistem in functie de prioritate
+                        var getZileGenerale = db.ZILEs.OrderBy(z => z.PRIORITATE).ToList();
                         #endregion
-
-                        #region Se seteaza ordinea de programare Laborator=>Seminar=>Curs
-                        List<LINK_PROFESORI_PRELEGERI> OrdinePlanificare = new List<LINK_PROFESORI_PRELEGERI>();
-                        if (ProfesorLaborator!=null)
-                        {
-                            OrdinePlanificare.Add(ProfesorLaborator);
-                        }
-                        if (ProfesorSeminar!=null)
-                        {
-                            OrdinePlanificare.Add(ProfesorSeminar);
-                        }
-                        if (ProfesorCurs!=null)
-                        {
-                            OrdinePlanificare.Add(ProfesorCurs);
-                        }
+                        #region Se Selecteaza modulele care sunt permise pentru a se plasa ore pentru grupa selectata in ordine descrescatoare a modulelor (Se pot seta prioritat)
+                        var getModuleGenerale = db.LINK_MODULE_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).OrderByDescending(z => z.ID_MODUL).ToList();
                         #endregion
-
-                        #region Se proceseaza ordinea de programare
-                        foreach (var ordine in OrdinePlanificare)
+                        #region Se selecteaza prelegerile ce trebuie parcurse de grupa (Se pot seta prioritati si la acestea)
+                        var getPrelegeriNecesare = db.LINK_PRELEGERI_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).ToList();
+                        #endregion
+                        #region Se proceseaza fiecare prelegere in parte
+                        foreach (var prelegere in getPrelegeriNecesare)
                         {
-                            //stabilire module si zile in functie de profesor
-                            var getPrioritatiZileProfesor = db.PREFERINTE_PROFESORI_ZILE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
-                            var getPrioritatiModuleProfesor = db.PREFERINTE_PROFESORI_MODULE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
+                            #region Se selecteaza profesorul eligibil pentru curs/seminar/laborator daca sunt mai multi se selecteaza random
+                            LINK_PROFESORI_PRELEGERI ProfesorCurs = null;
+                            LINK_PROFESORI_PRELEGERI ProfesorSeminar = null;
+                            LINK_PROFESORI_PRELEGERI ProfesorLaborator = null;
 
-                            List<ZILE> getZile = new List<ZILE>();
-                            foreach (var zi in getZileGenerale)
+                            var getProfesoriEligibiliCurs = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 1).ToList();
+                            if (getProfesoriEligibiliCurs.Count != 0)
                             {
-                                ZILE dto = new ZILE();
-                                dto.ID_ZI = zi.ID_ZI;
-                                dto.PRIORITATE = zi.PRIORITATE;
-                                dto.DENUMIRE = zi.DENUMIRE;
-                                getZile.Add(dto);
-                            }
-                            foreach (var item in getPrioritatiZileProfesor)
-                            {
-                                var getZi = getZile.FirstOrDefault(z => z.ID_ZI == item.ID_ZI);
-                                if (getZi!=null)
+                                if (getProfesoriEligibiliCurs.Count == 1)
                                 {
-                                    getZi.PRIORITATE = item.PRIORITATE;
+                                    //doar ala
+                                    ProfesorCurs = getProfesoriEligibiliCurs.FirstOrDefault();
+                                }
+                                else
+                                {
+                                    //alegem unul din ei
+                                    Random rand = new Random();
+                                    var ales = rand.Next(0, getProfesoriEligibiliCurs.Count);
+                                    ProfesorCurs = getProfesoriEligibiliCurs[ales];
                                 }
                             }
-                            getZile = getZile.OrderBy(z => z.PRIORITATE).ToList();
 
-                            List<DTOModule> getModule = new List<DTOModule>();
-                            foreach (var modul in getModuleGenerale)
+                            var getProfesoriEligibiliSeminar = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 2).ToList();
+                            if (getProfesoriEligibiliSeminar.Count != 0)
                             {
-                                DTOModule dto = new DTOModule();
-                                dto.iID_LINK_MODULE_GRUPE = modul.ID_LINK_MODULE_GRUPE;
-                                dto.iID_MODUL = modul.ID_MODUL;
-                                dto.iPRIORITATE = 10;
-                                getModule.Add(dto);
-                            }
-                            foreach (var item in getPrioritatiModuleProfesor)
-                            {
-                                var getModul = getModule.FirstOrDefault(z => z.iID_MODUL == item.ID_MODUL);
-                                if (getModul!=null)
+                                if (getProfesoriEligibiliSeminar.Count == 1)
                                 {
-                                    getModul.iPRIORITATE = item.PRIORITATE;
+                                    //doar ala
+                                    ProfesorSeminar = getProfesoriEligibiliSeminar.FirstOrDefault();
+                                }
+                                else
+                                {
+                                    //alegem unul din ei
+                                    Random rand = new Random();
+                                    var ales = rand.Next(0, getProfesoriEligibiliSeminar.Count);
+                                    ProfesorSeminar = getProfesoriEligibiliSeminar[ales];
                                 }
                             }
-                            getModule = getModule.OrderBy(z => z.iPRIORITATE).ThenByDescending(z=>z.iID_MODUL).ToList();
 
-
-                            //se planifica tot in functie de numarul de ore necesare
-                            var numar_ore_necesare = ordine.NUMAR_ORE;
-                            while (numar_ore_necesare!=0)
+                            var getProfesoriEligibiliLaborator = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 3).ToList();
+                            if (getProfesoriEligibiliLaborator.Count != 0)
                             {
-                                #region Profesorul curent este cel din ordine dar se va modifica in cazul in care nu poate fi programat cu acesta si se selecteaza altul din lista
-                                var ProfesorCurent = ordine;
-                                #endregion
-                                #region Variabile Blocker utilizate pentru a da skip la anumite componente care nu pot fi utilizate in programare
-                                List<LINK_PROFESORI_PRELEGERI> ProfesoriBlocati = new List<LINK_PROFESORI_PRELEGERI>();
-                                List<ZILE> ZileBlocate = new List<ZILE>();
-                                List<DTOModule> ModuleBlocate = new List<DTOModule>();
-                                #endregion
-                                bool Planificat = false;
-                                #region Se verifica daca materia in cauza a fost deja planificata
-
-                                var VerificaPlanificare = db.PLANIFICARE_ORAR.FirstOrDefault(
-                                    z => z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
-                                    &&
-                                    z.ID_PRELEGERE == ordine.ID_PRELEGERE
-                                    &&
-                                    z.ID_TIP_EXECUTIE == ordine.ID_TIP_EXECUTIE
-                                    &&
-                                    z.NUMAR_GENERARE == Numar_Generare
-                                    );
-                                if (VerificaPlanificare != null)
+                                if (getProfesoriEligibiliLaborator.Count == 1)
                                 {
-                                    Planificat = true;
-                                    numar_ore_necesare = 0;
+                                    //doar ala
+                                    ProfesorLaborator = getProfesoriEligibiliLaborator.FirstOrDefault();
                                 }
-                                #endregion
-                                while (Planificat == false)
+                                else
                                 {
+                                    //alegem unul din ei
+                                    Random rand = new Random();
+                                    var ales = rand.Next(0, getProfesoriEligibiliLaborator.Count);
+                                    ProfesorLaborator = getProfesoriEligibiliLaborator[ales];
+                                }
+                            }
+                            #endregion
 
-                                    #region Eliminare Zile care au peste 4 module programate deja prin inserarea in ZileBlocate
+                            #region Se seteaza ordinea de programare Laborator=>Seminar=>Curs
+                            List<LINK_PROFESORI_PRELEGERI> OrdinePlanificare = new List<LINK_PROFESORI_PRELEGERI>();
+                            if (ProfesorLaborator != null)
+                            {
+                                OrdinePlanificare.Add(ProfesorLaborator);
+                            }
+                            if (ProfesorSeminar != null)
+                            {
+                                OrdinePlanificare.Add(ProfesorSeminar);
+                            }
+                            if (ProfesorCurs != null)
+                            {
+                                OrdinePlanificare.Add(ProfesorCurs);
+                            }
+                            #endregion
 
-                                    var getModuleZiPlanificateGrupe = (from u in db.PLANIFICARE_ORAR
-                                                                       where u.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
-                                                                       && u.NUMAR_GENERARE == Numar_Generare
-                                                                       select u).GroupBy(z => z.ID_ZI).ToList();
-                                    foreach (var item in getModuleZiPlanificateGrupe)
+                            #region Se proceseaza ordinea de programare
+                            foreach (var ordine in OrdinePlanificare)
+                            {
+                                //stabilire module si zile in functie de profesor
+                                var getPrioritatiZileProfesor = db.PREFERINTE_PROFESORI_ZILE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
+                                var getPrioritatiModuleProfesor = db.PREFERINTE_PROFESORI_MODULE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
+
+                                List<ZILE> getZile = new List<ZILE>();
+                                foreach (var zi in getZileGenerale)
+                                {
+                                    ZILE dto = new ZILE();
+                                    dto.ID_ZI = zi.ID_ZI;
+                                    dto.PRIORITATE = zi.PRIORITATE;
+                                    dto.DENUMIRE = zi.DENUMIRE;
+                                    getZile.Add(dto);
+                                }
+                                foreach (var item in getPrioritatiZileProfesor)
+                                {
+                                    var getZi = getZile.FirstOrDefault(z => z.ID_ZI == item.ID_ZI);
+                                    if (getZi != null)
                                     {
-                                        if (item.Count() >= 4)
+                                        getZi.PRIORITATE = item.PRIORITATE;
+                                    }
+                                }
+                                getZile = getZile.OrderBy(z => z.PRIORITATE).ToList();
+
+                                //todo nu aici Shuffle Zile pe baza prioritatii
+
+                                List<DTOModule> getModule = new List<DTOModule>();
+                                foreach (var modul in getModuleGenerale)
+                                {
+                                    DTOModule dto = new DTOModule();
+                                    dto.iID_LINK_MODULE_GRUPE = modul.ID_LINK_MODULE_GRUPE;
+                                    dto.iID_MODUL = modul.ID_MODUL;
+                                    dto.iPRIORITATE = 10;
+                                    getModule.Add(dto);
+                                }
+                                foreach (var item in getPrioritatiModuleProfesor)
+                                {
+                                    var getModul = getModule.FirstOrDefault(z => z.iID_MODUL == item.ID_MODUL);
+                                    if (getModul != null)
+                                    {
+                                        getModul.iPRIORITATE = item.PRIORITATE;
+                                    }
+                                }
+                                getModule = getModule.OrderBy(z => z.iPRIORITATE).ThenByDescending(z => z.iID_MODUL).ToList();
+
+
+                                //se planifica tot in functie de numarul de ore necesare
+                                var numar_ore_necesare = ordine.NUMAR_ORE;
+                                while (numar_ore_necesare != 0)
+                                {
+                                    #region Profesorul curent este cel din ordine dar se va modifica in cazul in care nu poate fi programat cu acesta si se selecteaza altul din lista
+                                    var ProfesorCurent = ordine;
+                                    #endregion
+                                    #region Variabile Blocker utilizate pentru a da skip la anumite componente care nu pot fi utilizate in programare
+                                    List<LINK_PROFESORI_PRELEGERI> ProfesoriBlocati = new List<LINK_PROFESORI_PRELEGERI>();
+                                    List<ZILE> ZileBlocate = new List<ZILE>();
+                                    List<DTOModule> ModuleBlocate = new List<DTOModule>();
+                                    #endregion
+                                    bool Planificat = false;
+                                    #region Se verifica daca materia in cauza a fost deja planificata
+
+                                    var VerificaPlanificare = db.PLANIFICARE_ORAR.FirstOrDefault(
+                                        z => z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
+                                        &&
+                                        z.ID_PRELEGERE == ordine.ID_PRELEGERE
+                                        &&
+                                        z.ID_TIP_EXECUTIE == ordine.ID_TIP_EXECUTIE
+                                        &&
+                                        z.NUMAR_GENERARE == Numar_Generare
+                                        );
+                                    if (VerificaPlanificare != null)
+                                    {
+                                        Planificat = true;
+                                        numar_ore_necesare = 0;
+                                    }
+                                    #endregion
+                                    while (Planificat == false)
+                                    {
+
+                                        #region Eliminare Zile care au peste 4 module programate deja prin inserarea in ZileBlocate
+
+                                        var getModuleZiPlanificateGrupe = (from u in db.PLANIFICARE_ORAR
+                                                                           where u.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
+                                                                           && u.NUMAR_GENERARE == Numar_Generare
+                                                                           select u).GroupBy(z => z.ID_ZI).ToList();
+                                        foreach (var item in getModuleZiPlanificateGrupe)
                                         {
-                                            var idzilocal = item.FirstOrDefault().ID_ZI;
-                                            var getZiLocal = db.ZILEs.FirstOrDefault(z => z.ID_ZI == idzilocal);
-                                            if (getZiLocal != null)
+                                            if (item.Count() >= 4)
                                             {
-                                                ZileBlocate.Add(getZiLocal);
+                                                var idzilocal = item.FirstOrDefault().ID_ZI;
+                                                var getZiLocal = db.ZILEs.FirstOrDefault(z => z.ID_ZI == idzilocal);
+                                                if (getZiLocal != null)
+                                                {
+                                                    ZileBlocate.Add(getZiLocal);
+                                                }
                                             }
                                         }
-                                    }
 
-                                    #endregion
+                                        #endregion
 
-                                    var ZileDisponibile = (from u in getZile
-                                                           where !ZileBlocate.Any(z => z.ID_ZI == u.ID_ZI)
-                                                           select u).ToList().FirstOrDefault();
+                                        var ZileDisponibile = (from u in getZile
+                                                               where !ZileBlocate.Any(z => z.ID_ZI == u.ID_ZI)
+                                                               select u).ToList().FirstOrDefault();
 
-                                    var ModuleDisponibile = (from u in getModule
-                                                             where !ModuleBlocate.Any(z => z.iID_LINK_MODULE_GRUPE == u.iID_LINK_MODULE_GRUPE)
-                                                             select u).ToList().FirstOrDefault();
-                                    if (ZileDisponibile != null && ModuleDisponibile != null)
-                                    {
-                                        ///profesor diferit
-                                        ///acelasi profesor dar care tine o prelegere diferita
-                                        ///acelasi profesor dar care tine aceasi perelgere la un tip de executie diferit
-                                        ///
-
-                                        //var SuprapuneriGenerale = db.PLANIFICARE_ORAR.Where(z => z.ID_ZI == ZileDisponibile.ID_ZI && z.ID_MODUL == ModuleDisponibile.ID_MODUL && z.NUMAR_GENERARE == Numar_Generare).ToList();
-                                        //var ProfesorulESuprapus = SuprapuneriGenerale.Where(z => z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR).ToList();
-                                        //if (ProfesorulESuprapus.Count>0)
-                                        //{
-
-                                        //}
-                                        //else
-                                        //{
-
-                                        //}
-
-                                        var VerificaSuprapunere = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
-                                        z.ID_ZI == ZileDisponibile.ID_ZI
-                                        &&
-                                        z.ID_MODUL == ModuleDisponibile.iID_MODUL
-                                        &&
-                                        ((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR) || (z.ID_PROFESOR != ProfesorCurent.ID_PROFESOR && z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA))
-                                        //&&
-                                        //((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR&&((z.ID_PRELEGERE != ProfesorCurent.ID_PRELEGERE)||(z.ID_PRELEGERE == ProfesorCurent.ID_PRELEGERE &&z.ID_TIP_EXECUTIE != ProfesorCurent.ID_TIP_EXECUTIE)))
-                                        //||z.ID_PROFESOR!=ProfesorCurent.ID_PROFESOR)
-                                        &&
-                                        z.NUMAR_GENERARE == Numar_Generare);
-                                        if (VerificaSuprapunere != null)
+                                        var ModuleDisponibile = (from u in getModule
+                                                                 where !ModuleBlocate.Any(z => z.iID_LINK_MODULE_GRUPE == u.iID_LINK_MODULE_GRUPE)
+                                                                 select u).ToList().FirstOrDefault();
+                                        if (ZileDisponibile != null && ModuleDisponibile != null)
                                         {
-                                            //e suprapunere
-                                            Planificat = false;
-                                            ModuleBlocate.Add(ModuleDisponibile);
-                                        }
-                                        else
-                                        {
-                                            //cazul de curs se trateaza separat deoarece trebuie pusa si la ceilalti din acelasi an
-                                            if (ProfesorCurent.ID_TIP_EXECUTIE == 1)
+                                            ///profesor diferit
+                                            ///acelasi profesor dar care tine o prelegere diferita
+                                            ///acelasi profesor dar care tine aceasi perelgere la un tip de executie diferit
+                                            ///
+
+                                            //var SuprapuneriGenerale = db.PLANIFICARE_ORAR.Where(z => z.ID_ZI == ZileDisponibile.ID_ZI && z.ID_MODUL == ModuleDisponibile.ID_MODUL && z.NUMAR_GENERARE == Numar_Generare).ToList();
+                                            //var ProfesorulESuprapus = SuprapuneriGenerale.Where(z => z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR).ToList();
+                                            //if (ProfesorulESuprapus.Count>0)
+                                            //{
+
+                                            //}
+                                            //else
+                                            //{
+
+                                            //}
+
+                                            var VerificaSuprapunere = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
+                                            z.ID_ZI == ZileDisponibile.ID_ZI
+                                            &&
+                                            z.ID_MODUL == ModuleDisponibile.iID_MODUL
+                                            &&
+                                            ((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR) || (z.ID_PROFESOR != ProfesorCurent.ID_PROFESOR && z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA))
+                                            //&&
+                                            //((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR&&((z.ID_PRELEGERE != ProfesorCurent.ID_PRELEGERE)||(z.ID_PRELEGERE == ProfesorCurent.ID_PRELEGERE &&z.ID_TIP_EXECUTIE != ProfesorCurent.ID_TIP_EXECUTIE)))
+                                            //||z.ID_PROFESOR!=ProfesorCurent.ID_PROFESOR)
+                                            &&
+                                            z.NUMAR_GENERARE == Numar_Generare);
+                                            if (VerificaSuprapunere != null)
                                             {
-                                                var CursEligibil = true;
-                                                var getSemiGrupeLinkate = db.SEMIGRUPEs.Where(z =>
-                                                z.ID_SEMIGRUPA != parsedsemigrupa.ID_SEMIGRUPA
-                                                &&
-                                                z.GRUPE.ID_TIP_GRUPA == parsedsemigrupa.GRUPE.ID_TIP_GRUPA
-                                                &&
-                                                z.GRUPE.AN == parsedsemigrupa.GRUPE.AN
-                                                ).ToList();
-                                                //pentru fiecare semigrupa din lista se verifica daca este libera ziua si modulul respectiv
-                                                foreach (var semigrupa in getSemiGrupeLinkate)
+                                                //e suprapunere
+                                                Planificat = false;
+                                                ModuleBlocate.Add(ModuleDisponibile);
+                                            }
+                                            else
+                                            {
+                                                //cazul de curs se trateaza separat deoarece trebuie pusa si la ceilalti din acelasi an
+                                                if (ProfesorCurent.ID_TIP_EXECUTIE == 1)
                                                 {
-                                                    if (CursEligibil == true)
+                                                    var CursEligibil = true;
+                                                    var getSemiGrupeLinkate = db.SEMIGRUPEs.Where(z =>
+                                                    z.ID_SEMIGRUPA != parsedsemigrupa.ID_SEMIGRUPA
+                                                    &&
+                                                    z.GRUPE.ID_TIP_GRUPA == parsedsemigrupa.GRUPE.ID_TIP_GRUPA
+                                                    &&
+                                                    z.GRUPE.AN == parsedsemigrupa.GRUPE.AN
+                                                    ).ToList();
+                                                    //pentru fiecare semigrupa din lista se verifica daca este libera ziua si modulul respectiv
+                                                    foreach (var semigrupa in getSemiGrupeLinkate)
                                                     {
-                                                        var CheckZiModulDisponibilSemigrupa = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
-                                                        z.NUMAR_GENERARE == Numar_Generare
-                                                        &&
-                                                        z.ID_ZI == ZileDisponibile.ID_ZI
-                                                        &&
-                                                        z.ID_MODUL == ModuleDisponibile.iID_MODUL
-                                                        &&
-                                                        z.ID_SEMIGRUPA == semigrupa.ID_SEMIGRUPA
-                                                        );
-                                                        if (CheckZiModulDisponibilSemigrupa != null)
+                                                        if (CursEligibil == true)
                                                         {
-                                                            CursEligibil = false;
+                                                            var CheckZiModulDisponibilSemigrupa = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
+                                                            z.NUMAR_GENERARE == Numar_Generare
+                                                            &&
+                                                            z.ID_ZI == ZileDisponibile.ID_ZI
+                                                            &&
+                                                            z.ID_MODUL == ModuleDisponibile.iID_MODUL
+                                                            &&
+                                                            z.ID_SEMIGRUPA == semigrupa.ID_SEMIGRUPA
+                                                            );
+                                                            if (CheckZiModulDisponibilSemigrupa != null)
+                                                            {
+                                                                CursEligibil = false;
+                                                            }
                                                         }
                                                     }
+                                                    if (CursEligibil == true)
+                                                    {
+                                                        //se planifica cursul pentru toate semigrupele din lista si semigrupa curenta
+                                                        Planificat = true;
+                                                        PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
+                                                        orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
+                                                        orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
+                                                        orarplan.ID_ZI = ZileDisponibile.ID_ZI;
+                                                        orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
+                                                        orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
+                                                        orarplan.ID_TIP_EXECUTIE = ProfesorCurent.ID_TIP_EXECUTIE;
+                                                        orarplan.NUMAR_GENERARE = Numar_Generare;
+                                                        if (numar_ore_necesare < 2)
+                                                        {
+                                                            orarplan.ID_TIP_PLANIFICARE = 2;
+                                                            numar_ore_necesare = 0;
+                                                        }
+                                                        else
+                                                        {
+                                                            orarplan.ID_TIP_PLANIFICARE = 1;
+                                                            numar_ore_necesare -= 2;
+                                                        }
+
+                                                        db.PLANIFICARE_ORAR.Add(orarplan);
+                                                        db.SaveChanges();
+
+                                                        var backupTipPlanificare = orarplan.ID_TIP_PLANIFICARE;
+
+                                                        foreach (var semigrupa in getSemiGrupeLinkate)
+                                                        {
+                                                            orarplan = new PLANIFICARE_ORAR();
+                                                            orarplan.ID_SEMIGRUPA = semigrupa.ID_SEMIGRUPA;
+                                                            orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
+                                                            orarplan.ID_ZI = ZileDisponibile.ID_ZI;
+                                                            orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
+                                                            orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
+                                                            orarplan.ID_TIP_EXECUTIE = ProfesorCurent.ID_TIP_EXECUTIE;
+                                                            orarplan.NUMAR_GENERARE = Numar_Generare;
+                                                            orarplan.ID_TIP_PLANIFICARE = backupTipPlanificare;
+                                                            //if (numar_ore_necesare < 2)
+                                                            //{
+                                                            //    orarplan.ID_TIP_PLANIFICARE = 2;
+                                                            //}
+                                                            //else
+                                                            //{
+                                                            //    orarplan.ID_TIP_PLANIFICARE = 1;
+                                                            //}
+
+                                                            db.PLANIFICARE_ORAR.Add(orarplan);
+                                                            db.SaveChanges();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        Planificat = false;
+                                                        ModuleBlocate.Add(ModuleDisponibile);
+                                                    }
                                                 }
-                                                if (CursEligibil == true)
+                                                else
                                                 {
-                                                    //se planifica cursul pentru toate semigrupele din lista si semigrupa curenta
+                                                    //nu e deci pot sa il pun
                                                     Planificat = true;
                                                     PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
                                                     orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
@@ -421,11 +503,519 @@ namespace ARPC
 
                                                     db.PLANIFICARE_ORAR.Add(orarplan);
                                                     db.SaveChanges();
-
-                                                    foreach (var semigrupa in getSemiGrupeLinkate)
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (ModuleDisponibile == null)
+                                            {
+                                                ModuleBlocate.Clear();
+                                                if (ZileDisponibile != null)
+                                                {
+                                                    ZileBlocate.Add(ZileDisponibile);
+                                                }
+                                            }
+                                            if (ZileDisponibile == null)
+                                            {
+                                                //nu am unde sa il pun efectiv cu profesorul curent.....
+                                                if (ProfesorCurent == ProfesorLaborator)
+                                                {
+                                                    if (getProfesoriEligibiliLaborator.Count > 1)
                                                     {
-                                                        orarplan = new PLANIFICARE_ORAR();
-                                                        orarplan.ID_SEMIGRUPA = semigrupa.ID_SEMIGRUPA;
+                                                        if (ProfesoriBlocati.Count == getProfesoriEligibiliLaborator.Count)
+                                                        {
+                                                            NoTimeCounter++;
+                                                            numar_ore_necesare = 0;
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            ProfesoriBlocati.Add(ProfesorCurent);
+                                                            ProfesorCurent = (from u in getProfesoriEligibiliLaborator
+                                                                              where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                              select u).ToList().FirstOrDefault();
+                                                            ZileBlocate.Clear();
+                                                            ModuleBlocate.Clear();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        NoTimeCounter++;
+                                                        numar_ore_necesare = 0;
+                                                        break;
+                                                    }
+                                                }
+                                                else
+                                                if (ProfesorCurent == ProfesorSeminar)
+                                                {
+                                                    if (getProfesoriEligibiliSeminar.Count > 1)
+                                                    {
+                                                        if (ProfesoriBlocati.Count == getProfesoriEligibiliSeminar.Count)
+                                                        {
+                                                            NoTimeCounter++;
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            ProfesoriBlocati.Add(ProfesorCurent);
+                                                            ProfesorCurent = (from u in getProfesoriEligibiliSeminar
+                                                                              where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                              select u).ToList().FirstOrDefault();
+                                                            ZileBlocate.Clear();
+                                                            ModuleBlocate.Clear();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        NoTimeCounter++;
+                                                        numar_ore_necesare = 0;
+                                                        break;
+                                                    }
+                                                }
+                                                else
+                                                if (ProfesorCurent == ProfesorCurs)
+                                                {
+                                                    if (getProfesoriEligibiliCurs.Count > 1)
+                                                    {
+                                                        if (ProfesoriBlocati.Count == getProfesoriEligibiliCurs.Count)
+                                                        {
+                                                            NoTimeCounter++;
+                                                            numar_ore_necesare = 0;
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            ProfesoriBlocati.Add(ProfesorCurent);
+                                                            ProfesorCurent = (from u in getProfesoriEligibiliCurs
+                                                                              where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                              select u).ToList().FirstOrDefault();
+                                                            ZileBlocate.Clear();
+                                                            ModuleBlocate.Clear();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        NoTimeCounter++;
+                                                        numar_ore_necesare = 0;
+                                                        break;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    NoTimeCounter++;
+                                                    numar_ore_necesare = 0;
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                            #endregion
+
+                        }
+                        #endregion
+
+                    }
+                    #endregion
+                    #region Update Numar Generare
+                    if (getSetare != null)
+                    {
+                        getSetare.VALOARE += 1;
+                        db.SaveChanges();
+                    }
+                    #endregion
+                }
+            }
+            else
+            {
+                var NumarGenerari = Convert.ToInt32(textBoxNumarGenerari.Text);
+                for (int m = 0; m < NumarGenerari; m++)
+                {
+                    NoTimeCounter = 0;
+                    using (var db = new ARPCContext())
+                    {
+
+                        #region Selectare SemiGrupe Master si Licenta
+                        //var getGrupeLicenta = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 1).OrderByDescending(z=>z.ID_GRUPA).ToList();
+                        //var getGrupeMaster = db.GRUPEs.Where(z => z.ID_TIP_GRUPA == 2).OrderByDescending(z=>z.ID_GRUPA).ToList();
+                        var getSemiGrupe = db.SEMIGRUPEs.OrderBy(z => z.PRIORITATE).ToList();
+                        #endregion
+
+                        #region Selectare Numar Generare
+                        int Numar_Generare = 1;
+                        var getSetare = db.SETARIs.FirstOrDefault(z => z.CHEIE == 1337);
+                        if (getSetare != null)
+                        {
+                            Numar_Generare = getSetare.VALOARE;
+                        }
+                        #endregion
+
+                        #region Stabilire Ordine de generare a grupelor Master2=>Licenta3=>Master1=>Licenta2=>Licenta1 in functie de prioritate
+                        List<SEMIGRUPE> OrdineSemiGrupe = new List<SEMIGRUPE>();
+                        OrdineSemiGrupe.AddRange(getSemiGrupe);
+                        //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
+                        //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 3 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                        //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
+                        //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                        //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 1 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
+                        //foreach (var item in getGrupeMaster)
+                        //{
+                        //    if (item != getGrupeMaster.FirstOrDefault())
+                        //    {
+                        //        OrdineGrupe.Add(item);
+                        //    }
+                        //}
+                        //foreach (var item in getGrupeLicenta)
+                        //{
+                        //    if (item != getGrupeLicenta.FirstOrDefault())
+                        //    {
+                        //        OrdineGrupe.Add(item);
+                        //    }
+                        //}
+                        #endregion
+
+                        #region Se Proceseaza Fiecare Grupa in Parte
+                        foreach (var parsedsemigrupa in OrdineSemiGrupe)
+                        {
+                            #region Se Selecteaza zilele disponibile din sistem in functie de prioritate
+                            var getZileGenerale = db.ZILEs.OrderBy(z => z.PRIORITATE).ToList();
+                            #endregion
+                            #region Se Selecteaza modulele care sunt permise pentru a se plasa ore pentru grupa selectata in ordine descrescatoare a modulelor (Se pot seta prioritat)
+                            var getModuleGenerale = db.LINK_MODULE_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).OrderByDescending(z => z.ID_MODUL).ToList();
+                            #endregion
+                            #region Se selecteaza prelegerile ce trebuie parcurse de grupa (Se pot seta prioritati si la acestea)
+                            var getPrelegeriNecesare = db.LINK_PRELEGERI_GRUPE.Where(z => z.ID_GRUPA == parsedsemigrupa.ID_GRUPA).ToList();
+                            #endregion
+                            #region Se proceseaza fiecare prelegere in parte
+                            foreach (var prelegere in getPrelegeriNecesare)
+                            {
+                                #region Se selecteaza profesorul eligibil pentru curs/seminar/laborator daca sunt mai multi se selecteaza random
+                                LINK_PROFESORI_PRELEGERI ProfesorCurs = null;
+                                LINK_PROFESORI_PRELEGERI ProfesorSeminar = null;
+                                LINK_PROFESORI_PRELEGERI ProfesorLaborator = null;
+
+                                var getProfesoriEligibiliCurs = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 1).ToList();
+                                if (getProfesoriEligibiliCurs.Count != 0)
+                                {
+                                    if (getProfesoriEligibiliCurs.Count == 1)
+                                    {
+                                        //doar ala
+                                        ProfesorCurs = getProfesoriEligibiliCurs.FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        //alegem unul din ei
+                                        Random rand = new Random();
+                                        var ales = rand.Next(0, getProfesoriEligibiliCurs.Count);
+                                        ProfesorCurs = getProfesoriEligibiliCurs[ales];
+                                    }
+                                }
+
+                                var getProfesoriEligibiliSeminar = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 2).ToList();
+                                if (getProfesoriEligibiliSeminar.Count != 0)
+                                {
+                                    if (getProfesoriEligibiliSeminar.Count == 1)
+                                    {
+                                        //doar ala
+                                        ProfesorSeminar = getProfesoriEligibiliSeminar.FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        //alegem unul din ei
+                                        Random rand = new Random();
+                                        var ales = rand.Next(0, getProfesoriEligibiliSeminar.Count);
+                                        ProfesorSeminar = getProfesoriEligibiliSeminar[ales];
+                                    }
+                                }
+
+                                var getProfesoriEligibiliLaborator = db.LINK_PROFESORI_PRELEGERI.Where(z => z.ID_PRELEGERE == prelegere.ID_PRELEGERE && z.ID_TIP_EXECUTIE == 3).ToList();
+                                if (getProfesoriEligibiliLaborator.Count != 0)
+                                {
+                                    if (getProfesoriEligibiliLaborator.Count == 1)
+                                    {
+                                        //doar ala
+                                        ProfesorLaborator = getProfesoriEligibiliLaborator.FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        //alegem unul din ei
+                                        Random rand = new Random();
+                                        var ales = rand.Next(0, getProfesoriEligibiliLaborator.Count);
+                                        ProfesorLaborator = getProfesoriEligibiliLaborator[ales];
+                                    }
+                                }
+                                #endregion
+
+                                #region Se seteaza ordinea de programare Laborator=>Seminar=>Curs
+                                List<LINK_PROFESORI_PRELEGERI> OrdinePlanificare = new List<LINK_PROFESORI_PRELEGERI>();
+                                if (ProfesorLaborator != null)
+                                {
+                                    OrdinePlanificare.Add(ProfesorLaborator);
+                                }
+                                if (ProfesorSeminar != null)
+                                {
+                                    OrdinePlanificare.Add(ProfesorSeminar);
+                                }
+                                if (ProfesorCurs != null)
+                                {
+                                    OrdinePlanificare.Add(ProfesorCurs);
+                                }
+                                #endregion
+
+                                #region Se proceseaza ordinea de programare
+                                foreach (var ordine in OrdinePlanificare)
+                                {
+                                    //stabilire module si zile in functie de profesor
+                                    var getPrioritatiZileProfesor = db.PREFERINTE_PROFESORI_ZILE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
+                                    var getPrioritatiModuleProfesor = db.PREFERINTE_PROFESORI_MODULE.Where(z => z.ID_PROFESOR == ordine.ID_PROFESOR).OrderBy(i => i.PRIORITATE).ToList();
+
+                                    List<ZILE> getZile = new List<ZILE>();
+                                    foreach (var zi in getZileGenerale)
+                                    {
+                                        ZILE dto = new ZILE();
+                                        dto.ID_ZI = zi.ID_ZI;
+                                        dto.PRIORITATE = zi.PRIORITATE;
+                                        dto.DENUMIRE = zi.DENUMIRE;
+                                        getZile.Add(dto);
+                                    }
+                                    foreach (var item in getPrioritatiZileProfesor)
+                                    {
+                                        var getZi = getZile.FirstOrDefault(z => z.ID_ZI == item.ID_ZI);
+                                        if (getZi != null)
+                                        {
+                                            getZi.PRIORITATE = item.PRIORITATE;
+                                        }
+                                    }
+                                    getZile = getZile.OrderBy(z => z.PRIORITATE).ToList();
+
+                                    //Shuffle Zile pe baza prioritatii
+                                    List<ZILE> ShuffledZile = new List<ZILE>();
+                                    var ZileGrupate = getZile.GroupBy(z => z.PRIORITATE).ToList();
+                                    foreach (var grupare in ZileGrupate)
+                                    {
+                                        var OrdineInitiala = grupare.ToList();
+                                        Shuffle(OrdineInitiala);
+                                        ShuffledZile.AddRange(OrdineInitiala);
+                                    }
+                                    getZile = ShuffledZile;
+
+                                    List<DTOModule> getModule = new List<DTOModule>();
+                                    foreach (var modul in getModuleGenerale)
+                                    {
+                                        DTOModule dto = new DTOModule();
+                                        dto.iID_LINK_MODULE_GRUPE = modul.ID_LINK_MODULE_GRUPE;
+                                        dto.iID_MODUL = modul.ID_MODUL;
+                                        dto.iPRIORITATE = 10;
+                                        getModule.Add(dto);
+                                    }
+                                    foreach (var item in getPrioritatiModuleProfesor)
+                                    {
+                                        var getModul = getModule.FirstOrDefault(z => z.iID_MODUL == item.ID_MODUL);
+                                        if (getModul != null)
+                                        {
+                                            getModul.iPRIORITATE = item.PRIORITATE;
+                                        }
+                                    }
+                                    getModule = getModule.OrderBy(z => z.iPRIORITATE).ThenByDescending(z => z.iID_MODUL).ToList();
+
+
+                                    //se planifica tot in functie de numarul de ore necesare
+                                    var numar_ore_necesare = ordine.NUMAR_ORE;
+                                    while (numar_ore_necesare != 0)
+                                    {
+                                        #region Profesorul curent este cel din ordine dar se va modifica in cazul in care nu poate fi programat cu acesta si se selecteaza altul din lista
+                                        var ProfesorCurent = ordine;
+                                        #endregion
+                                        #region Variabile Blocker utilizate pentru a da skip la anumite componente care nu pot fi utilizate in programare
+                                        List<LINK_PROFESORI_PRELEGERI> ProfesoriBlocati = new List<LINK_PROFESORI_PRELEGERI>();
+                                        List<ZILE> ZileBlocate = new List<ZILE>();
+                                        List<DTOModule> ModuleBlocate = new List<DTOModule>();
+                                        #endregion
+                                        bool Planificat = false;
+                                        #region Se verifica daca materia in cauza a fost deja planificata
+
+                                        var VerificaPlanificare = db.PLANIFICARE_ORAR.FirstOrDefault(
+                                            z => z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
+                                            &&
+                                            z.ID_PRELEGERE == ordine.ID_PRELEGERE
+                                            &&
+                                            z.ID_TIP_EXECUTIE == ordine.ID_TIP_EXECUTIE
+                                            &&
+                                            z.NUMAR_GENERARE == Numar_Generare
+                                            );
+                                        if (VerificaPlanificare != null)
+                                        {
+                                            Planificat = true;
+                                            numar_ore_necesare = 0;
+                                        }
+                                        #endregion
+                                        while (Planificat == false)
+                                        {
+
+                                            #region Eliminare Zile care au peste 4 module programate deja prin inserarea in ZileBlocate
+
+                                            var getModuleZiPlanificateGrupe = (from u in db.PLANIFICARE_ORAR
+                                                                               where u.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA
+                                                                               && u.NUMAR_GENERARE == Numar_Generare
+                                                                               select u).GroupBy(z => z.ID_ZI).ToList();
+                                            foreach (var item in getModuleZiPlanificateGrupe)
+                                            {
+                                                if (item.Count() >= 4)
+                                                {
+                                                    var idzilocal = item.FirstOrDefault().ID_ZI;
+                                                    var getZiLocal = db.ZILEs.FirstOrDefault(z => z.ID_ZI == idzilocal);
+                                                    if (getZiLocal != null)
+                                                    {
+                                                        ZileBlocate.Add(getZiLocal);
+                                                    }
+                                                }
+                                            }
+
+                                            #endregion
+
+                                            var ZileDisponibile = (from u in getZile
+                                                                   where !ZileBlocate.Any(z => z.ID_ZI == u.ID_ZI)
+                                                                   select u).ToList().FirstOrDefault();
+
+                                            var ModuleDisponibile = (from u in getModule
+                                                                     where !ModuleBlocate.Any(z => z.iID_LINK_MODULE_GRUPE == u.iID_LINK_MODULE_GRUPE)
+                                                                     select u).ToList().FirstOrDefault();
+                                            if (ZileDisponibile != null && ModuleDisponibile != null)
+                                            {
+                                                ///profesor diferit
+                                                ///acelasi profesor dar care tine o prelegere diferita
+                                                ///acelasi profesor dar care tine aceasi perelgere la un tip de executie diferit
+                                                ///
+
+                                                //var SuprapuneriGenerale = db.PLANIFICARE_ORAR.Where(z => z.ID_ZI == ZileDisponibile.ID_ZI && z.ID_MODUL == ModuleDisponibile.ID_MODUL && z.NUMAR_GENERARE == Numar_Generare).ToList();
+                                                //var ProfesorulESuprapus = SuprapuneriGenerale.Where(z => z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR).ToList();
+                                                //if (ProfesorulESuprapus.Count>0)
+                                                //{
+
+                                                //}
+                                                //else
+                                                //{
+
+                                                //}
+
+                                                var VerificaSuprapunere = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
+                                                z.ID_ZI == ZileDisponibile.ID_ZI
+                                                &&
+                                                z.ID_MODUL == ModuleDisponibile.iID_MODUL
+                                                &&
+                                                ((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR) || (z.ID_PROFESOR != ProfesorCurent.ID_PROFESOR && z.ID_SEMIGRUPA == parsedsemigrupa.ID_SEMIGRUPA))
+                                                //&&
+                                                //((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR&&((z.ID_PRELEGERE != ProfesorCurent.ID_PRELEGERE)||(z.ID_PRELEGERE == ProfesorCurent.ID_PRELEGERE &&z.ID_TIP_EXECUTIE != ProfesorCurent.ID_TIP_EXECUTIE)))
+                                                //||z.ID_PROFESOR!=ProfesorCurent.ID_PROFESOR)
+                                                &&
+                                                z.NUMAR_GENERARE == Numar_Generare);
+                                                if (VerificaSuprapunere != null)
+                                                {
+                                                    //e suprapunere
+                                                    Planificat = false;
+                                                    ModuleBlocate.Add(ModuleDisponibile);
+                                                }
+                                                else
+                                                {
+                                                    //cazul de curs se trateaza separat deoarece trebuie pusa si la ceilalti din acelasi an
+                                                    if (ProfesorCurent.ID_TIP_EXECUTIE == 1)
+                                                    {
+                                                        var CursEligibil = true;
+                                                        var getSemiGrupeLinkate = db.SEMIGRUPEs.Where(z =>
+                                                        z.ID_SEMIGRUPA != parsedsemigrupa.ID_SEMIGRUPA
+                                                        &&
+                                                        z.GRUPE.ID_TIP_GRUPA == parsedsemigrupa.GRUPE.ID_TIP_GRUPA
+                                                        &&
+                                                        z.GRUPE.AN == parsedsemigrupa.GRUPE.AN
+                                                        ).ToList();
+                                                        //pentru fiecare semigrupa din lista se verifica daca este libera ziua si modulul respectiv
+                                                        foreach (var semigrupa in getSemiGrupeLinkate)
+                                                        {
+                                                            if (CursEligibil == true)
+                                                            {
+                                                                var CheckZiModulDisponibilSemigrupa = db.PLANIFICARE_ORAR.FirstOrDefault(z =>
+                                                                z.NUMAR_GENERARE == Numar_Generare
+                                                                &&
+                                                                z.ID_ZI == ZileDisponibile.ID_ZI
+                                                                &&
+                                                                z.ID_MODUL == ModuleDisponibile.iID_MODUL
+                                                                &&
+                                                                z.ID_SEMIGRUPA == semigrupa.ID_SEMIGRUPA
+                                                                );
+                                                                if (CheckZiModulDisponibilSemigrupa != null)
+                                                                {
+                                                                    CursEligibil = false;
+                                                                }
+                                                            }
+                                                        }
+                                                        if (CursEligibil == true)
+                                                        {
+                                                            //se planifica cursul pentru toate semigrupele din lista si semigrupa curenta
+                                                            Planificat = true;
+                                                            PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
+                                                            orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
+                                                            orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
+                                                            orarplan.ID_ZI = ZileDisponibile.ID_ZI;
+                                                            orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
+                                                            orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
+                                                            orarplan.ID_TIP_EXECUTIE = ProfesorCurent.ID_TIP_EXECUTIE;
+                                                            orarplan.NUMAR_GENERARE = Numar_Generare;
+                                                            if (numar_ore_necesare < 2)
+                                                            {
+                                                                orarplan.ID_TIP_PLANIFICARE = 2;
+                                                                numar_ore_necesare = 0;
+                                                            }
+                                                            else
+                                                            {
+                                                                orarplan.ID_TIP_PLANIFICARE = 1;
+                                                                numar_ore_necesare -= 2;
+                                                            }
+
+                                                            db.PLANIFICARE_ORAR.Add(orarplan);
+                                                            db.SaveChanges();
+
+                                                            var backupTipPlanificare = orarplan.ID_TIP_PLANIFICARE;
+
+                                                            foreach (var semigrupa in getSemiGrupeLinkate)
+                                                            {
+                                                                orarplan = new PLANIFICARE_ORAR();
+                                                                orarplan.ID_SEMIGRUPA = semigrupa.ID_SEMIGRUPA;
+                                                                orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
+                                                                orarplan.ID_ZI = ZileDisponibile.ID_ZI;
+                                                                orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
+                                                                orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
+                                                                orarplan.ID_TIP_EXECUTIE = ProfesorCurent.ID_TIP_EXECUTIE;
+                                                                orarplan.NUMAR_GENERARE = Numar_Generare;
+                                                                orarplan.ID_TIP_PLANIFICARE = backupTipPlanificare;
+                                                                //if (numar_ore_necesare < 2)
+                                                                //{
+                                                                //    orarplan.ID_TIP_PLANIFICARE = 2;
+                                                                //}
+                                                                //else
+                                                                //{
+                                                                //    orarplan.ID_TIP_PLANIFICARE = 1;
+                                                                //}
+
+                                                                db.PLANIFICARE_ORAR.Add(orarplan);
+                                                                db.SaveChanges();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            Planificat = false;
+                                                            ModuleBlocate.Add(ModuleDisponibile);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //nu e deci pot sa il pun
+                                                        Planificat = true;
+                                                        PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
+                                                        orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
                                                         orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
                                                         orarplan.ID_ZI = ZileDisponibile.ID_ZI;
                                                         orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
@@ -435,174 +1025,146 @@ namespace ARPC
                                                         if (numar_ore_necesare < 2)
                                                         {
                                                             orarplan.ID_TIP_PLANIFICARE = 2;
+                                                            numar_ore_necesare = 0;
                                                         }
                                                         else
                                                         {
                                                             orarplan.ID_TIP_PLANIFICARE = 1;
+                                                            numar_ore_necesare -= 2;
                                                         }
 
                                                         db.PLANIFICARE_ORAR.Add(orarplan);
                                                         db.SaveChanges();
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    Planificat = false;
-                                                    ModuleBlocate.Add(ModuleDisponibile);
-                                                }
                                             }
                                             else
                                             {
-                                                //nu e deci pot sa il pun
-                                                Planificat = true;
-                                                PLANIFICARE_ORAR orarplan = new PLANIFICARE_ORAR();
-                                                orarplan.ID_SEMIGRUPA = parsedsemigrupa.ID_SEMIGRUPA;
-                                                orarplan.ID_MODUL = ModuleDisponibile.iID_MODUL;
-                                                orarplan.ID_ZI = ZileDisponibile.ID_ZI;
-                                                orarplan.ID_PROFESOR = ProfesorCurent.ID_PROFESOR;
-                                                orarplan.ID_PRELEGERE = ProfesorCurent.ID_PRELEGERE;
-                                                orarplan.ID_TIP_EXECUTIE = ProfesorCurent.ID_TIP_EXECUTIE;
-                                                orarplan.NUMAR_GENERARE = Numar_Generare;
-                                                if (numar_ore_necesare < 2)
+                                                if (ModuleDisponibile == null)
                                                 {
-                                                    orarplan.ID_TIP_PLANIFICARE = 2;
-                                                    numar_ore_necesare = 0;
+                                                    ModuleBlocate.Clear();
+                                                    if (ZileDisponibile != null)
+                                                    {
+                                                        ZileBlocate.Add(ZileDisponibile);
+                                                    }
                                                 }
-                                                else
+                                                if (ZileDisponibile == null)
                                                 {
-                                                    orarplan.ID_TIP_PLANIFICARE = 1;
-                                                    numar_ore_necesare -= 2;
-                                                }
-
-                                                db.PLANIFICARE_ORAR.Add(orarplan);
-                                                db.SaveChanges();
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (ModuleDisponibile == null)
-                                        {
-                                            ModuleBlocate.Clear();
-                                            if (ZileDisponibile != null)
-                                            {
-                                                ZileBlocate.Add(ZileDisponibile);
-                                            }
-                                        }
-                                        if (ZileDisponibile == null)
-                                        {
-                                            //nu am unde sa il pun efectiv cu profesorul curent.....
-                                            if (ProfesorCurent == ProfesorLaborator)
-                                            {
-                                                if (getProfesoriEligibiliLaborator.Count > 1)
-                                                {
-                                                    if (ProfesoriBlocati.Count == getProfesoriEligibiliLaborator.Count)
+                                                    //nu am unde sa il pun efectiv cu profesorul curent.....
+                                                    if (ProfesorCurent == ProfesorLaborator)
+                                                    {
+                                                        if (getProfesoriEligibiliLaborator.Count > 1)
+                                                        {
+                                                            if (ProfesoriBlocati.Count == getProfesoriEligibiliLaborator.Count)
+                                                            {
+                                                                NoTimeCounter++;
+                                                                numar_ore_necesare = 0;
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                ProfesoriBlocati.Add(ProfesorCurent);
+                                                                ProfesorCurent = (from u in getProfesoriEligibiliLaborator
+                                                                                  where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                                  select u).ToList().FirstOrDefault();
+                                                                ZileBlocate.Clear();
+                                                                ModuleBlocate.Clear();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            NoTimeCounter++;
+                                                            numar_ore_necesare = 0;
+                                                            break;
+                                                        }
+                                                    }
+                                                    else
+                                                    if (ProfesorCurent == ProfesorSeminar)
+                                                    {
+                                                        if (getProfesoriEligibiliSeminar.Count > 1)
+                                                        {
+                                                            if (ProfesoriBlocati.Count == getProfesoriEligibiliSeminar.Count)
+                                                            {
+                                                                NoTimeCounter++;
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                ProfesoriBlocati.Add(ProfesorCurent);
+                                                                ProfesorCurent = (from u in getProfesoriEligibiliSeminar
+                                                                                  where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                                  select u).ToList().FirstOrDefault();
+                                                                ZileBlocate.Clear();
+                                                                ModuleBlocate.Clear();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            NoTimeCounter++;
+                                                            numar_ore_necesare = 0;
+                                                            break;
+                                                        }
+                                                    }
+                                                    else
+                                                    if (ProfesorCurent == ProfesorCurs)
+                                                    {
+                                                        if (getProfesoriEligibiliCurs.Count > 1)
+                                                        {
+                                                            if (ProfesoriBlocati.Count == getProfesoriEligibiliCurs.Count)
+                                                            {
+                                                                NoTimeCounter++;
+                                                                numar_ore_necesare = 0;
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                ProfesoriBlocati.Add(ProfesorCurent);
+                                                                ProfesorCurent = (from u in getProfesoriEligibiliCurs
+                                                                                  where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
+                                                                                  select u).ToList().FirstOrDefault();
+                                                                ZileBlocate.Clear();
+                                                                ModuleBlocate.Clear();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            NoTimeCounter++;
+                                                            numar_ore_necesare = 0;
+                                                            break;
+                                                        }
+                                                    }
+                                                    else
                                                     {
                                                         NoTimeCounter++;
                                                         numar_ore_necesare = 0;
                                                         break;
                                                     }
-                                                    else
-                                                    {
-                                                        ProfesoriBlocati.Add(ProfesorCurent);
-                                                        ProfesorCurent = (from u in getProfesoriEligibiliLaborator
-                                                                          where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
-                                                                          select u).ToList().FirstOrDefault();
-                                                        ZileBlocate.Clear();
-                                                        ModuleBlocate.Clear();
-                                                    }
+
                                                 }
-                                                else
-                                                {
-                                                    NoTimeCounter++;
-                                                    numar_ore_necesare = 0;
-                                                    break;
-                                                }
-                                            }
-                                            else
-                                            if (ProfesorCurent == ProfesorSeminar)
-                                            {
-                                                if (getProfesoriEligibiliSeminar.Count > 1)
-                                                {
-                                                    if (ProfesoriBlocati.Count == getProfesoriEligibiliSeminar.Count)
-                                                    {
-                                                        NoTimeCounter++;
-                                                        break;
-                                                    }
-                                                    else
-                                                    {
-                                                        ProfesoriBlocati.Add(ProfesorCurent);
-                                                        ProfesorCurent = (from u in getProfesoriEligibiliSeminar
-                                                                          where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
-                                                                          select u).ToList().FirstOrDefault();
-                                                        ZileBlocate.Clear();
-                                                        ModuleBlocate.Clear();
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    NoTimeCounter++;
-                                                    numar_ore_necesare = 0;
-                                                    break;
-                                                }
-                                            }
-                                            else
-                                            if (ProfesorCurent == ProfesorCurs)
-                                            {
-                                                if (getProfesoriEligibiliCurs.Count > 1)
-                                                {
-                                                    if (ProfesoriBlocati.Count == getProfesoriEligibiliCurs.Count)
-                                                    {
-                                                        NoTimeCounter++;
-                                                        numar_ore_necesare = 0;
-                                                        break;
-                                                    }
-                                                    else
-                                                    {
-                                                        ProfesoriBlocati.Add(ProfesorCurent);
-                                                        ProfesorCurent = (from u in getProfesoriEligibiliCurs
-                                                                          where !ProfesoriBlocati.Any(z => z.ID_LINK_PROFESORI_PRELEGERI == u.ID_LINK_PROFESORI_PRELEGERI)
-                                                                          select u).ToList().FirstOrDefault();
-                                                        ZileBlocate.Clear();
-                                                        ModuleBlocate.Clear();
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    NoTimeCounter++;
-                                                    numar_ore_necesare = 0;
-                                                    break;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                NoTimeCounter++;
-                                                numar_ore_necesare = 0;
-                                                break;
                                             }
 
                                         }
                                     }
-
                                 }
-                            }                            
+                                #endregion
+
+                            }
+                            #endregion
+
                         }
                         #endregion
-
+                        #region Update Numar Generare
+                        if (getSetare != null)
+                        {
+                            getSetare.VALOARE += 1;
+                            db.SaveChanges();
+                        }
+                        #endregion
                     }
-                    #endregion
-
                 }
-                #endregion
-                #region Update Numar Generare
-                if (getSetare!=null)
-                {
-                    getSetare.VALOARE += 1;
-                    db.SaveChanges();
-                }
-                #endregion
-                MessageBox.Show("Generarea este Gata. Nu s-au putut plasa: "+NoTimeCounter.ToString());
             }
+            MessageBox.Show("Generarea este Gata. Nu s-au putut plasa: " + NoTimeCounter.ToString());
+            BindComboGenerare();
         }
 
         private void ButtonIncarca_Click(object sender, EventArgs e)
