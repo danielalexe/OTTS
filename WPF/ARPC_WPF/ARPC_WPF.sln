@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARPC_WPF", "ARPC_WPF\ARPC_WPF.csproj", "{2562ACBC-2BC9-4BC6-BA2D-B7C34AC49420}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2562ACBC-2BC9-4BC6-BA2D-B7C34AC49420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2562ACBC-2BC9-4BC6-BA2D-B7C34AC49420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2562ACBC-2BC9-4BC6-BA2D-B7C34AC49420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2562ACBC-2BC9-4BC6-BA2D-B7C34AC49420}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9CBBDF7-6AD9-4EF7-9657-A3F1224BEA27}
+	EndGlobalSection
+EndGlobal

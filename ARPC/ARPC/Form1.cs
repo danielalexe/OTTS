@@ -90,8 +90,8 @@ namespace ARPC
         /// DONE 7. Restrictia de 4 module / zi nu e luata in considerare
         /// 8. Nu se aloca salile in functie de numarul de studenti (Temp disabled)
         /// 9. Alocare Zile prioritati profesori in baza de date
-        /// 10. utilizare rng crypto pentru creere functie shuffle zile cu aceleasi prioritati
-        /// 11. Implementare posibilitate selectie numar generari de efectuat (Prima va fi standard, restul cu shuffle)
+        /// DONE 10. utilizare rng crypto pentru creere functie shuffle zile cu aceleasi prioritati
+        /// DONE 11. Implementare posibilitate selectie numar generari de efectuat (Toate cu shuffle)
         /// TODO:
         /// DONE 1. Preferintele de zile trebuie sa aiba o prioritate
         /// DONE 2. Preferintele de module trebuie sa aiba o prioritate
