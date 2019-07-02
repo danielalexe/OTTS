@@ -21,12 +21,24 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200">
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridTabControl">
+                <EasingDoubleKeyFrame KeyTime="0" Value="990">
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="850">
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="DrawerClose">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="200">
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60">
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridTabControl">
+                <EasingDoubleKeyFrame KeyTime="0" Value="850">
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="990">
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
@@ -66,7 +78,7 @@
                 <Grid Height="60" Background="White">
                     <Button x:Name="ButtonCloseDrawer" Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Collapsed" Click="ButtonCloseDrawer_Click">
                         <materialDesign:PackIcon Foreground="#FF0F0F57" Kind="ArrowLeft" Width="25" Height="25">
-                            
+
                         </materialDesign:PackIcon>
                     </Button>
                     <Button x:Name="ButtonOpenDrawer" Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonOpenDrawer_Click">
@@ -76,10 +88,17 @@
                     </Button>
                 </Grid>
                 <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown">
+                                
+                            </EventSetter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ViewDashboard" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
-                                
+
                             </materialDesign:PackIcon>
                             <TextBlock Text="Home" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
@@ -130,8 +149,10 @@
                 </ListView>
             </StackPanel>
         </Grid>
-        <Grid>
-            
+        <Grid x:Name="GridTabControl" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="990" Height="500" Margin="65 60 0 0">
+            <TabControl x:Name="TabControlMain">
+                
+            </TabControl>
         </Grid>
     </Grid>
 </Window>
