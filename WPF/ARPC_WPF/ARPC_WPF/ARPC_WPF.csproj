@@ -218,7 +218,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DataObjects\DataObjects.csproj">
+      <Project>{B2BE59BC-1511-4AAC-BCE6-12BAFA597BE9}</Project>
+      <Name>DataObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Data\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -4,12 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ARPC_WPF.Profesori"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         xmlns:base="clr-namespace:ARPC_WPF.Template"
         Title="Profesori" Height="450" Width="800">
-    <Grid>
-        <Button VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="300" x:Name="ButonClose" Content="Close" Click="ButonClose_Click" >
+    <Grid Loaded="Grid_Loaded">
+        <Grid Height="60" VerticalAlignment="Top" Background="#FF174699">
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="ButtonAdd" Click="ButtonAdd_Click"  Height="50">
+                    <materialDesign:PackIcon Kind="Add" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonEdit" Click="ButtonEdit_Click"  Margin="5 0 0 0" Height="50">
+                    <materialDesign:PackIcon Kind="Edit" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonDelete" Click="ButtonDelete_Click"  Margin="5 0 0 0" Height="50">
+                    <materialDesign:PackIcon Kind="Delete" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonRefresh" Click="ButtonRefresh_Click" Margin="5 0 0 0" Height="50">
+                    <materialDesign:PackIcon Kind="Refresh" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonClose" Click="ButonClose_Click" Margin="5 0 0 0" Height="50">
+                    <materialDesign:PackIcon Kind="Close" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid VerticalAlignment="Top" Height="80" Margin="0 60 0 0">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="FILTERS">
+                
+            </TextBlock>
+        </Grid>
+        <DataGrid x:Name="DataGridProfesori" VerticalAlignment="Bottom" Height="280" IsReadOnly="True">
             
-        </Button>
+        </DataGrid>
     </Grid>
 </base:WindowBase>

@@ -60,12 +60,13 @@
         <Grid Height="60" VerticalAlignment="Top" Background="#FF174699">
             <TextBlock Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Foreground="White" Text="Logged User" VerticalAlignment="Center" FontSize="18">
+                <TextBlock Foreground="White" Text="Offline User" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" Margin="10">
                 </TextBlock>
+                <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Kind="Notifications" Foreground="White" Width="30" Height="30" Margin="10">
+                    
+                </materialDesign:PackIcon>
                 <materialDesign:PopupBox Foreground="White" Margin="10" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
                     <StackPanel Width="150">
-                        <Button Content="Account" />
-                        <Button Content="Settings" />
                         <Button Content="Help" />
                         <Separator/>
                         <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
@@ -97,55 +98,84 @@
                     </ListView.ItemContainerStyle>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ViewDashboard" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="CalendarClock" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                             </materialDesign:PackIcon>
-                            <TextBlock Text="Home" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+                            <TextBlock Text="Planificare Orar" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Pencil"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Teacher" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                             </materialDesign:PackIcon>
-                            <TextBlock Text="Create" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+                            <TextBlock Text="Profesori" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Ticket"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="UserGroup"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                             </materialDesign:PackIcon>
-                            <TextBlock Text="Tickets" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+                            <TextBlock Text="Grupe" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Message"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Books"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                             </materialDesign:PackIcon>
-                            <TextBlock Text="Message" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+                            <TextBlock Text="Prelegeri" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="GithubBox" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="ViewModule"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                             </materialDesign:PackIcon>
-                            <TextBlock Text="GitHub" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+                            <TextBlock Text="Module" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
+                    <ListViewItem Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ViewWeek" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Zile" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Room" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Sali" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Settings" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Setari" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
                 </ListView>
             </StackPanel>
         </Grid>
