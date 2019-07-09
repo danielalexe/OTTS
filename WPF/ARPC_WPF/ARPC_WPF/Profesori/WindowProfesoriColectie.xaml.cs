@@ -1,5 +1,5 @@
-﻿using ARPC_WPF.Data;
-using ARPC_WPF.Template;
+﻿using ARPC_WPF.Template;
+using DataLink;
 using DataObjects;
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace ARPC_WPF.Profesori
         {
             InitializeComponent();
             ReloadData();
+            
         }
 
         private void ButonClose_Click(object sender, RoutedEventArgs e)
@@ -42,7 +43,12 @@ namespace ARPC_WPF.Profesori
         {
             using (var db = new ARPCContext())
             {
-                var getProfesori = (from u in db.PROFESORIs
+                var FiltruNume = CTextNume.CString.ToUpper();
+                var FiltruPrenume = CTextPrenume.CString.ToUpper();
+                var getProfesori = (from u in db.PROFESORI
+                                    where ((String.IsNullOrEmpty(FiltruNume) || u.NUME.Contains(FiltruNume))
+                                    &&
+                                    (String.IsNullOrEmpty(FiltruPrenume) || u.PRENUME.Contains(FiltruPrenume)))
                                     select new DTOProfesori
                                     {
                                         ID_PROFESOR = u.ID_PROFESOR,
@@ -50,6 +56,7 @@ namespace ARPC_WPF.Profesori
                                         PRENUME = u.PRENUME
                                     }).ToList();
                 DataGridProfesori.ItemsSource = getProfesori;
+                RenderColumns();
             }
         }
 
