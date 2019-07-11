@@ -66,8 +66,17 @@
     <Compile Include="CDecimal.xaml.cs">
       <DependentUpon>CDecimal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CPassword.xaml.cs">
+      <DependentUpon>CPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CText.xaml.cs">
       <DependentUpon>CText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CTextBulk.xaml.cs">
+      <DependentUpon>CTextBulk.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CUploadFile.xaml.cs">
+      <DependentUpon>CUploadFile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,7 +97,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CTextBulk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CUploadFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

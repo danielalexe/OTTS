@@ -14,7 +14,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" x:Name="CButtonValue" Background="White" Foreground="Black" Content="Browse" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ></Button>
+        <Button Grid.Row="0" Grid.Column="0" x:Name="CButtonValue" Background="White" Foreground="Black" Content="Browse" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ></Button>
         <Label Grid.Row="0" Grid.Column="1" x:Name="CLabelValue" Background="White" Foreground="Black" FontSize="22" IsEnabled="False"></Label>
     </Grid>
 </UserControl>

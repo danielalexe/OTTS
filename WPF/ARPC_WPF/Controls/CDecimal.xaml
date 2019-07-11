@@ -15,7 +15,10 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ></Label>
+        <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform" StretchDirection="DownOnly">
+            <Label x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22">
+            </Label>
+        </Viewbox>
         <Controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="CDecimalValue" Background="White" Foreground="Black" StringFormat="C2"></Controls:NumericUpDown>
     </Grid>
 </UserControl>

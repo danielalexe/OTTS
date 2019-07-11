@@ -26,6 +26,7 @@ namespace ARPC_WPF
         public MainScreen()
         {
             InitializeComponent();
+            
         }
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)

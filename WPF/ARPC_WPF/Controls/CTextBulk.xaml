@@ -14,7 +14,10 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ></Label>
+        <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform" StretchDirection="DownOnly">
+            <Label x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22">
+            </Label>
+        </Viewbox>
         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="CTextBlockValue" Background="White" Foreground="Black" FontSize="15"></TextBlock>
     </Grid>
 </UserControl>

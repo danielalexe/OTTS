@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ARPC_WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -12,35 +13,26 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d" Height="600" Width="1080" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+        mc:Ignorable="d" MinHeight="580" Height="600" MinWidth="780" Width="1080" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
     <Window.Resources>
         <Storyboard x:Key="DrawerOpen">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
                 <EasingDoubleKeyFrame KeyTime="0" Value="60">
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="200">
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridTabControl">
-                <EasingDoubleKeyFrame KeyTime="0" Value="990">
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="850">
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
+            <metro:GridLengthAnimation To="200" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
+            
         </Storyboard>
-        <Storyboard x:Key="DrawerClose">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+        <Storyboard x:Key="DrawerClose" >
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
                 <EasingDoubleKeyFrame KeyTime="0" Value="200">
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="60">
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridTabControl">
-                <EasingDoubleKeyFrame KeyTime="0" Value="850">
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="990">
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
+            <metro:GridLengthAnimation To="1*" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
         </Storyboard>
     </Window.Resources>
 
@@ -56,27 +48,73 @@
         
     </Window.Triggers>
     
-    <Grid Background="LightGray">
-        <Grid Height="60" VerticalAlignment="Top" Background="#FF174699">
-            <TextBlock Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Foreground="White" Text="Offline User" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" Margin="10">
-                </TextBlock>
-                <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Kind="Notifications" Foreground="White" Width="30" Height="30" Margin="10">
-                    
-                </materialDesign:PackIcon>
-                <materialDesign:PopupBox Foreground="White" Margin="10" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                    <StackPanel Width="150">
-                        <Button Content="Help" />
-                        <Separator/>
-                        <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
-                    </StackPanel>
-                </materialDesign:PopupBox>
-            </StackPanel>
+    <Grid x:Name="MainScreenGrid" Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="DynamicColumn" MinWidth="60" MaxWidth="60" />
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="60" MaxHeight="60"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="Offline User" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">
+                        </TextBlock>
+                        <materialDesign:PackIcon Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Kind="Notifications" Foreground="White" Width="30" Height="30">
+
+                        </materialDesign:PackIcon>
+                        <materialDesign:PopupBox Grid.Row="0" Grid.Column="2" Foreground="White" Width="30" Height="30" StaysOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel Width="150">
+                                <Button Content="Help" />
+                                <Separator/>
+                                <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" x:Name="GridTabControl">
+                    <TabControl x:Name="TabControlMain">
+
+                    </TabControl>
+                </Grid>
+            </Grid>
         </Grid>
-        <Grid x:Name="GridMenu" Width="60" HorizontalAlignment="Left" Background="#FF0F0F57">
-            <StackPanel>
-                <Grid Height="60" Background="White">
+        
+        <Grid x:Name="GridMenu" Background="#FF0F0F57">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="60" MaxHeight="60"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" Background="White">
                     <Button x:Name="ButtonCloseDrawer" Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Collapsed" Click="ButtonCloseDrawer_Click">
                         <materialDesign:PackIcon Foreground="#FF0F0F57" Kind="ArrowLeft" Width="25" Height="25">
 
@@ -88,11 +126,11 @@
                         </materialDesign:PackIcon>
                     </Button>
                 </Grid>
-                <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown">
-                                
+
                             </EventSetter>
                         </Style>
                     </ListView.ItemContainerStyle>
@@ -177,12 +215,8 @@
                         </StackPanel>
                     </ListViewItem>
                 </ListView>
-            </StackPanel>
+            </Grid>
         </Grid>
-        <Grid x:Name="GridTabControl" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="990" Height="500" Margin="65 60 0 0">
-            <TabControl x:Name="TabControlMain">
-                
-            </TabControl>
-        </Grid>
+        
     </Grid>
 </Window>

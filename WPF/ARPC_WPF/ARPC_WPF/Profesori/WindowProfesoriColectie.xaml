@@ -11,14 +11,14 @@
         Title="Profesori" Height="450" Width="800">
     <Grid Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition MinHeight="60" MaxHeight="60"/>
+            <RowDefinition MinHeight="40" MaxHeight="40"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Height="60" Background="#FF174699">
+        <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="ButtonAdd" Click="ButtonAdd_Click"  Height="50">
                     <materialDesign:PackIcon Kind="Add" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
