@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ARPC_WPF.Helpers;
 using ARPC_WPF.Profesori;
 using ARPC_WPF.Template;
 using MaterialDesignThemes;
@@ -26,7 +30,6 @@ namespace ARPC_WPF
         public MainScreen()
         {
             InitializeComponent();
-            
         }
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)
@@ -44,6 +47,18 @@ namespace ARPC_WPF
         {
             ButtonOpenDrawer.Visibility = Visibility.Visible;
             ButtonCloseDrawer.Visibility = Visibility.Collapsed;
+        }
+
+        private void ButtonRaiseDownMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonRaiseDownMenu.Visibility = Visibility.Collapsed;
+            ButtonLowerDownMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ButtonLowerDownMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonRaiseDownMenu.Visibility = Visibility.Visible;
+            ButtonLowerDownMenu.Visibility = Visibility.Collapsed;
         }
 
         private void CreateTabItem(WindowBase window)
@@ -75,8 +90,34 @@ namespace ARPC_WPF
             if (item!=null)
             {
                 WindowProfesoriColectie wind = new WindowProfesoriColectie();
+                wind.MainScreen = this;
                 CreateTabItem(wind);
             }
         }
+
+        public void RaiseDownMenu(Window window,EnumWindowType WindowType)
+        {
+            if (WindowType == EnumWindowType.ADDMODE)
+            {
+                LabelDownMenu.Content = window.Title + " Add";
+            }
+            else if (WindowType == EnumWindowType.EDITMODE)
+            {
+                LabelDownMenu.Content = window.Title + " Edit";
+            }
+            //click the button
+            ButtonRaiseDownMenu.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            //set the content
+            GridDownMenuContent.Content = window.Content;
+        }
+
+        public void LowerDownMenu()
+        {
+            Storyboard sb = this.FindResource("CloseDownMenu") as Storyboard;
+            if (sb != null) { BeginStoryboard(sb); }
+            LabelDownMenu.Content = "";
+            GridDownMenuContent.Content = null;
+        }
+        
     }
 }

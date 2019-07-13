@@ -34,6 +34,19 @@
             </DoubleAnimationUsingKeyFrames>
             <metro:GridLengthAnimation To="1*" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
         </Storyboard>
+
+        <Storyboard x:Key="RaiseDownMenu" >
+            <metro:GridLengthAnimation To="0" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
+        <Storyboard x:Key="LowerDownMenu" >
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="30" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
+        <Storyboard x:Key="CloseDownMenu" >
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="0" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
     </Window.Resources>
 
     <Window.Triggers>
@@ -45,7 +58,17 @@
             <BeginStoryboard Storyboard="{StaticResource DrawerClose}">
             </BeginStoryboard>
         </EventTrigger>
-        
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonRaiseDownMenu">
+            <BeginStoryboard Storyboard="{StaticResource RaiseDownMenu}">
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonLowerDownMenu">
+            <BeginStoryboard Storyboard="{StaticResource LowerDownMenu}">
+            </BeginStoryboard>
+        </EventTrigger>
+
     </Window.Triggers>
     
     <Grid x:Name="MainScreenGrid" Background="LightGray">
@@ -98,9 +121,44 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="0" x:Name="GridTabControl">
-                    <TabControl x:Name="TabControlMain">
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="DynamicRowTabControl" />
+                        <RowDefinition Height="0" x:Name="DynamicRowDownMenu"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl Grid.Row="0" Grid.Column="0" x:Name="TabControlMain">
 
                     </TabControl>
+                    <Grid x:Name="GridDownMenu" Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform" StretchDirection="DownOnly" Panel.ZIndex="999" HorizontalAlignment="Left"  VerticalAlignment="Center">
+                            <Label x:Name="LabelDownMenu" Content="MenuName" Foreground="White"  FontSize="22">
+                            </Label>
+                        </Viewbox>
+                        <Button x:Name="ButtonRaiseDownMenu" Grid.Row="0" Grid.Column="0" Click="ButtonRaiseDownMenu_Click">
+                            <materialDesign:PackIcon Kind="ArrowUp" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button x:Name="ButtonLowerDownMenu" Grid.Row="0" Grid.Column="0" Visibility="Collapsed" Click="ButtonLowerDownMenu_Click">
+                            <materialDesign:PackIcon Kind="ArrowDown" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <ContentControl x:Name="GridDownMenuContent">
+                                
+                            </ContentControl>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

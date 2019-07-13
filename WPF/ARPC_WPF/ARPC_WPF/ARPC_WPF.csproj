@@ -79,8 +79,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\EnumWindowType.cs" />
     <Compile Include="Profesori\WindowProfesoriColectie.xaml.cs">
       <DependentUpon>WindowProfesoriColectie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profesori\WindowProfesoriEntitate.xaml.cs">
+      <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Template\WindowBase.cs" />
     <Page Include="MainScreen.xaml">
@@ -103,6 +107,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Profesori\WindowProfesoriColectie.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Profesori\WindowProfesoriEntitate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

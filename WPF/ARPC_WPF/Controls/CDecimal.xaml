@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DataControls"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="400">
+             d:DesignHeight="50" d:DesignWidth="400" Background="White">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

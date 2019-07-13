@@ -22,11 +22,11 @@ namespace ARPC_WPF.Profesori
     /// </summary>
     public partial class WindowProfesoriColectie : WindowBase
     {
+        public MainScreen MainScreen { get; set; }
         public WindowProfesoriColectie()
         {
             InitializeComponent();
             ReloadData();
-            
         }
 
         private void ButonClose_Click(object sender, RoutedEventArgs e)
@@ -39,7 +39,7 @@ namespace ARPC_WPF.Profesori
             ReloadData();
         }
 
-        private void ReloadData()
+        public void ReloadData()
         {
             using (var db = new ARPCContext())
             {
@@ -62,17 +62,43 @@ namespace ARPC_WPF.Profesori
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            var list = DataGridProfesori.SelectedItems;
+            if (list.Count>0)
+            {
+                using (var db = new ARPCContext())
+                {
+                    foreach (DTOProfesori item in list)
+                    {
+                        var getProfesor = db.PROFESORI.FirstOrDefault(z => z.ID_PROFESOR == item.ID_PROFESOR);
+                        if (getProfesor!=null)
+                        {
+                            db.PROFESORI.Remove(getProfesor);
+                        }
+                    }
+                    db.SaveChanges();
+                }
+            }
+            ReloadData();
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
+            profesoriEntitate.MainScreen = MainScreen;
+            profesoriEntitate.WindowType = Helpers.EnumWindowType.EDITMODE;
+            profesoriEntitate.ID_PROFESOR = ((DTOProfesori)DataGridProfesori.SelectedItem).ID_PROFESOR;
+            profesoriEntitate.WindowProfesoriColectie = this;
+            profesoriEntitate.LoadData();
+            MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.EDITMODE);
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
+            profesoriEntitate.MainScreen = MainScreen;
+            profesoriEntitate.WindowType = Helpers.EnumWindowType.ADDMODE;
+            profesoriEntitate.WindowProfesoriColectie = this;
+            MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.ADDMODE);
         }
 
 
