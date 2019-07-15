@@ -41,19 +41,19 @@ namespace ARPC_WPF.Profesori
 
         public void ReloadData()
         {
-            using (var db = new ARPCContext())
+            using (var db = new OTTSContext())
             {
                 var FiltruNume = CTextNume.CString.ToUpper();
                 var FiltruPrenume = CTextPrenume.CString.ToUpper();
-                var getProfesori = (from u in db.PROFESORI
-                                    where ((String.IsNullOrEmpty(FiltruNume) || u.NUME.Contains(FiltruNume))
+                var getProfesori = (from u in db.TEACHERS
+                                    where ((String.IsNullOrEmpty(FiltruNume) || u.nvNAME.Contains(FiltruNume))
                                     &&
-                                    (String.IsNullOrEmpty(FiltruPrenume) || u.PRENUME.Contains(FiltruPrenume)))
+                                    (String.IsNullOrEmpty(FiltruPrenume) || u.nvSURNAME.Contains(FiltruPrenume)))
                                     select new DTOProfesori
                                     {
-                                        ID_PROFESOR = u.ID_PROFESOR,
-                                        NUME = u.NUME,
-                                        PRENUME = u.PRENUME
+                                        ID_PROFESOR = u.iID_TEACHER,
+                                        NUME = u.nvNAME,
+                                        PRENUME = u.nvSURNAME
                                     }).ToList();
                 DataGridProfesori.ItemsSource = getProfesori;
                 RenderColumns();
@@ -65,14 +65,14 @@ namespace ARPC_WPF.Profesori
             var list = DataGridProfesori.SelectedItems;
             if (list.Count>0)
             {
-                using (var db = new ARPCContext())
+                using (var db = new OTTSContext())
                 {
                     foreach (DTOProfesori item in list)
                     {
-                        var getProfesor = db.PROFESORI.FirstOrDefault(z => z.ID_PROFESOR == item.ID_PROFESOR);
+                        var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.ID_PROFESOR);
                         if (getProfesor!=null)
                         {
-                            db.PROFESORI.Remove(getProfesor);
+                            db.TEACHERS.Remove(getProfesor);
                         }
                     }
                     db.SaveChanges();

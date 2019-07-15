@@ -12,22 +12,23 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class ZILE
+    public partial class LECTURE_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ZILE()
+        public LECTURE_TYPE()
         {
-            this.BLOCKED_MODULES = new HashSet<BLOCKED_MODULES>();
-            this.PREFERINTE_PROFESORI_ZILE = new HashSet<PREFERINTE_PROFESORI_ZILE>();
+            this.TEACHERS_LECTURES_LINK = new HashSet<TEACHERS_LECTURES_LINK>();
         }
     
-        public int ID_ZI { get; set; }
-        public string DENUMIRE { get; set; }
-        public int PRIORITATE { get; set; }
+        public int iID_LECTURE_TYPE { get; set; }
+        public string nvNAME { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_ZILE> PREFERINTE_PROFESORI_ZILE { get; set; }
+        public virtual ICollection<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
     }
 }

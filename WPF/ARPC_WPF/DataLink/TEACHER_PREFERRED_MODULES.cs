@@ -12,12 +12,12 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class BLOCKED_MODULES
+    public partial class TEACHER_PREFERRED_MODULES
     {
-        public int iID_BLOCKED_MODULE { get; set; }
+        public int iID_TEACHER_PREFERRED_MODULE { get; set; }
         public int iID_TEACHER { get; set; }
         public int iID_MODULE { get; set; }
-        public int iID_DAY { get; set; }
+        public int iPRIORITY { get; set; }
         public Nullable<bool> bACTIVE { get; set; }
         public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
@@ -26,6 +26,5 @@ namespace DataLink
     
         public virtual MODULES MODULES { get; set; }
         public virtual TEACHERS TEACHERS { get; set; }
-        public virtual DAYS DAYS { get; set; }
     }
 }

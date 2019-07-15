@@ -35,12 +35,16 @@ namespace ARPC_WPF.Profesori
         {
             if (WindowType == EnumWindowType.ADDMODE)
             {
-                using (var db = new ARPCContext())
+                using (var db = new OTTSContext())
                 {
-                    PROFESORI profesor = new PROFESORI();
-                    profesor.NUME = CTextNume.CTextBox.Text;
-                    profesor.PRENUME = CTextPrenume.CTextBox.Text;
-                    db.PROFESORI.Add(profesor);
+                    TEACHERS profesor = new TEACHERS();
+                    profesor.nvNAME = CTextNume.CTextBox.Text;
+                    profesor.nvSURNAME = CTextPrenume.CTextBox.Text;
+
+                    profesor.dtCREATE_DATE = DateTime.UtcNow;
+                    profesor.iCREATE_USER = 1;
+
+                    db.TEACHERS.Add(profesor);
                     db.SaveChanges();
                     WindowProfesoriColectie.ReloadData();
                     CloseWindow();
@@ -48,13 +52,17 @@ namespace ARPC_WPF.Profesori
             }
             else if (WindowType == EnumWindowType.EDITMODE)
             {
-                using (var db = new ARPCContext())
+                using (var db = new OTTSContext())
                 {
-                    var getProfesor = db.PROFESORI.FirstOrDefault(z => z.ID_PROFESOR == ID_PROFESOR);
+                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
                     if (getProfesor!=null)
                     {
-                        getProfesor.NUME = CTextNume.CTextBox.Text;
-                        getProfesor.PRENUME = CTextPrenume.CTextBox.Text;
+                        getProfesor.nvNAME = CTextNume.CTextBox.Text;
+                        getProfesor.nvSURNAME = CTextPrenume.CTextBox.Text;
+
+                        getProfesor.dtLASTMODIFIED_DATE = DateTime.UtcNow;
+                        getProfesor.iLASTMODIFIED_USER = 1;
+
                         db.SaveChanges();
                         WindowProfesoriColectie.ReloadData();
                         CloseWindow();
@@ -77,13 +85,13 @@ namespace ARPC_WPF.Profesori
         {
             if (WindowType == EnumWindowType.EDITMODE)
             {
-                using (var db = new ARPCContext())
+                using (var db = new OTTSContext())
                 {
-                    var getProfesor = db.PROFESORI.FirstOrDefault(z => z.ID_PROFESOR == ID_PROFESOR);
+                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
                     if (getProfesor != null)
                     {
-                        CTextNume.CTextBox.Text = getProfesor.NUME;
-                        CTextPrenume.CTextBox.Text = getProfesor.PRENUME;
+                        CTextNume.CTextBox.Text = getProfesor.nvNAME;
+                        CTextPrenume.CTextBox.Text = getProfesor.nvSURNAME;
                     }
                 }
             }

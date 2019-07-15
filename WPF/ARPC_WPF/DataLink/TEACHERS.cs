@@ -12,31 +12,36 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class PROFESORI
+    public partial class TEACHERS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PROFESORI()
+        public TEACHERS()
         {
             this.BLOCKED_MODULES = new HashSet<BLOCKED_MODULES>();
-            this.LINK_PROFESORI_PRELEGERI = new HashSet<LINK_PROFESORI_PRELEGERI>();
-            this.PREFERINTE_PROFESORI_MODULE = new HashSet<PREFERINTE_PROFESORI_MODULE>();
-            this.PREFERINTE_PROFESORI_SALI = new HashSet<PREFERINTE_PROFESORI_SALI>();
-            this.PREFERINTE_PROFESORI_ZILE = new HashSet<PREFERINTE_PROFESORI_ZILE>();
+            this.TEACHER_PREFERRED_DAYS = new HashSet<TEACHER_PREFERRED_DAYS>();
+            this.TEACHER_PREFERRED_HALLS = new HashSet<TEACHER_PREFERRED_HALLS>();
+            this.TEACHER_PREFERRED_MODULES = new HashSet<TEACHER_PREFERRED_MODULES>();
+            this.TEACHERS_LECTURES_LINK = new HashSet<TEACHERS_LECTURES_LINK>();
         }
     
-        public int ID_PROFESOR { get; set; }
-        public string NUME { get; set; }
-        public string PRENUME { get; set; }
+        public int iID_TEACHER { get; set; }
+        public string nvNAME { get; set; }
+        public string nvSURNAME { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_PROFESORI_PRELEGERI> LINK_PROFESORI_PRELEGERI { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_DAYS> TEACHER_PREFERRED_DAYS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_MODULE> PREFERINTE_PROFESORI_MODULE { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_HALLS> TEACHER_PREFERRED_HALLS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_SALI> PREFERINTE_PROFESORI_SALI { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_MODULES> TEACHER_PREFERRED_MODULES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_ZILE> PREFERINTE_PROFESORI_ZILE { get; set; }
+        public virtual ICollection<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
     }
 }

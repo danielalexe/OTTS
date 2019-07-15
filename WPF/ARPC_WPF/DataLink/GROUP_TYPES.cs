@@ -12,18 +12,23 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class TIP_GRUPA
+    public partial class GROUP_TYPES
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TIP_GRUPA()
+        public GROUP_TYPES()
         {
-            this.GRUPE = new HashSet<GRUPE>();
+            this.GROUPS = new HashSet<GROUPS>();
         }
     
-        public int ID_TIP_GRUPA { get; set; }
-        public string DENUMIRE { get; set; }
+        public int iID_GROUP_TYPE { get; set; }
+        public string nvNAME { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GRUPE> GRUPE { get; set; }
+        public virtual ICollection<GROUPS> GROUPS { get; set; }
     }
 }

@@ -12,20 +12,23 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class BLOCKED_MODULES
+    public partial class TIMETABLE_PLANNING
     {
-        public int iID_BLOCKED_MODULE { get; set; }
-        public int iID_TEACHER { get; set; }
-        public int iID_MODULE { get; set; }
+        public int iID_TIMETABLE_PLANNING { get; set; }
         public int iID_DAY { get; set; }
+        public int iID_MODULE { get; set; }
+        public int iID_SEMIGROUP { get; set; }
+        public int iID_LECTURE { get; set; }
+        public int iID_TEACHER { get; set; }
+        public int iID_LECTURE_TYPE { get; set; }
+        public int iGENERATION_NUMBER { get; set; }
+        public int iID_PLANNING_TYPE { get; set; }
         public Nullable<bool> bACTIVE { get; set; }
         public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public Nullable<int> iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
-        public virtual MODULES MODULES { get; set; }
-        public virtual TEACHERS TEACHERS { get; set; }
-        public virtual DAYS DAYS { get; set; }
+        public virtual PLANNING_TYPE PLANNING_TYPE { get; set; }
     }
 }

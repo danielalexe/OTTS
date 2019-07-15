@@ -13,10 +13,10 @@ namespace DataLink
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ARPCContext : DbContext
+    public partial class OTTSContext : DbContext
     {
-        public ARPCContext()
-            : base("name=ARPCContext")
+        public OTTSContext()
+            : base("name=OTTSContext")
         {
         }
     
@@ -26,24 +26,24 @@ namespace DataLink
         }
     
         public virtual DbSet<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
-        public virtual DbSet<GRUPE> GRUPE { get; set; }
-        public virtual DbSet<LINK_MODULE_GRUPE> LINK_MODULE_GRUPE { get; set; }
-        public virtual DbSet<LINK_PRELEGERI_GRUPE> LINK_PRELEGERI_GRUPE { get; set; }
-        public virtual DbSet<LINK_PROFESORI_PRELEGERI> LINK_PROFESORI_PRELEGERI { get; set; }
-        public virtual DbSet<MODULE> MODULE { get; set; }
-        public virtual DbSet<PLANIFICARE_ORAR> PLANIFICARE_ORAR { get; set; }
-        public virtual DbSet<PREFERINTE_PROFESORI_MODULE> PREFERINTE_PROFESORI_MODULE { get; set; }
-        public virtual DbSet<PREFERINTE_PROFESORI_SALI> PREFERINTE_PROFESORI_SALI { get; set; }
-        public virtual DbSet<PREFERINTE_PROFESORI_ZILE> PREFERINTE_PROFESORI_ZILE { get; set; }
-        public virtual DbSet<PRELEGERI> PRELEGERI { get; set; }
-        public virtual DbSet<PROFESORI> PROFESORI { get; set; }
-        public virtual DbSet<SALI> SALI { get; set; }
-        public virtual DbSet<SEMIGRUPE> SEMIGRUPE { get; set; }
-        public virtual DbSet<SETARI> SETARI { get; set; }
+        public virtual DbSet<DAYS> DAYS { get; set; }
+        public virtual DbSet<GROUP_TYPES> GROUP_TYPES { get; set; }
+        public virtual DbSet<GROUPS> GROUPS { get; set; }
+        public virtual DbSet<GROUPS_LECTURES_LINK> GROUPS_LECTURES_LINK { get; set; }
+        public virtual DbSet<GROUPS_MODULES_LINK> GROUPS_MODULES_LINK { get; set; }
+        public virtual DbSet<HALLS> HALLS { get; set; }
+        public virtual DbSet<LECTURE_TYPE> LECTURE_TYPE { get; set; }
+        public virtual DbSet<LECTURES> LECTURES { get; set; }
+        public virtual DbSet<MODULES> MODULES { get; set; }
+        public virtual DbSet<PLANNING_TYPE> PLANNING_TYPE { get; set; }
+        public virtual DbSet<SEMIGROUPS> SEMIGROUPS { get; set; }
+        public virtual DbSet<SETTINGS> SETTINGS { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<TIP_EXECUTIE> TIP_EXECUTIE { get; set; }
-        public virtual DbSet<TIP_GRUPA> TIP_GRUPA { get; set; }
-        public virtual DbSet<TIP_PLANIFICARE> TIP_PLANIFICARE { get; set; }
-        public virtual DbSet<ZILE> ZILE { get; set; }
+        public virtual DbSet<TEACHER_PREFERRED_DAYS> TEACHER_PREFERRED_DAYS { get; set; }
+        public virtual DbSet<TEACHER_PREFERRED_HALLS> TEACHER_PREFERRED_HALLS { get; set; }
+        public virtual DbSet<TEACHER_PREFERRED_MODULES> TEACHER_PREFERRED_MODULES { get; set; }
+        public virtual DbSet<TEACHERS> TEACHERS { get; set; }
+        public virtual DbSet<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
+        public virtual DbSet<TIMETABLE_PLANNING> TIMETABLE_PLANNING { get; set; }
     }
 }

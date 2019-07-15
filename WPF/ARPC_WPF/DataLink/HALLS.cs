@@ -12,21 +12,24 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class PRELEGERI
+    public partial class HALLS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRELEGERI()
+        public HALLS()
         {
-            this.LINK_PRELEGERI_GRUPE = new HashSet<LINK_PRELEGERI_GRUPE>();
-            this.LINK_PROFESORI_PRELEGERI = new HashSet<LINK_PROFESORI_PRELEGERI>();
+            this.TEACHER_PREFERRED_HALLS = new HashSet<TEACHER_PREFERRED_HALLS>();
         }
     
-        public int ID_PRELEGERE { get; set; }
-        public string DENUMIRE { get; set; }
+        public int iID_HALL { get; set; }
+        public string nvNAME { get; set; }
+        public int iCAPACITY { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_PRELEGERI_GRUPE> LINK_PRELEGERI_GRUPE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_PROFESORI_PRELEGERI> LINK_PROFESORI_PRELEGERI { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_HALLS> TEACHER_PREFERRED_HALLS { get; set; }
     }
 }

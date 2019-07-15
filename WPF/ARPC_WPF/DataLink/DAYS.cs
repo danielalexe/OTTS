@@ -12,24 +12,27 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class MODULE
+    public partial class DAYS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MODULE()
+        public DAYS()
         {
             this.BLOCKED_MODULES = new HashSet<BLOCKED_MODULES>();
-            this.LINK_MODULE_GRUPE = new HashSet<LINK_MODULE_GRUPE>();
-            this.PREFERINTE_PROFESORI_MODULE = new HashSet<PREFERINTE_PROFESORI_MODULE>();
+            this.TEACHER_PREFERRED_DAYS = new HashSet<TEACHER_PREFERRED_DAYS>();
         }
     
-        public int ID_MODUL { get; set; }
-        public string DENUMIRE { get; set; }
+        public int iID_DAY { get; set; }
+        public string nvNAME { get; set; }
+        public int nvPRIORITY { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_MODULE_GRUPE> LINK_MODULE_GRUPE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_MODULE> PREFERINTE_PROFESORI_MODULE { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_DAYS> TEACHER_PREFERRED_DAYS { get; set; }
     }
 }

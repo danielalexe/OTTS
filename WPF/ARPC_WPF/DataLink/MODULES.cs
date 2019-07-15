@@ -12,28 +12,29 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class GRUPE
+    public partial class MODULES
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public GRUPE()
+        public MODULES()
         {
-            this.LINK_MODULE_GRUPE = new HashSet<LINK_MODULE_GRUPE>();
-            this.LINK_PRELEGERI_GRUPE = new HashSet<LINK_PRELEGERI_GRUPE>();
-            this.SEMIGRUPE = new HashSet<SEMIGRUPE>();
+            this.BLOCKED_MODULES = new HashSet<BLOCKED_MODULES>();
+            this.GROUPS_MODULES_LINK = new HashSet<GROUPS_MODULES_LINK>();
+            this.TEACHER_PREFERRED_MODULES = new HashSet<TEACHER_PREFERRED_MODULES>();
         }
     
-        public int ID_GRUPA { get; set; }
-        public string DENUMIRE { get; set; }
-        public int NUMAR_STUDENTI { get; set; }
-        public int ID_TIP_GRUPA { get; set; }
-        public int AN { get; set; }
+        public int iID_MODULE { get; set; }
+        public string nvNAME { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
-        public virtual TIP_GRUPA TIP_GRUPA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_MODULE_GRUPE> LINK_MODULE_GRUPE { get; set; }
+        public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LINK_PRELEGERI_GRUPE> LINK_PRELEGERI_GRUPE { get; set; }
+        public virtual ICollection<GROUPS_MODULES_LINK> GROUPS_MODULES_LINK { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SEMIGRUPE> SEMIGRUPE { get; set; }
+        public virtual ICollection<TEACHER_PREFERRED_MODULES> TEACHER_PREFERRED_MODULES { get; set; }
     }
 }

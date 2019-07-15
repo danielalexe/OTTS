@@ -12,19 +12,23 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class SALI
+    public partial class PLANNING_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SALI()
+        public PLANNING_TYPE()
         {
-            this.PREFERINTE_PROFESORI_SALI = new HashSet<PREFERINTE_PROFESORI_SALI>();
+            this.TIMETABLE_PLANNING = new HashSet<TIMETABLE_PLANNING>();
         }
     
-        public int ID_SALA { get; set; }
-        public string DENUMIRE { get; set; }
-        public int CAPACITATE { get; set; }
+        public int iID_PLANNING_TYPE { get; set; }
+        public string nvNAME { get; set; }
+        public Nullable<bool> bACTIVE { get; set; }
+        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
+        public Nullable<int> iCREATE_USER { get; set; }
+        public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PREFERINTE_PROFESORI_SALI> PREFERINTE_PROFESORI_SALI { get; set; }
+        public virtual ICollection<TIMETABLE_PLANNING> TIMETABLE_PLANNING { get; set; }
     }
 }
