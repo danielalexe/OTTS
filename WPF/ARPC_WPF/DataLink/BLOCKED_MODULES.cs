@@ -24,8 +24,8 @@ namespace DataLink
         public Nullable<int> iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
+        public virtual DAYS DAYS { get; set; }
         public virtual MODULES MODULES { get; set; }
         public virtual TEACHERS TEACHERS { get; set; }
-        public virtual DAYS DAYS { get; set; }
     }
 }

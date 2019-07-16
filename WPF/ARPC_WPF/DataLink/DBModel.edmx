@@ -273,31 +273,7 @@
           <Property Name="iCREATE_USER" Type="int" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
-        <Association Name="FK_BLOCKED_MODULES_MODULE">
-          <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
-          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MODULES">
-              <PropertyRef Name="iID_MODULE" />
-            </Principal>
-            <Dependent Role="BLOCKED_MODULES">
-              <PropertyRef Name="iID_MODULE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BLOCKED_MODULES_PROFESORI">
-          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
-          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEACHERS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Principal>
-            <Dependent Role="BLOCKED_MODULES">
-              <PropertyRef Name="iID_TEACHER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BLOCKED_MODULES_ZILE">
+        <Association Name="FK_BLOCKED_MODULES_DAYS">
           <End Role="DAYS" Type="Self.DAYS" Multiplicity="1" />
           <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -309,7 +285,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GRUPE_TIP_GRUPA">
+        <Association Name="FK_BLOCKED_MODULES_MODULES">
+          <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
+          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODULES">
+              <PropertyRef Name="iID_MODULE" />
+            </Principal>
+            <Dependent Role="BLOCKED_MODULES">
+              <PropertyRef Name="iID_MODULE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BLOCKED_MODULES_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="BLOCKED_MODULES">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GROUPS_GROUP_TYPES">
           <End Role="GROUP_TYPES" Type="Self.GROUP_TYPES" Multiplicity="1" />
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -321,31 +321,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_MODULE_GRUPE_GRUPE">
-          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
-          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GROUPS">
-              <PropertyRef Name="iID_GROUP" />
-            </Principal>
-            <Dependent Role="GROUPS_MODULES_LINK">
-              <PropertyRef Name="iID_GROUP" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LINK_MODULE_GRUPE_MODULE">
-          <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
-          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MODULES">
-              <PropertyRef Name="iID_MODULE" />
-            </Principal>
-            <Dependent Role="GROUPS_MODULES_LINK">
-              <PropertyRef Name="iID_MODULE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LINK_PRELEGERI_GRUPE_GRUPE">
+        <Association Name="FK_GROUPS_LECTURES_LINK_GROUPS">
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
           <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -357,7 +333,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PRELEGERI_GRUPE_PRELEGERI">
+        <Association Name="FK_GROUPS_LECTURES_LINK_LECTURES">
           <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
           <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -369,115 +345,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_PRELEGERI">
-          <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
-          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+        <Association Name="FK_GROUPS_MODULES_LINK_GROUPS">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
+          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="LECTURES">
-              <PropertyRef Name="iID_LECTURE" />
+            <Principal Role="GROUPS">
+              <PropertyRef Name="iID_GROUP" />
             </Principal>
-            <Dependent Role="TEACHERS_LECTURES_LINK">
-              <PropertyRef Name="iID_LECTURE" />
+            <Dependent Role="GROUPS_MODULES_LINK">
+              <PropertyRef Name="iID_GROUP" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_PROFESORI">
-          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
-          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEACHERS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Principal>
-            <Dependent Role="TEACHERS_LECTURES_LINK">
-              <PropertyRef Name="iID_TEACHER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE">
-          <End Role="LECTURE_TYPE" Type="Self.LECTURE_TYPE" Multiplicity="1" />
-          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LECTURE_TYPE">
-              <PropertyRef Name="iID_LECTURE_TYPE" />
-            </Principal>
-            <Dependent Role="TEACHERS_LECTURES_LINK">
-              <PropertyRef Name="iID_LECTURE_TYPE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PLANIFICARE_ORAR_TIP_PLANIFICARE">
-          <End Role="PLANNING_TYPE" Type="Self.PLANNING_TYPE" Multiplicity="1" />
-          <End Role="TIMETABLE_PLANNING" Type="Self.TIMETABLE_PLANNING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PLANNING_TYPE">
-              <PropertyRef Name="iID_PLANNING_TYPE" />
-            </Principal>
-            <Dependent Role="TIMETABLE_PLANNING">
-              <PropertyRef Name="iID_PLANNING_TYPE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_MODULE_MODULE">
+        <Association Name="FK_GROUPS_MODULES_LINK_MODULES">
           <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
-          <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
+          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MODULES">
               <PropertyRef Name="iID_MODULE" />
             </Principal>
-            <Dependent Role="TEACHER_PREFERRED_MODULES">
+            <Dependent Role="GROUPS_MODULES_LINK">
               <PropertyRef Name="iID_MODULE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_MODULE_PROFESORI">
-          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
-          <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
+        <Association Name="FK_SEMIGROUPS_GROUPS">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
+          <End Role="SEMIGROUPS" Type="Self.SEMIGROUPS" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="TEACHERS">
-              <PropertyRef Name="iID_TEACHER" />
+            <Principal Role="GROUPS">
+              <PropertyRef Name="iID_GROUP" />
             </Principal>
-            <Dependent Role="TEACHER_PREFERRED_MODULES">
-              <PropertyRef Name="iID_TEACHER" />
+            <Dependent Role="SEMIGROUPS">
+              <PropertyRef Name="iID_GROUP" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_SALI_PROFESORI">
-          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
-          <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEACHERS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Principal>
-            <Dependent Role="TEACHER_PREFERRED_HALLS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_SALI_SALI">
-          <End Role="HALLS" Type="Self.HALLS" Multiplicity="1" />
-          <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HALLS">
-              <PropertyRef Name="iID_HALL" />
-            </Principal>
-            <Dependent Role="TEACHER_PREFERRED_HALLS">
-              <PropertyRef Name="iID_HALL" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_ZILE_PROFESORI">
-          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
-          <End Role="TEACHER_PREFERRED_DAYS" Type="Self.TEACHER_PREFERRED_DAYS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEACHERS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Principal>
-            <Dependent Role="TEACHER_PREFERRED_DAYS">
-              <PropertyRef Name="iID_TEACHER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_ZILE_ZILE">
+        <Association Name="FK_TEACHER_PREFERRED_DAYS_DAYS">
           <End Role="DAYS" Type="Self.DAYS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_DAYS" Type="Self.TEACHER_PREFERRED_DAYS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -489,15 +393,111 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SEMIGRUPE_GRUPE">
-          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
-          <End Role="SEMIGROUPS" Type="Self.SEMIGROUPS" Multiplicity="*" />
+        <Association Name="FK_TEACHER_PREFERRED_DAYS_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHER_PREFERRED_DAYS" Type="Self.TEACHER_PREFERRED_DAYS" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="GROUPS">
-              <PropertyRef Name="iID_GROUP" />
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
             </Principal>
-            <Dependent Role="SEMIGROUPS">
-              <PropertyRef Name="iID_GROUP" />
+            <Dependent Role="TEACHER_PREFERRED_DAYS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHER_PREFERRED_HALLS_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="TEACHER_PREFERRED_HALLS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHER_PREFERRED_MODULES_MODULES">
+          <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
+          <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODULES">
+              <PropertyRef Name="iID_MODULE" />
+            </Principal>
+            <Dependent Role="TEACHER_PREFERRED_MODULES">
+              <PropertyRef Name="iID_MODULE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHER_PREFFERED_HALLS_HALLS">
+          <End Role="HALLS" Type="Self.HALLS" Multiplicity="1" />
+          <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HALLS">
+              <PropertyRef Name="iID_HALL" />
+            </Principal>
+            <Dependent Role="TEACHER_PREFERRED_HALLS">
+              <PropertyRef Name="iID_HALL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
+          <End Role="LECTURE_TYPE" Type="Self.LECTURE_TYPE" Multiplicity="1" />
+          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LECTURE_TYPE">
+              <PropertyRef Name="iID_LECTURE_TYPE" />
+            </Principal>
+            <Dependent Role="TEACHERS_LECTURES_LINK">
+              <PropertyRef Name="iID_LECTURE_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURES">
+          <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
+          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LECTURES">
+              <PropertyRef Name="iID_LECTURE" />
+            </Principal>
+            <Dependent Role="TEACHERS_LECTURES_LINK">
+              <PropertyRef Name="iID_LECTURE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_LECTURES_LINK_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="TEACHERS_LECTURES_LINK">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_PREFERRED_MODULES_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="TEACHER_PREFERRED_MODULES">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIMETABLE_PLANNING_PLANNING_TYPE">
+          <End Role="PLANNING_TYPE" Type="Self.PLANNING_TYPE" Multiplicity="1" />
+          <End Role="TIMETABLE_PLANNING" Type="Self.TIMETABLE_PLANNING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANNING_TYPE">
+              <PropertyRef Name="iID_PLANNING_TYPE" />
+            </Principal>
+            <Dependent Role="TIMETABLE_PLANNING">
+              <PropertyRef Name="iID_PLANNING_TYPE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -553,81 +553,81 @@
           <EntitySet Name="TEACHERS" EntityType="Self.TEACHERS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEACHERS_LECTURES_LINK" EntityType="Self.TEACHERS_LECTURES_LINK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIMETABLE_PLANNING" EntityType="Self.TIMETABLE_PLANNING" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_BLOCKED_MODULES_MODULE" Association="Self.FK_BLOCKED_MODULES_MODULE">
-            <End Role="MODULES" EntitySet="MODULES" />
-            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BLOCKED_MODULES_PROFESORI" Association="Self.FK_BLOCKED_MODULES_PROFESORI">
-            <End Role="TEACHERS" EntitySet="TEACHERS" />
-            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BLOCKED_MODULES_ZILE" Association="Self.FK_BLOCKED_MODULES_ZILE">
+          <AssociationSet Name="FK_BLOCKED_MODULES_DAYS" Association="Self.FK_BLOCKED_MODULES_DAYS">
             <End Role="DAYS" EntitySet="DAYS" />
             <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
           </AssociationSet>
-          <AssociationSet Name="FK_GRUPE_TIP_GRUPA" Association="Self.FK_GRUPE_TIP_GRUPA">
+          <AssociationSet Name="FK_BLOCKED_MODULES_MODULES" Association="Self.FK_BLOCKED_MODULES_MODULES">
+            <End Role="MODULES" EntitySet="MODULES" />
+            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BLOCKED_MODULES_TEACHERS" Association="Self.FK_BLOCKED_MODULES_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GROUPS_GROUP_TYPES" Association="Self.FK_GROUPS_GROUP_TYPES">
             <End Role="GROUP_TYPES" EntitySet="GROUP_TYPES" />
             <End Role="GROUPS" EntitySet="GROUPS" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_MODULE_GRUPE_GRUPE" Association="Self.FK_LINK_MODULE_GRUPE_GRUPE">
-            <End Role="GROUPS" EntitySet="GROUPS" />
-            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LINK_MODULE_GRUPE_MODULE" Association="Self.FK_LINK_MODULE_GRUPE_MODULE">
-            <End Role="MODULES" EntitySet="MODULES" />
-            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LINK_PRELEGERI_GRUPE_GRUPE" Association="Self.FK_LINK_PRELEGERI_GRUPE_GRUPE">
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_GROUPS" Association="Self.FK_GROUPS_LECTURES_LINK_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PRELEGERI_GRUPE_PRELEGERI" Association="Self.FK_LINK_PRELEGERI_GRUPE_PRELEGERI">
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_LECTURES" Association="Self.FK_GROUPS_LECTURES_LINK_LECTURES">
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_PRELEGERI" Association="Self.FK_LINK_PROFESORI_PRELEGERI_PRELEGERI">
-            <End Role="LECTURES" EntitySet="LECTURES" />
-            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
+          <AssociationSet Name="FK_GROUPS_MODULES_LINK_GROUPS" Association="Self.FK_GROUPS_MODULES_LINK_GROUPS">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_PROFESORI" Association="Self.FK_LINK_PROFESORI_PRELEGERI_PROFESORI">
-            <End Role="TEACHERS" EntitySet="TEACHERS" />
-            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE" Association="Self.FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE">
-            <End Role="LECTURE_TYPE" EntitySet="LECTURE_TYPE" />
-            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PLANIFICARE_ORAR_TIP_PLANIFICARE" Association="Self.FK_PLANIFICARE_ORAR_TIP_PLANIFICARE">
-            <End Role="PLANNING_TYPE" EntitySet="PLANNING_TYPE" />
-            <End Role="TIMETABLE_PLANNING" EntitySet="TIMETABLE_PLANNING" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_MODULE_MODULE" Association="Self.FK_PREFERINTE_PROFESORI_MODULE_MODULE">
+          <AssociationSet Name="FK_GROUPS_MODULES_LINK_MODULES" Association="Self.FK_GROUPS_MODULES_LINK_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
-            <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
+            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_MODULE_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_MODULE_PROFESORI">
-            <End Role="TEACHERS" EntitySet="TEACHERS" />
-            <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
+          <AssociationSet Name="FK_SEMIGROUPS_GROUPS" Association="Self.FK_SEMIGROUPS_GROUPS">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="SEMIGROUPS" EntitySet="SEMIGROUPS" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_SALI_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_SALI_PROFESORI">
-            <End Role="TEACHERS" EntitySet="TEACHERS" />
-            <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_SALI_SALI" Association="Self.FK_PREFERINTE_PROFESORI_SALI_SALI">
-            <End Role="HALLS" EntitySet="HALLS" />
-            <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_ZILE_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_ZILE_PROFESORI">
-            <End Role="TEACHERS" EntitySet="TEACHERS" />
-            <End Role="TEACHER_PREFERRED_DAYS" EntitySet="TEACHER_PREFERRED_DAYS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_ZILE_ZILE" Association="Self.FK_PREFERINTE_PROFESORI_ZILE_ZILE">
+          <AssociationSet Name="FK_TEACHER_PREFERRED_DAYS_DAYS" Association="Self.FK_TEACHER_PREFERRED_DAYS_DAYS">
             <End Role="DAYS" EntitySet="DAYS" />
             <End Role="TEACHER_PREFERRED_DAYS" EntitySet="TEACHER_PREFERRED_DAYS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SEMIGRUPE_GRUPE" Association="Self.FK_SEMIGRUPE_GRUPE">
-            <End Role="GROUPS" EntitySet="GROUPS" />
-            <End Role="SEMIGROUPS" EntitySet="SEMIGROUPS" />
+          <AssociationSet Name="FK_TEACHER_PREFERRED_DAYS_TEACHERS" Association="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHER_PREFERRED_DAYS" EntitySet="TEACHER_PREFERRED_DAYS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHER_PREFERRED_HALLS_TEACHERS" Association="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHER_PREFERRED_MODULES_MODULES" Association="Self.FK_TEACHER_PREFERRED_MODULES_MODULES">
+            <End Role="MODULES" EntitySet="MODULES" />
+            <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHER_PREFFERED_HALLS_HALLS" Association="Self.FK_TEACHER_PREFFERED_HALLS_HALLS">
+            <End Role="HALLS" EntitySet="HALLS" />
+            <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
+            <End Role="LECTURE_TYPE" EntitySet="LECTURE_TYPE" />
+            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURES" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURES">
+            <End Role="LECTURES" EntitySet="LECTURES" />
+            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_TEACHERS" Association="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_PREFERRED_MODULES_TEACHERS" Association="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIMETABLE_PLANNING_PLANNING_TYPE" Association="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE">
+            <End Role="PLANNING_TYPE" EntitySet="PLANNING_TYPE" />
+            <End Role="TIMETABLE_PLANNING" EntitySet="TIMETABLE_PLANNING" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -648,9 +648,9 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULE" FromRole="BLOCKED_MODULES" ToRole="MODULES" />
-          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_BLOCKED_MODULES_PROFESORI" FromRole="BLOCKED_MODULES" ToRole="TEACHERS" />
-          <NavigationProperty Name="DAYS" Relationship="Self.FK_BLOCKED_MODULES_ZILE" FromRole="BLOCKED_MODULES" ToRole="DAYS" />
+          <NavigationProperty Name="DAYS" Relationship="Self.FK_BLOCKED_MODULES_DAYS" FromRole="BLOCKED_MODULES" ToRole="DAYS" />
+          <NavigationProperty Name="MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULES" FromRole="BLOCKED_MODULES" ToRole="MODULES" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_BLOCKED_MODULES_TEACHERS" FromRole="BLOCKED_MODULES" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="DAYS">
           <Key>
@@ -664,8 +664,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_ZILE" FromRole="DAYS" ToRole="BLOCKED_MODULES" />
-          <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_PREFERINTE_PROFESORI_ZILE_ZILE" FromRole="DAYS" ToRole="TEACHER_PREFERRED_DAYS" />
+          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_DAYS" FromRole="DAYS" ToRole="BLOCKED_MODULES" />
+          <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_DAYS" FromRole="DAYS" ToRole="TEACHER_PREFERRED_DAYS" />
         </EntityType>
         <EntityType Name="GROUP_TYPES">
           <Key>
@@ -678,7 +678,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUPS" Relationship="Self.FK_GRUPE_TIP_GRUPA" FromRole="GROUP_TYPES" ToRole="GROUPS" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_GROUP_TYPES" FromRole="GROUP_TYPES" ToRole="GROUPS" />
         </EntityType>
         <EntityType Name="GROUPS">
           <Key>
@@ -694,10 +694,10 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUP_TYPES" Relationship="Self.FK_GRUPE_TIP_GRUPA" FromRole="GROUPS" ToRole="GROUP_TYPES" />
-          <NavigationProperty Name="GROUPS_MODULES_LINK" Relationship="Self.FK_LINK_MODULE_GRUPE_GRUPE" FromRole="GROUPS" ToRole="GROUPS_MODULES_LINK" />
-          <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_LINK_PRELEGERI_GRUPE_GRUPE" FromRole="GROUPS" ToRole="GROUPS_LECTURES_LINK" />
-          <NavigationProperty Name="SEMIGROUPS" Relationship="Self.FK_SEMIGRUPE_GRUPE" FromRole="GROUPS" ToRole="SEMIGROUPS" />
+          <NavigationProperty Name="GROUP_TYPES" Relationship="Self.FK_GROUPS_GROUP_TYPES" FromRole="GROUPS" ToRole="GROUP_TYPES" />
+          <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_GROUPS" FromRole="GROUPS" ToRole="GROUPS_LECTURES_LINK" />
+          <NavigationProperty Name="GROUPS_MODULES_LINK" Relationship="Self.FK_GROUPS_MODULES_LINK_GROUPS" FromRole="GROUPS" ToRole="GROUPS_MODULES_LINK" />
+          <NavigationProperty Name="SEMIGROUPS" Relationship="Self.FK_SEMIGROUPS_GROUPS" FromRole="GROUPS" ToRole="SEMIGROUPS" />
         </EntityType>
         <EntityType Name="GROUPS_LECTURES_LINK">
           <Key>
@@ -711,8 +711,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUPS" Relationship="Self.FK_LINK_PRELEGERI_GRUPE_GRUPE" FromRole="GROUPS_LECTURES_LINK" ToRole="GROUPS" />
-          <NavigationProperty Name="LECTURES" Relationship="Self.FK_LINK_PRELEGERI_GRUPE_PRELEGERI" FromRole="GROUPS_LECTURES_LINK" ToRole="LECTURES" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_LECTURES_LINK_GROUPS" FromRole="GROUPS_LECTURES_LINK" ToRole="GROUPS" />
+          <NavigationProperty Name="LECTURES" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="GROUPS_LECTURES_LINK" ToRole="LECTURES" />
         </EntityType>
         <EntityType Name="GROUPS_MODULES_LINK">
           <Key>
@@ -726,8 +726,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUPS" Relationship="Self.FK_LINK_MODULE_GRUPE_GRUPE" FromRole="GROUPS_MODULES_LINK" ToRole="GROUPS" />
-          <NavigationProperty Name="MODULES" Relationship="Self.FK_LINK_MODULE_GRUPE_MODULE" FromRole="GROUPS_MODULES_LINK" ToRole="MODULES" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_MODULES_LINK_GROUPS" FromRole="GROUPS_MODULES_LINK" ToRole="GROUPS" />
+          <NavigationProperty Name="MODULES" Relationship="Self.FK_GROUPS_MODULES_LINK_MODULES" FromRole="GROUPS_MODULES_LINK" ToRole="MODULES" />
         </EntityType>
         <EntityType Name="HALLS">
           <Key>
@@ -741,7 +741,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_PREFERINTE_PROFESORI_SALI_SALI" FromRole="HALLS" ToRole="TEACHER_PREFERRED_HALLS" />
+          <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_TEACHER_PREFFERED_HALLS_HALLS" FromRole="HALLS" ToRole="TEACHER_PREFERRED_HALLS" />
         </EntityType>
         <EntityType Name="LECTURE_TYPE">
           <Key>
@@ -754,7 +754,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE" FromRole="LECTURE_TYPE" ToRole="TEACHERS_LECTURES_LINK" />
+          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="LECTURE_TYPE" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
         <EntityType Name="LECTURES">
           <Key>
@@ -767,8 +767,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_LINK_PRELEGERI_GRUPE_PRELEGERI" FromRole="LECTURES" ToRole="GROUPS_LECTURES_LINK" />
-          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_PRELEGERI" FromRole="LECTURES" ToRole="TEACHERS_LECTURES_LINK" />
+          <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="GROUPS_LECTURES_LINK" />
+          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
         <EntityType Name="MODULES">
           <Key>
@@ -781,9 +781,9 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULE" FromRole="MODULES" ToRole="BLOCKED_MODULES" />
-          <NavigationProperty Name="GROUPS_MODULES_LINK" Relationship="Self.FK_LINK_MODULE_GRUPE_MODULE" FromRole="MODULES" ToRole="GROUPS_MODULES_LINK" />
-          <NavigationProperty Name="TEACHER_PREFERRED_MODULES" Relationship="Self.FK_PREFERINTE_PROFESORI_MODULE_MODULE" FromRole="MODULES" ToRole="TEACHER_PREFERRED_MODULES" />
+          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULES" FromRole="MODULES" ToRole="BLOCKED_MODULES" />
+          <NavigationProperty Name="GROUPS_MODULES_LINK" Relationship="Self.FK_GROUPS_MODULES_LINK_MODULES" FromRole="MODULES" ToRole="GROUPS_MODULES_LINK" />
+          <NavigationProperty Name="TEACHER_PREFERRED_MODULES" Relationship="Self.FK_TEACHER_PREFERRED_MODULES_MODULES" FromRole="MODULES" ToRole="TEACHER_PREFERRED_MODULES" />
         </EntityType>
         <EntityType Name="PLANNING_TYPE">
           <Key>
@@ -796,7 +796,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="TIMETABLE_PLANNING" Relationship="Self.FK_PLANIFICARE_ORAR_TIP_PLANIFICARE" FromRole="PLANNING_TYPE" ToRole="TIMETABLE_PLANNING" />
+          <NavigationProperty Name="TIMETABLE_PLANNING" Relationship="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE" FromRole="PLANNING_TYPE" ToRole="TIMETABLE_PLANNING" />
         </EntityType>
         <EntityType Name="SEMIGROUPS">
           <Key>
@@ -811,7 +811,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="GROUPS" Relationship="Self.FK_SEMIGRUPE_GRUPE" FromRole="SEMIGROUPS" ToRole="GROUPS" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.FK_SEMIGROUPS_GROUPS" FromRole="SEMIGROUPS" ToRole="GROUPS" />
         </EntityType>
         <EntityType Name="SETTINGS">
           <Key>
@@ -851,8 +851,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="DAYS" Relationship="Self.FK_PREFERINTE_PROFESORI_ZILE_ZILE" FromRole="TEACHER_PREFERRED_DAYS" ToRole="DAYS" />
-          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_PREFERINTE_PROFESORI_ZILE_PROFESORI" FromRole="TEACHER_PREFERRED_DAYS" ToRole="TEACHERS" />
+          <NavigationProperty Name="DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_DAYS" FromRole="TEACHER_PREFERRED_DAYS" ToRole="DAYS" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHER_PREFERRED_DAYS" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TEACHER_PREFERRED_HALLS">
           <Key>
@@ -866,8 +866,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="HALLS" Relationship="Self.FK_PREFERINTE_PROFESORI_SALI_SALI" FromRole="TEACHER_PREFERRED_HALLS" ToRole="HALLS" />
-          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_PREFERINTE_PROFESORI_SALI_PROFESORI" FromRole="TEACHER_PREFERRED_HALLS" ToRole="TEACHERS" />
+          <NavigationProperty Name="HALLS" Relationship="Self.FK_TEACHER_PREFFERED_HALLS_HALLS" FromRole="TEACHER_PREFERRED_HALLS" ToRole="HALLS" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS" FromRole="TEACHER_PREFERRED_HALLS" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TEACHER_PREFERRED_MODULES">
           <Key>
@@ -882,8 +882,8 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="MODULES" Relationship="Self.FK_PREFERINTE_PROFESORI_MODULE_MODULE" FromRole="TEACHER_PREFERRED_MODULES" ToRole="MODULES" />
-          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_PREFERINTE_PROFESORI_MODULE_PROFESORI" FromRole="TEACHER_PREFERRED_MODULES" ToRole="TEACHERS" />
+          <NavigationProperty Name="MODULES" Relationship="Self.FK_TEACHER_PREFERRED_MODULES_MODULES" FromRole="TEACHER_PREFERRED_MODULES" ToRole="MODULES" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" FromRole="TEACHER_PREFERRED_MODULES" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TEACHERS">
           <Key>
@@ -897,11 +897,11 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_PROFESORI" FromRole="TEACHERS" ToRole="BLOCKED_MODULES" />
-          <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_PREFERINTE_PROFESORI_ZILE_PROFESORI" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_DAYS" />
-          <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_PREFERINTE_PROFESORI_SALI_PROFESORI" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_HALLS" />
-          <NavigationProperty Name="TEACHER_PREFERRED_MODULES" Relationship="Self.FK_PREFERINTE_PROFESORI_MODULE_PROFESORI" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_MODULES" />
-          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_PROFESORI" FromRole="TEACHERS" ToRole="TEACHERS_LECTURES_LINK" />
+          <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="BLOCKED_MODULES" />
+          <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_DAYS" />
+          <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_HALLS" />
+          <NavigationProperty Name="TEACHER_PREFERRED_MODULES" Relationship="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_MODULES" />
+          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS" FromRole="TEACHERS" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
         <EntityType Name="TEACHERS_LECTURES_LINK">
           <Key>
@@ -917,9 +917,9 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="LECTURE_TYPE" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURE_TYPE" />
-          <NavigationProperty Name="LECTURES" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_PRELEGERI" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURES" />
-          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_LINK_PROFESORI_PRELEGERI_PROFESORI" FromRole="TEACHERS_LECTURES_LINK" ToRole="TEACHERS" />
+          <NavigationProperty Name="LECTURE_TYPE" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURE_TYPE" />
+          <NavigationProperty Name="LECTURES" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURES" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS" FromRole="TEACHERS_LECTURES_LINK" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TIMETABLE_PLANNING">
           <Key>
@@ -939,9 +939,21 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <NavigationProperty Name="PLANNING_TYPE" Relationship="Self.FK_PLANIFICARE_ORAR_TIP_PLANIFICARE" FromRole="TIMETABLE_PLANNING" ToRole="PLANNING_TYPE" />
+          <NavigationProperty Name="PLANNING_TYPE" Relationship="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE" FromRole="TIMETABLE_PLANNING" ToRole="PLANNING_TYPE" />
         </EntityType>
-        <Association Name="FK_BLOCKED_MODULES_MODULE">
+        <Association Name="FK_BLOCKED_MODULES_DAYS">
+          <End Role="DAYS" Type="Self.DAYS" Multiplicity="1" />
+          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAYS">
+              <PropertyRef Name="iID_DAY" />
+            </Principal>
+            <Dependent Role="BLOCKED_MODULES">
+              <PropertyRef Name="iID_DAY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BLOCKED_MODULES_MODULES">
           <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
           <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -953,7 +965,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BLOCKED_MODULES_PROFESORI">
+        <Association Name="FK_BLOCKED_MODULES_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -965,19 +977,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BLOCKED_MODULES_ZILE">
-          <End Role="DAYS" Type="Self.DAYS" Multiplicity="1" />
-          <End Role="BLOCKED_MODULES" Type="Self.BLOCKED_MODULES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAYS">
-              <PropertyRef Name="iID_DAY" />
-            </Principal>
-            <Dependent Role="BLOCKED_MODULES">
-              <PropertyRef Name="iID_DAY" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_ZILE_ZILE">
+        <Association Name="FK_TEACHER_PREFERRED_DAYS_DAYS">
           <End Role="DAYS" Type="Self.DAYS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_DAYS" Type="Self.TEACHER_PREFERRED_DAYS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -989,7 +989,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GRUPE_TIP_GRUPA">
+        <Association Name="FK_GROUPS_GROUP_TYPES">
           <End Role="GROUP_TYPES" Type="Self.GROUP_TYPES" Multiplicity="1" />
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1001,19 +1001,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_MODULE_GRUPE_GRUPE">
-          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
-          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GROUPS">
-              <PropertyRef Name="iID_GROUP" />
-            </Principal>
-            <Dependent Role="GROUPS_MODULES_LINK">
-              <PropertyRef Name="iID_GROUP" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LINK_PRELEGERI_GRUPE_GRUPE">
+        <Association Name="FK_GROUPS_LECTURES_LINK_GROUPS">
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
           <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1025,7 +1013,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SEMIGRUPE_GRUPE">
+        <Association Name="FK_GROUPS_MODULES_LINK_GROUPS">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
+          <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUPS">
+              <PropertyRef Name="iID_GROUP" />
+            </Principal>
+            <Dependent Role="GROUPS_MODULES_LINK">
+              <PropertyRef Name="iID_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SEMIGROUPS_GROUPS">
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
           <End Role="SEMIGROUPS" Type="Self.SEMIGROUPS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1037,7 +1037,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PRELEGERI_GRUPE_PRELEGERI">
+        <Association Name="FK_GROUPS_LECTURES_LINK_LECTURES">
           <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
           <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1049,7 +1049,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_MODULE_GRUPE_MODULE">
+        <Association Name="FK_GROUPS_MODULES_LINK_MODULES">
           <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
           <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1061,7 +1061,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_SALI_SALI">
+        <Association Name="FK_TEACHER_PREFFERED_HALLS_HALLS">
           <End Role="HALLS" Type="Self.HALLS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1073,7 +1073,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE">
+        <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
           <End Role="LECTURE_TYPE" Type="Self.LECTURE_TYPE" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1085,7 +1085,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_PRELEGERI">
+        <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURES">
           <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1097,7 +1097,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_MODULE_MODULE">
+        <Association Name="FK_TEACHER_PREFERRED_MODULES_MODULES">
           <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1109,7 +1109,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PLANIFICARE_ORAR_TIP_PLANIFICARE">
+        <Association Name="FK_TIMETABLE_PLANNING_PLANNING_TYPE">
           <End Role="PLANNING_TYPE" Type="Self.PLANNING_TYPE" Multiplicity="1" />
           <End Role="TIMETABLE_PLANNING" Type="Self.TIMETABLE_PLANNING" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1121,7 +1121,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_ZILE_PROFESORI">
+        <Association Name="FK_TEACHER_PREFERRED_DAYS_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_DAYS" Type="Self.TEACHER_PREFERRED_DAYS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1133,7 +1133,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_SALI_PROFESORI">
+        <Association Name="FK_TEACHER_PREFERRED_HALLS_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_HALLS" Type="Self.TEACHER_PREFERRED_HALLS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1145,7 +1145,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PREFERINTE_PROFESORI_MODULE_PROFESORI">
+        <Association Name="FK_TEACHERS_PREFERRED_MODULES_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHER_PREFERRED_MODULES" Type="Self.TEACHER_PREFERRED_MODULES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1157,7 +1157,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LINK_PROFESORI_PRELEGERI_PROFESORI">
+        <Association Name="FK_TEACHERS_LECTURES_LINK_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1190,79 +1190,79 @@
           <EntitySet Name="TEACHERS" EntityType="Self.TEACHERS" />
           <EntitySet Name="TEACHERS_LECTURES_LINK" EntityType="Self.TEACHERS_LECTURES_LINK" />
           <EntitySet Name="TIMETABLE_PLANNING" EntityType="Self.TIMETABLE_PLANNING" />
-          <AssociationSet Name="FK_BLOCKED_MODULES_MODULE" Association="Self.FK_BLOCKED_MODULES_MODULE">
+          <AssociationSet Name="FK_BLOCKED_MODULES_DAYS" Association="Self.FK_BLOCKED_MODULES_DAYS">
+            <End Role="DAYS" EntitySet="DAYS" />
+            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BLOCKED_MODULES_MODULES" Association="Self.FK_BLOCKED_MODULES_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
             <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
           </AssociationSet>
-          <AssociationSet Name="FK_BLOCKED_MODULES_PROFESORI" Association="Self.FK_BLOCKED_MODULES_PROFESORI">
+          <AssociationSet Name="FK_BLOCKED_MODULES_TEACHERS" Association="Self.FK_BLOCKED_MODULES_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
           </AssociationSet>
-          <AssociationSet Name="FK_BLOCKED_MODULES_ZILE" Association="Self.FK_BLOCKED_MODULES_ZILE">
-            <End Role="DAYS" EntitySet="DAYS" />
-            <End Role="BLOCKED_MODULES" EntitySet="BLOCKED_MODULES" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_ZILE_ZILE" Association="Self.FK_PREFERINTE_PROFESORI_ZILE_ZILE">
+          <AssociationSet Name="FK_TEACHER_PREFERRED_DAYS_DAYS" Association="Self.FK_TEACHER_PREFERRED_DAYS_DAYS">
             <End Role="DAYS" EntitySet="DAYS" />
             <End Role="TEACHER_PREFERRED_DAYS" EntitySet="TEACHER_PREFERRED_DAYS" />
           </AssociationSet>
-          <AssociationSet Name="FK_GRUPE_TIP_GRUPA" Association="Self.FK_GRUPE_TIP_GRUPA">
+          <AssociationSet Name="FK_GROUPS_GROUP_TYPES" Association="Self.FK_GROUPS_GROUP_TYPES">
             <End Role="GROUP_TYPES" EntitySet="GROUP_TYPES" />
             <End Role="GROUPS" EntitySet="GROUPS" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_MODULE_GRUPE_GRUPE" Association="Self.FK_LINK_MODULE_GRUPE_GRUPE">
-            <End Role="GROUPS" EntitySet="GROUPS" />
-            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LINK_PRELEGERI_GRUPE_GRUPE" Association="Self.FK_LINK_PRELEGERI_GRUPE_GRUPE">
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_GROUPS" Association="Self.FK_GROUPS_LECTURES_LINK_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_SEMIGRUPE_GRUPE" Association="Self.FK_SEMIGRUPE_GRUPE">
+          <AssociationSet Name="FK_GROUPS_MODULES_LINK_GROUPS" Association="Self.FK_GROUPS_MODULES_LINK_GROUPS">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SEMIGROUPS_GROUPS" Association="Self.FK_SEMIGROUPS_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="SEMIGROUPS" EntitySet="SEMIGROUPS" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PRELEGERI_GRUPE_PRELEGERI" Association="Self.FK_LINK_PRELEGERI_GRUPE_PRELEGERI">
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_LECTURES" Association="Self.FK_GROUPS_LECTURES_LINK_LECTURES">
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_MODULE_GRUPE_MODULE" Association="Self.FK_LINK_MODULE_GRUPE_MODULE">
+          <AssociationSet Name="FK_GROUPS_MODULES_LINK_MODULES" Association="Self.FK_GROUPS_MODULES_LINK_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
             <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_SALI_SALI" Association="Self.FK_PREFERINTE_PROFESORI_SALI_SALI">
+          <AssociationSet Name="FK_TEACHER_PREFFERED_HALLS_HALLS" Association="Self.FK_TEACHER_PREFFERED_HALLS_HALLS">
             <End Role="HALLS" EntitySet="HALLS" />
             <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE" Association="Self.FK_LINK_PROFESORI_PRELEGERI_TIP_EXECUTIE">
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
             <End Role="LECTURE_TYPE" EntitySet="LECTURE_TYPE" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_PRELEGERI" Association="Self.FK_LINK_PROFESORI_PRELEGERI_PRELEGERI">
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURES" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURES">
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_MODULE_MODULE" Association="Self.FK_PREFERINTE_PROFESORI_MODULE_MODULE">
+          <AssociationSet Name="FK_TEACHER_PREFERRED_MODULES_MODULES" Association="Self.FK_TEACHER_PREFERRED_MODULES_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
             <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
           </AssociationSet>
-          <AssociationSet Name="FK_PLANIFICARE_ORAR_TIP_PLANIFICARE" Association="Self.FK_PLANIFICARE_ORAR_TIP_PLANIFICARE">
+          <AssociationSet Name="FK_TIMETABLE_PLANNING_PLANNING_TYPE" Association="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE">
             <End Role="PLANNING_TYPE" EntitySet="PLANNING_TYPE" />
             <End Role="TIMETABLE_PLANNING" EntitySet="TIMETABLE_PLANNING" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_ZILE_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_ZILE_PROFESORI">
+          <AssociationSet Name="FK_TEACHER_PREFERRED_DAYS_TEACHERS" Association="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHER_PREFERRED_DAYS" EntitySet="TEACHER_PREFERRED_DAYS" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_SALI_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_SALI_PROFESORI">
+          <AssociationSet Name="FK_TEACHER_PREFERRED_HALLS_TEACHERS" Association="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
           </AssociationSet>
-          <AssociationSet Name="FK_PREFERINTE_PROFESORI_MODULE_PROFESORI" Association="Self.FK_PREFERINTE_PROFESORI_MODULE_PROFESORI">
+          <AssociationSet Name="FK_TEACHERS_PREFERRED_MODULES_TEACHERS" Association="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
           </AssociationSet>
-          <AssociationSet Name="FK_LINK_PROFESORI_PRELEGERI_PROFESORI" Association="Self.FK_LINK_PROFESORI_PRELEGERI_PROFESORI">
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_TEACHERS" Association="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>

@@ -17,8 +17,8 @@ namespace DataLink
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GROUPS()
         {
-            this.GROUPS_MODULES_LINK = new HashSet<GROUPS_MODULES_LINK>();
             this.GROUPS_LECTURES_LINK = new HashSet<GROUPS_LECTURES_LINK>();
+            this.GROUPS_MODULES_LINK = new HashSet<GROUPS_MODULES_LINK>();
             this.SEMIGROUPS = new HashSet<SEMIGROUPS>();
         }
     
@@ -35,9 +35,9 @@ namespace DataLink
     
         public virtual GROUP_TYPES GROUP_TYPES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GROUPS_MODULES_LINK> GROUPS_MODULES_LINK { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GROUPS_LECTURES_LINK> GROUPS_LECTURES_LINK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GROUPS_MODULES_LINK> GROUPS_MODULES_LINK { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SEMIGROUPS> SEMIGROUPS { get; set; }
     }
