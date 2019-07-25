@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Schyte Software")]
 [assembly: AssemblyProduct("Open TimeTable Software")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright © 2019 Schyte Software")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

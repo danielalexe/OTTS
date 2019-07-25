@@ -85,6 +85,7 @@
                 <Button Grid.Column="3" x:Name="ButtonExit" Content="Cancel" Click="ButtonExit_Click"></Button>
             </Grid>
             <DataControls:CText x:Name="CTextVersion" IsEnabled="False" Grid.Row="8" CLabel="Versiune"></DataControls:CText>
+            <Label x:Name="LabelCopyright" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"></Label>
         </Grid>
     </Grid>
 </Window>

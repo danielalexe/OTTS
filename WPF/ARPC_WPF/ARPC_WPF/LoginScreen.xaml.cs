@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace OTTS_WPF
 {
@@ -30,6 +31,7 @@ namespace OTTS_WPF
             BindComboDatabaseType();
             BindComboAuthenticationType();
             CTextVersion.CString = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            LabelCopyright.Content = ((AssemblyCopyrightAttribute)Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true).FirstOrDefault()).Copyright;
         }
 
         private void BindComboAuthenticationType()
