@@ -1,0 +1,90 @@
+﻿<Window x:Class="OTTS_WPF.LoginScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OTTS_WPF"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:DataControls="clr-namespace:DataControls;assembly=DataControls"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="LoginScreen" MinHeight="580" Height="600" MinWidth="780" Width="1080" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="60" MaxHeight="60"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Viewbox Height="30" Grid.Row="0" Grid.Column="0">
+                    <RadioButton x:Name="RadioOffline" IsChecked="True" Content="Offline" GroupName="WorkType" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioOffline_Checked"></RadioButton>
+                </Viewbox>
+                <Viewbox Height="30" Grid.Row="0" Grid.Column="1">
+                    <RadioButton x:Name="RadioOnline" Content="Online" GroupName="WorkType" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="RadioOnline_Checked"></RadioButton>
+                </Viewbox>
+            </Grid>
+            <DataControls:CCombo x:Name="CComboDatabaseType" IsEnabled="False" Grid.Row="1" CLabel="Tip baza de date"></DataControls:CCombo>
+            <DataControls:CText x:Name="CTextDatabaseServer" IsEnabled="False" Grid.Row="2" CLabel="Server DB"></DataControls:CText>
+            <DataControls:CText x:Name="CTextDatabaseName" IsEnabled="False" Grid.Row="3" CLabel="Baza de date"></DataControls:CText>
+            <DataControls:CCombo x:Name="CComboAuthenticationType" IsEnabled="False" Grid.Row="4" CLabel="Tip Autentificare"></DataControls:CCombo>
+            <DataControls:CText x:Name="CTextUsername" IsEnabled="False" Grid.Row="5" CLabel="Nume utilizator"></DataControls:CText>
+            <DataControls:CPassword x:Name="CPasswordPassword" IsEnabled="False" Grid.Row="6" CLabel="Parola"></DataControls:CPassword>
+            <Grid Grid.Row="7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Grid.Column="1" x:Name="ButtonLogin" Content="Login" Click="ButtonLogin_Click"></Button>
+                <Button Grid.Column="3" x:Name="ButtonExit" Content="Cancel" Click="ButtonExit_Click"></Button>
+            </Grid>
+            <DataControls:CText x:Name="CTextVersion" IsEnabled="False" Grid.Row="8" CLabel="Versiune"></DataControls:CText>
+        </Grid>
+    </Grid>
+</Window>

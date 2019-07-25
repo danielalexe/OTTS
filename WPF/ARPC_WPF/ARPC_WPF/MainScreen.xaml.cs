@@ -14,18 +14,19 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ARPC_WPF.Helpers;
-using ARPC_WPF.Profesori;
-using ARPC_WPF.Template;
+using OTTS_WPF.Helpers;
+using OTTS_WPF.Profesori;
+using OTTS_WPF.Template;
 using MaterialDesignThemes;
 
-namespace ARPC_WPF
+namespace OTTS_WPF
 {
     /// <summary>
     /// Interaction logic for MainScreen.xaml
     /// </summary>
     public partial class MainScreen : Window
     {
+        public LoginScreen SourceScreen { get; set; }
         int childCount = 0;
         public MainScreen()
         {
@@ -34,7 +35,8 @@ namespace ARPC_WPF
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Hide();
+            SourceScreen.Show();
         }
 
         private void ButtonOpenDrawer_Click(object sender, RoutedEventArgs e)

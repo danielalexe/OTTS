@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b5ff52feab564f5682c20f71c134175c" Name="Diagram1">
+      <Diagram DiagramId="2c779944b8144f3280f5d1ea8423026f" Name="Diagram1">
         <EntityTypeShape EntityType="OTTSModel.BLOCKED_MODULES" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
         <EntityTypeShape EntityType="OTTSModel.DAYS" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="OTTSModel.GROUP_TYPES" Width="1.5" PointX="8.75" PointY="5.25" IsExpanded="true" />

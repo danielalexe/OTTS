@@ -1,4 +1,5 @@
-﻿using ARPC_WPF.Template;
+﻿using OTTS_WPF.Helpers;
+using OTTS_WPF.Template;
 using DataLink;
 using DataObjects;
 using System;
@@ -15,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ARPC_WPF.Profesori
+namespace OTTS_WPF.Profesori
 {
     /// <summary>
     /// Interaction logic for WindowProfesoriColectie.xaml
@@ -41,7 +42,7 @@ namespace ARPC_WPF.Profesori
 
         public void ReloadData()
         {
-            using (var db = new OTTSContext())
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 var FiltruNume = CTextNume.CString.ToUpper();
                 var FiltruPrenume = CTextPrenume.CString.ToUpper();
@@ -49,7 +50,7 @@ namespace ARPC_WPF.Profesori
                                     where ((String.IsNullOrEmpty(FiltruNume) || u.nvNAME.Contains(FiltruNume))
                                     &&
                                     (String.IsNullOrEmpty(FiltruPrenume) || u.nvSURNAME.Contains(FiltruPrenume)))
-                                    select new DTOProfesori
+                                    select new DTOProfessor
                                     {
                                         ID_PROFESOR = u.iID_TEACHER,
                                         NUME = u.nvNAME,
@@ -65,9 +66,9 @@ namespace ARPC_WPF.Profesori
             var list = DataGridProfesori.SelectedItems;
             if (list.Count>0)
             {
-                using (var db = new OTTSContext())
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    foreach (DTOProfesori item in list)
+                    foreach (DTOProfessor item in list)
                     {
                         var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.ID_PROFESOR);
                         if (getProfesor!=null)
@@ -86,7 +87,7 @@ namespace ARPC_WPF.Profesori
             WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
             profesoriEntitate.MainScreen = MainScreen;
             profesoriEntitate.WindowType = Helpers.EnumWindowType.EDITMODE;
-            profesoriEntitate.ID_PROFESOR = ((DTOProfesori)DataGridProfesori.SelectedItem).ID_PROFESOR;
+            profesoriEntitate.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).ID_PROFESOR;
             profesoriEntitate.WindowProfesoriColectie = this;
             profesoriEntitate.LoadData();
             MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.EDITMODE);

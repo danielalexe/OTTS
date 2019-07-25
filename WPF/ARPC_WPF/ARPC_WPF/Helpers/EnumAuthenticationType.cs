@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OTTS_WPF.Helpers
 {
-    public enum EnumWindowType
+    public enum EnumAuthenticationType
     {
-        ADDMODE=1,
-        EDITMODE
+        WindowsAuth=1,
+        SQLAuth
     }
 }

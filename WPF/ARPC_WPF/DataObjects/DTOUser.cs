@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OTTS_WPF.Helpers
+namespace DataObjects
 {
-    public enum EnumWindowType
+    public class DTOUser
     {
-        ADDMODE=1,
-        EDITMODE
+        public int iID_USER { get; set; }
+        public string nvUSERNUME { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataObjects
 {
-    public class DTOProfesori
+    public class DTOProfessor
     {
         public int ID_PROFESOR { get; set; }
         public string NUME { get; set; }

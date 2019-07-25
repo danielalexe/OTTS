@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace OTTS_WPF.Helpers
 {
-    public enum EnumWindowType
+    public enum EnumDatabaseType
     {
-        ADDMODE=1,
-        EDITMODE
+        MicrosoftSQL=1,
+        Oracle,
+        MySQL,
+        PostgreSQL
     }
 }

@@ -1,4 +1,4 @@
-﻿using ARPC_WPF.Helpers;
+﻿using OTTS_WPF.Helpers;
 using DataLink;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ARPC_WPF.Profesori
+namespace OTTS_WPF.Profesori
 {
     /// <summary>
     /// Interaction logic for WindowProfesoriEntitate.xaml
@@ -35,7 +35,7 @@ namespace ARPC_WPF.Profesori
         {
             if (WindowType == EnumWindowType.ADDMODE)
             {
-                using (var db = new OTTSContext())
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
                     TEACHERS profesor = new TEACHERS();
                     profesor.nvNAME = CTextNume.CTextBox.Text;
@@ -52,7 +52,7 @@ namespace ARPC_WPF.Profesori
             }
             else if (WindowType == EnumWindowType.EDITMODE)
             {
-                using (var db = new OTTSContext())
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
                     var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
                     if (getProfesor!=null)
@@ -85,7 +85,7 @@ namespace ARPC_WPF.Profesori
         {
             if (WindowType == EnumWindowType.EDITMODE)
             {
-                using (var db = new OTTSContext())
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
                     var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
                     if (getProfesor != null)
