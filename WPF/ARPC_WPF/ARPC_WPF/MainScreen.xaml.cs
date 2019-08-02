@@ -19,6 +19,7 @@ using OTTS_WPF.Profesori;
 using OTTS_WPF.Template;
 using MaterialDesignThemes;
 using OTTS_WPF.Halls;
+using OTTS_WPF.Lectures;
 
 namespace OTTS_WPF
 {
@@ -104,6 +105,9 @@ namespace OTTS_WPF
                     case "Groups":
                         break;
                     case "Lectures":
+                        WindowLecturesCollection winLectures = new WindowLecturesCollection();
+                        winLectures.MainScreen = this;
+                        CreateTabItem(winLectures);
                         break;
                     case "Modules":
                         break;

@@ -125,6 +125,12 @@
     <Compile Include="Helpers\EnumDatabaseType.cs" />
     <Compile Include="Helpers\EnumWindowType.cs" />
     <Compile Include="Helpers\PersistentData.cs" />
+    <Compile Include="Lectures\WindowLecturesCollection.xaml.cs">
+      <DependentUpon>WindowLecturesCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Lectures\WindowLecturesEntity.xaml.cs">
+      <DependentUpon>WindowLecturesEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
@@ -149,6 +155,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Halls\WindowHallsEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Lectures\WindowLecturesCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Lectures\WindowLecturesEntity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
