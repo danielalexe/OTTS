@@ -18,10 +18,10 @@ namespace DataLink
         public string nvNAME { get; set; }
         public int iID_GROUP { get; set; }
         public int iPRIORITY { get; set; }
-        public Nullable<bool> bACTIVE { get; set; }
-        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public bool bACTIVE { get; set; }
+        public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
-        public Nullable<int> iCREATE_USER { get; set; }
+        public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         public virtual GROUPS GROUPS { get; set; }

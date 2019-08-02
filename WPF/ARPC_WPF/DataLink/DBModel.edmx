@@ -13,10 +13,10 @@
           <Property Name="iID_TEACHER" Type="int" Nullable="false" />
           <Property Name="iID_MODULE" Type="int" Nullable="false" />
           <Property Name="iID_DAY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="DAYS">
@@ -26,10 +26,10 @@
           <Property Name="iID_DAY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="nvPRIORITY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="GROUP_TYPES">
@@ -38,10 +38,10 @@
           </Key>
           <Property Name="iID_GROUP_TYPE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="GROUPS">
@@ -53,10 +53,10 @@
           <Property Name="iNUMBER_OF_STUDENTS" Type="int" Nullable="false" />
           <Property Name="iID_GROUP_TYPE" Type="int" Nullable="false" />
           <Property Name="iYEAR" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="GROUPS_LECTURES_LINK">
@@ -66,10 +66,10 @@
           <Property Name="iID_GROUPS_LECTURES_LINK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="iID_GROUP" Type="int" Nullable="false" />
           <Property Name="iID_LECTURE" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="GROUPS_MODULES_LINK">
@@ -79,10 +79,10 @@
           <Property Name="iID_GROUPS_MODULES_LINK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="iID_MODULE" Type="int" Nullable="false" />
           <Property Name="iID_GROUP" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="HALLS">
@@ -92,10 +92,10 @@
           <Property Name="iID_HALL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="iCAPACITY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="LECTURE_TYPE">
@@ -104,10 +104,10 @@
           </Key>
           <Property Name="iID_LECTURE_TYPE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="LECTURES">
@@ -116,10 +116,10 @@
           </Key>
           <Property Name="iID_LECTURE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="MODULES">
@@ -128,10 +128,10 @@
           </Key>
           <Property Name="iID_MODULE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="PLANNING_TYPE">
@@ -140,10 +140,10 @@
           </Key>
           <Property Name="iID_PLANNING_TYPE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="SEMIGROUPS">
@@ -154,10 +154,10 @@
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="iID_GROUP" Type="int" Nullable="false" />
           <Property Name="iPRIORITY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="SETTINGS">
@@ -169,10 +169,10 @@
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="iVALUE" Type="int" Nullable="false" />
           <Property Name="nvVALUE" Type="nvarchar" MaxLength="50" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -193,10 +193,10 @@
           <Property Name="iID_DAY" Type="int" Nullable="false" />
           <Property Name="iID_TEACHER" Type="int" Nullable="false" />
           <Property Name="iPRIORITY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TEACHER_PREFERRED_HALLS">
@@ -206,10 +206,11 @@
           <Property Name="iID_TEACHER_PREFERRED_HALL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="iID_TEACHER" Type="int" Nullable="false" />
           <Property Name="iID_HALL" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="iPRIORITY" Type="int" Nullable="false" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TEACHER_PREFERRED_MODULES">
@@ -220,10 +221,10 @@
           <Property Name="iID_TEACHER" Type="int" Nullable="false" />
           <Property Name="iID_MODULE" Type="int" Nullable="false" />
           <Property Name="iPRIORITY" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TEACHERS">
@@ -233,10 +234,10 @@
           <Property Name="iID_TEACHER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="nvSURNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TEACHERS_LECTURES_LINK">
@@ -248,10 +249,10 @@
           <Property Name="iID_LECTURE" Type="int" Nullable="false" />
           <Property Name="iID_LECTURE_TYPE" Type="int" Nullable="false" />
           <Property Name="iHOURS" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TIMETABLE_PLANNING">
@@ -267,10 +268,10 @@
           <Property Name="iID_LECTURE_TYPE" Type="int" Nullable="false" />
           <Property Name="iGENERATION_NUMBER" Type="int" Nullable="false" />
           <Property Name="iID_PLANNING_TYPE" Type="int" Nullable="false" />
-          <Property Name="bACTIVE" Type="bit" />
-          <Property Name="dtCREATE_DATE" Type="datetime" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
-          <Property Name="iCREATE_USER" Type="int" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <Association Name="FK_BLOCKED_MODULES_DAYS">
@@ -643,10 +644,10 @@
           <Property Name="iID_TEACHER" Type="Int32" Nullable="false" />
           <Property Name="iID_MODULE" Type="Int32" Nullable="false" />
           <Property Name="iID_DAY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="DAYS" Relationship="Self.FK_BLOCKED_MODULES_DAYS" FromRole="BLOCKED_MODULES" ToRole="DAYS" />
           <NavigationProperty Name="MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULES" FromRole="BLOCKED_MODULES" ToRole="MODULES" />
@@ -659,10 +660,10 @@
           <Property Name="iID_DAY" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="nvPRIORITY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_DAYS" FromRole="DAYS" ToRole="BLOCKED_MODULES" />
           <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_DAYS" FromRole="DAYS" ToRole="TEACHER_PREFERRED_DAYS" />
@@ -673,10 +674,10 @@
           </Key>
           <Property Name="iID_GROUP_TYPE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_GROUP_TYPES" FromRole="GROUP_TYPES" ToRole="GROUPS" />
         </EntityType>
@@ -689,10 +690,10 @@
           <Property Name="iNUMBER_OF_STUDENTS" Type="Int32" Nullable="false" />
           <Property Name="iID_GROUP_TYPE" Type="Int32" Nullable="false" />
           <Property Name="iYEAR" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUP_TYPES" Relationship="Self.FK_GROUPS_GROUP_TYPES" FromRole="GROUPS" ToRole="GROUP_TYPES" />
           <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_GROUPS" FromRole="GROUPS" ToRole="GROUPS_LECTURES_LINK" />
@@ -706,10 +707,10 @@
           <Property Name="iID_GROUPS_LECTURES_LINK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="iID_GROUP" Type="Int32" Nullable="false" />
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_LECTURES_LINK_GROUPS" FromRole="GROUPS_LECTURES_LINK" ToRole="GROUPS" />
           <NavigationProperty Name="LECTURES" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="GROUPS_LECTURES_LINK" ToRole="LECTURES" />
@@ -721,10 +722,10 @@
           <Property Name="iID_GROUPS_MODULES_LINK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="iID_MODULE" Type="Int32" Nullable="false" />
           <Property Name="iID_GROUP" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_MODULES_LINK_GROUPS" FromRole="GROUPS_MODULES_LINK" ToRole="GROUPS" />
           <NavigationProperty Name="MODULES" Relationship="Self.FK_GROUPS_MODULES_LINK_MODULES" FromRole="GROUPS_MODULES_LINK" ToRole="MODULES" />
@@ -736,10 +737,10 @@
           <Property Name="iID_HALL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="iCAPACITY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_TEACHER_PREFFERED_HALLS_HALLS" FromRole="HALLS" ToRole="TEACHER_PREFERRED_HALLS" />
         </EntityType>
@@ -749,10 +750,10 @@
           </Key>
           <Property Name="iID_LECTURE_TYPE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="LECTURE_TYPE" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
@@ -762,10 +763,10 @@
           </Key>
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="GROUPS_LECTURES_LINK" />
           <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="TEACHERS_LECTURES_LINK" />
@@ -776,10 +777,10 @@
           </Key>
           <Property Name="iID_MODULE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_MODULES" FromRole="MODULES" ToRole="BLOCKED_MODULES" />
           <NavigationProperty Name="GROUPS_MODULES_LINK" Relationship="Self.FK_GROUPS_MODULES_LINK_MODULES" FromRole="MODULES" ToRole="GROUPS_MODULES_LINK" />
@@ -791,10 +792,10 @@
           </Key>
           <Property Name="iID_PLANNING_TYPE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="TIMETABLE_PLANNING" Relationship="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE" FromRole="PLANNING_TYPE" ToRole="TIMETABLE_PLANNING" />
         </EntityType>
@@ -806,10 +807,10 @@
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="iID_GROUP" Type="Int32" Nullable="false" />
           <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_SEMIGROUPS_GROUPS" FromRole="SEMIGROUPS" ToRole="GROUPS" />
         </EntityType>
@@ -822,10 +823,10 @@
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="iVALUE" Type="Int32" Nullable="false" />
           <Property Name="nvVALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -846,10 +847,10 @@
           <Property Name="iID_DAY" Type="Int32" Nullable="false" />
           <Property Name="iID_TEACHER" Type="Int32" Nullable="false" />
           <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_DAYS" FromRole="TEACHER_PREFERRED_DAYS" ToRole="DAYS" />
           <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHER_PREFERRED_DAYS" ToRole="TEACHERS" />
@@ -861,10 +862,11 @@
           <Property Name="iID_TEACHER_PREFERRED_HALL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="iID_TEACHER" Type="Int32" Nullable="false" />
           <Property Name="iID_HALL" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="HALLS" Relationship="Self.FK_TEACHER_PREFFERED_HALLS_HALLS" FromRole="TEACHER_PREFERRED_HALLS" ToRole="HALLS" />
           <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS" FromRole="TEACHER_PREFERRED_HALLS" ToRole="TEACHERS" />
@@ -877,10 +879,10 @@
           <Property Name="iID_TEACHER" Type="Int32" Nullable="false" />
           <Property Name="iID_MODULE" Type="Int32" Nullable="false" />
           <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="MODULES" Relationship="Self.FK_TEACHER_PREFERRED_MODULES_MODULES" FromRole="TEACHER_PREFERRED_MODULES" ToRole="MODULES" />
           <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" FromRole="TEACHER_PREFERRED_MODULES" ToRole="TEACHERS" />
@@ -892,10 +894,10 @@
           <Property Name="iID_TEACHER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="nvSURNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="BLOCKED_MODULES" />
           <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_DAYS" />
@@ -912,10 +914,10 @@
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" />
           <Property Name="iID_LECTURE_TYPE" Type="Int32" Nullable="false" />
           <Property Name="iHOURS" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="LECTURE_TYPE" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURE_TYPE" />
           <NavigationProperty Name="LECTURES" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURES" />
@@ -934,10 +936,10 @@
           <Property Name="iID_LECTURE_TYPE" Type="Int32" Nullable="false" />
           <Property Name="iGENERATION_NUMBER" Type="Int32" Nullable="false" />
           <Property Name="iID_PLANNING_TYPE" Type="Int32" Nullable="false" />
-          <Property Name="bACTIVE" Type="Boolean" />
-          <Property Name="dtCREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="iCREATE_USER" Type="Int32" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="PLANNING_TYPE" Relationship="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE" FromRole="TIMETABLE_PLANNING" ToRole="PLANNING_TYPE" />
         </EntityType>
@@ -1488,6 +1490,7 @@
                 <ScalarProperty Name="iID_TEACHER_PREFERRED_HALL" ColumnName="iID_TEACHER_PREFERRED_HALL" />
                 <ScalarProperty Name="iID_TEACHER" ColumnName="iID_TEACHER" />
                 <ScalarProperty Name="iID_HALL" ColumnName="iID_HALL" />
+                <ScalarProperty Name="iPRIORITY" ColumnName="iPRIORITY" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />

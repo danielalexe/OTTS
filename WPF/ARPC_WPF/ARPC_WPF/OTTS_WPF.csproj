@@ -125,6 +125,15 @@
     <Compile Include="Profesori\WindowProfesoriColectie.xaml.cs">
       <DependentUpon>WindowProfesoriColectie.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Profesori\WindowProfesoriZile.xaml.cs">
+      <DependentUpon>WindowProfesoriZile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profesori\WindowProfesoriModule.xaml.cs">
+      <DependentUpon>WindowProfesoriModule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profesori\WindowProfesoriSali.xaml.cs">
+      <DependentUpon>WindowProfesoriSali.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Profesori\WindowProfesoriEntitate.xaml.cs">
       <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
     </Compile>
@@ -155,6 +164,18 @@
     <Page Include="Profesori\WindowProfesoriColectie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Profesori\WindowProfesoriZile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Profesori\WindowProfesoriModule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Profesori\WindowProfesoriSali.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Profesori\WindowProfesoriEntitate.xaml">
       <SubType>Designer</SubType>

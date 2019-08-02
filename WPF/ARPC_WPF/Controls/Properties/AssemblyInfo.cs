@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Controls")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Schyte Software")]
+[assembly: AssemblyCompany("DAXOSS")]
 [assembly: AssemblyProduct("Controls")]
-[assembly: AssemblyCopyright("Copyright © 2019 Schyte Software")]
+[assembly: AssemblyCopyright("Copyright © 2019 DAXOSS")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -91,9 +91,30 @@ namespace OTTS_WPF
             var item = sender as ListViewItem;
             if (item!=null)
             {
-                WindowProfesoriColectie wind = new WindowProfesoriColectie();
-                wind.MainScreen = this;
-                CreateTabItem(wind);
+                switch (item.Name)
+                {
+                    case "Planning":
+                        break;
+                    case "Teachers":
+                        WindowProfesoriColectie wind = new WindowProfesoriColectie();
+                        wind.MainScreen = this;
+                        CreateTabItem(wind);
+                        break;
+                    case "Groups":
+                        break;
+                    case "Lectures":
+                        break;
+                    case "Modules":
+                        break;
+                    case "Days":
+                        break;
+                    case "Halls":
+                        break;
+                    case "Settings":
+                        break;
+                    default:
+                        break;
+                }                
             }
         }
 
@@ -113,6 +134,15 @@ namespace OTTS_WPF
             GridDownMenuContent.Content = window.Content;
         }
 
+        public void RaiseDownMenu(Window window)
+        {
+            LabelDownMenu.Content = window.Title;
+            //click the button
+            ButtonRaiseDownMenu.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            //set the content
+            GridDownMenuContent.Content = window.Content;
+        }
+
         public void LowerDownMenu()
         {
             Storyboard sb = this.FindResource("CloseDownMenu") as Storyboard;
@@ -120,6 +150,10 @@ namespace OTTS_WPF
             LabelDownMenu.Content = "";
             GridDownMenuContent.Content = null;
         }
-        
+
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

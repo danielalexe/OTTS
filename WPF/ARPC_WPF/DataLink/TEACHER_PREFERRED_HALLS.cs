@@ -17,10 +17,11 @@ namespace DataLink
         public int iID_TEACHER_PREFERRED_HALL { get; set; }
         public int iID_TEACHER { get; set; }
         public int iID_HALL { get; set; }
-        public Nullable<bool> bACTIVE { get; set; }
-        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public int iPRIORITY { get; set; }
+        public bool bACTIVE { get; set; }
+        public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
-        public Nullable<int> iCREATE_USER { get; set; }
+        public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         public virtual HALLS HALLS { get; set; }

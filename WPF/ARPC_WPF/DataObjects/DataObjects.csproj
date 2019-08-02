@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOProfessor.cs" />
+    <Compile Include="DTOProfessorPrefferedHall.cs" />
+    <Compile Include="DTOProfessorPrefferedModule.cs" />
+    <Compile Include="DTOProfessorPrefferedDay.cs" />
     <Compile Include="DTOUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

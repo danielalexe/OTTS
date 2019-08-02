@@ -116,6 +116,7 @@
                                 <Button Content="Help" />
                                 <Separator/>
                                 <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
+                                <Button x:Name="ButtonExit" Content="Exit" Click="ButtonExit_Click"></Button>
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </Grid>
@@ -192,7 +193,7 @@
                             </EventSetter>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Planning">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CalendarClock" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -202,7 +203,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Teachers">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Teacher" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -212,7 +213,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Groups">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="UserGroup"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -222,7 +223,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Lectures">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Books"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -232,7 +233,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Modules">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ViewModule"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -242,7 +243,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Days">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ViewWeek" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -252,7 +253,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Halls">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Room" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
@@ -262,7 +263,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60">
+                    <ListViewItem Height="60" x:Name="Settings">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Settings" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 

@@ -47,12 +47,15 @@ namespace OTTS_WPF.Profesori
                 var FiltruNume = CTextNume.CString.ToUpper();
                 var FiltruPrenume = CTextPrenume.CString.ToUpper();
                 var getProfesori = (from u in db.TEACHERS
-                                    where ((String.IsNullOrEmpty(FiltruNume) || u.nvNAME.Contains(FiltruNume))
+                                    where (
+                                    (String.IsNullOrEmpty(FiltruNume) || u.nvNAME.Contains(FiltruNume))
                                     &&
-                                    (String.IsNullOrEmpty(FiltruPrenume) || u.nvSURNAME.Contains(FiltruPrenume)))
+                                    (String.IsNullOrEmpty(FiltruPrenume) || u.nvSURNAME.Contains(FiltruPrenume))
+                                    &&
+                                    u.bACTIVE==true)
                                     select new DTOProfessor
                                     {
-                                        ID_PROFESOR = u.iID_TEACHER,
+                                        iID_PROFESOR = u.iID_TEACHER,
                                         NUME = u.nvNAME,
                                         PRENUME = u.nvSURNAME
                                     }).ToList();
@@ -64,33 +67,62 @@ namespace OTTS_WPF.Profesori
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             var list = DataGridProfesori.SelectedItems;
-            if (list.Count>0)
+            if (list.Count==0)
             {
-                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                MessageBox.Show("Nici un rand nu este selectat");
+                return;
+            }
+            else
+            {
+                if (list.Count > 0)
                 {
-                    foreach (DTOProfessor item in list)
+                    if (MessageBox.Show("Sunteti siguri ca vreti sa stergeti randurile selectate?","Atentie",MessageBoxButton.YesNo)==MessageBoxResult.Yes)
                     {
-                        var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.ID_PROFESOR);
-                        if (getProfesor!=null)
+                        using (var db = new OTTSContext(PersistentData.ConnectionString))
                         {
-                            db.TEACHERS.Remove(getProfesor);
+                            foreach (DTOProfessor item in list)
+                            {
+                                var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.iID_PROFESOR && z.bACTIVE==true);
+                                if (getProfesor != null)
+                                {
+                                    getProfesor.bACTIVE = false;
+                                }
+                            }
+                            db.SaveChanges();
                         }
-                    }
-                    db.SaveChanges();
+                        ReloadData();
+                    }   
                 }
             }
-            ReloadData();
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
-            profesoriEntitate.MainScreen = MainScreen;
-            profesoriEntitate.WindowType = Helpers.EnumWindowType.EDITMODE;
-            profesoriEntitate.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).ID_PROFESOR;
-            profesoriEntitate.WindowProfesoriColectie = this;
-            profesoriEntitate.LoadData();
-            MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.EDITMODE);
+
+            var list = DataGridProfesori.SelectedItems;
+            if (list.Count == 0)
+            {
+                MessageBox.Show("Nici un rand nu este selectat");
+                return;
+            }
+            else
+            {
+                if (list.Count > 1)
+                {
+                    MessageBox.Show("Modificarile asupra unui profesor se pot face doar la un singur profesor simultan");
+                    return;
+                }
+                else
+                {
+                    WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
+                    profesoriEntitate.MainScreen = MainScreen;
+                    profesoriEntitate.WindowType = Helpers.EnumWindowType.EDITMODE;
+                    profesoriEntitate.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
+                    profesoriEntitate.WindowProfesoriColectie = this;
+                    profesoriEntitate.LoadData();
+                    MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.EDITMODE);
+                }
+            }
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
@@ -107,7 +139,7 @@ namespace OTTS_WPF.Profesori
         {
             foreach (DataGridColumn c in DataGridProfesori.Columns)
             {
-                if (c.Header.ToString().StartsWith("ID_") || c.Header.ToString().StartsWith("PASSWORD") || c.Header.ToString().StartsWith("PAROLA"))
+                if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvPAROLA"))
                     c.Visibility = Visibility.Collapsed;
                 String aux = c.Header.ToString().ToLower();
                 c.Header = ReplaceFirstCharacterFromString(aux);
@@ -123,6 +155,84 @@ namespace OTTS_WPF.Profesori
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             RenderColumns();
+        }
+
+        private void ButtonSali_Click(object sender, RoutedEventArgs e)
+        {
+            var list = DataGridProfesori.SelectedItems;
+            if (list.Count == 0)
+            {
+                MessageBox.Show("Nici un rand nu este selectat");
+                return;
+            }
+            else
+            {
+                if (list.Count > 1)
+                {
+                    MessageBox.Show("Prioritatea pe sali se poate aloca doar la o singura persoana simultan");
+                    return;
+                }
+                else
+                {
+                    WindowProfesoriSali profesoriSali = new WindowProfesoriSali();
+                    profesoriSali.MainScreen = MainScreen;
+                    profesoriSali.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
+                    profesoriSali.WindowProfesoriColectie = this;
+                    MainScreen.RaiseDownMenu(profesoriSali);
+                }
+            }
+        }
+
+        private void ButtonModules_Click(object sender, RoutedEventArgs e)
+        {
+            var list = DataGridProfesori.SelectedItems;
+            if (list.Count == 0)
+            {
+                MessageBox.Show("Nici un rand nu este selectat");
+                return;
+            }
+            else
+            {
+                if (list.Count > 1)
+                {
+                    MessageBox.Show("Prioritatea pe module se poate aloca doar la o singura persoana simultan");
+                    return;
+                }
+                else
+                {
+                    WindowProfesoriModule profesoriModule = new WindowProfesoriModule();
+                    profesoriModule.MainScreen = MainScreen;
+                    profesoriModule.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
+                    profesoriModule.WindowProfesoriColectie = this;
+                    MainScreen.RaiseDownMenu(profesoriModule);
+                }
+            }
+        }
+
+        private void ButtonZile_Click(object sender, RoutedEventArgs e)
+        {
+            var list = DataGridProfesori.SelectedItems;
+            if (list.Count == 0)
+            {
+                MessageBox.Show("Nici un rand nu este selectat");
+                return;
+            }
+            else
+            {
+                if (list.Count > 1)
+                {
+                    MessageBox.Show("Prioritatea pe zile se poate aloca doar la o singura persoana simultan");
+                    return;
+                }
+                else
+                {
+                    WindowProfesoriZile profesoriZile = new WindowProfesoriZile();
+                    profesoriZile.MainScreen = MainScreen;
+                    profesoriZile.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
+                    profesoriZile.WindowProfesoriColectie = this;
+                    MainScreen.RaiseDownMenu(profesoriZile);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="OTTS_WPF.Profesori.WindowProfesoriEntitate"
+﻿<Window x:Class="OTTS_WPF.Profesori.WindowProfesoriZile"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         xmlns:DataControls="clr-namespace:DataControls;assembly=DataControls"
-        Title="Profesor" Height="450" Width="800">
+        Title="Profesor Zile" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="60" MaxHeight="60"/>
@@ -36,14 +36,7 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0">
-            <StackPanel Orientation="Vertical">
-                <DataControls:CText x:Name="CTextNume" CLabel="Nume">
-                    
-                </DataControls:CText>
-                <DataControls:CText x:Name="CTextPrenume" CLabel="Prenume">
-
-                </DataControls:CText>
-            </StackPanel>
+            <DataGrid x:Name="DataGridProfesori" AutoGeneratingColumn="DataGridProfesori_AutoGeneratingColumn" Loaded="DataGridProfesori_Loaded" CanUserAddRows="False"/>
         </Grid>
     </Grid>
 </Window>

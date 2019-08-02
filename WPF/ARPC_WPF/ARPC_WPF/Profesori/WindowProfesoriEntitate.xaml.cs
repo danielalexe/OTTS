@@ -41,8 +41,9 @@ namespace OTTS_WPF.Profesori
                     profesor.nvNAME = CTextNume.CTextBox.Text;
                     profesor.nvSURNAME = CTextPrenume.CTextBox.Text;
 
+                    profesor.bACTIVE = true;
                     profesor.dtCREATE_DATE = DateTime.UtcNow;
-                    profesor.iCREATE_USER = 1;
+                    profesor.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
 
                     db.TEACHERS.Add(profesor);
                     db.SaveChanges();
@@ -54,14 +55,14 @@ namespace OTTS_WPF.Profesori
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
+                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.bACTIVE==true);
                     if (getProfesor!=null)
                     {
                         getProfesor.nvNAME = CTextNume.CTextBox.Text;
                         getProfesor.nvSURNAME = CTextPrenume.CTextBox.Text;
 
                         getProfesor.dtLASTMODIFIED_DATE = DateTime.UtcNow;
-                        getProfesor.iLASTMODIFIED_USER = 1;
+                        getProfesor.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
 
                         db.SaveChanges();
                         WindowProfesoriColectie.ReloadData();
@@ -87,7 +88,7 @@ namespace OTTS_WPF.Profesori
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR);
+                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.bACTIVE==true);
                     if (getProfesor != null)
                     {
                         CTextNume.CTextBox.Text = getProfesor.nvNAME;
@@ -95,6 +96,11 @@ namespace OTTS_WPF.Profesori
                     }
                 }
             }
+        }
+
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadData();
         }
     }
 }

@@ -20,7 +20,22 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="ButtonAdd" Click="ButtonAdd_Click"  Height="50">
+                <Button x:Name="ButtonSali" Click="ButtonSali_Click"  Height="50" Background="Chartreuse">
+                    <materialDesign:PackIcon Kind="Room" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonModules" Click="ButtonModules_Click"  Margin="5 0 0 0"  Height="50" Background="Chartreuse">
+                    <materialDesign:PackIcon Kind="ViewModule" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonZile" Click="ButtonZile_Click"  Margin="5 0 0 0"  Height="50" Background="Chartreuse">
+                    <materialDesign:PackIcon Kind="ViewWeek" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonAdd" Click="ButtonAdd_Click"  Margin="5 0 0 0"  Height="50">
                     <materialDesign:PackIcon Kind="Add" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 
                     </materialDesign:PackIcon>
@@ -56,14 +71,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <DataControls:CText x:Name="CTextNume" Grid.Row="0" Grid.Column="0" CLabel="Nume">
-                
+
             </DataControls:CText>
             <DataControls:CText x:Name="CTextPrenume" Grid.Row="0" Grid.Column="1" CLabel="Prenume">
 
             </DataControls:CText>
         </Grid>
         <DataGrid Grid.Row="2" Grid.Column="0" x:Name="DataGridProfesori" IsReadOnly="True">
-            
+
         </DataGrid>
     </Grid>
 </base:WindowBase>

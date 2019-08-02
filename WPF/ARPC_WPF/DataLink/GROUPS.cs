@@ -27,10 +27,10 @@ namespace DataLink
         public int iNUMBER_OF_STUDENTS { get; set; }
         public int iID_GROUP_TYPE { get; set; }
         public int iYEAR { get; set; }
-        public Nullable<bool> bACTIVE { get; set; }
-        public Nullable<System.DateTime> dtCREATE_DATE { get; set; }
+        public bool bACTIVE { get; set; }
+        public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
-        public Nullable<int> iCREATE_USER { get; set; }
+        public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
         public virtual GROUP_TYPES GROUP_TYPES { get; set; }

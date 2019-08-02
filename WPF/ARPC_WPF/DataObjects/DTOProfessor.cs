@@ -8,7 +8,7 @@ namespace DataObjects
 {
     public class DTOProfessor
     {
-        public int ID_PROFESOR { get; set; }
+        public int iID_PROFESOR { get; set; }
         public string NUME { get; set; }
         public string PRENUME { get; set; }
     }

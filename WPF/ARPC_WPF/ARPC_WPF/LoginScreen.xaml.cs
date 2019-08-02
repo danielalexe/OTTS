@@ -103,6 +103,19 @@ namespace OTTS_WPF
                 user.nvUSERNUME = "OfflineUser";
                 PersistentData.LoggedUser = user;
                 PersistentData.ConnectionString = PersistentData.GetConnectionString_Offline();
+                using (var db = new EntityConnection(PersistentData.ConnectionString))
+                {
+                    try
+                    {
+                        db.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        db.Close();
+                        return;
+                    }
+                }
             }
             else
             {
