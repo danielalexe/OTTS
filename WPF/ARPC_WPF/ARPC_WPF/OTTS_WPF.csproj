@@ -115,6 +115,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Halls\WindowHallsCollection.xaml.cs">
+      <DependentUpon>WindowHallsCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Halls\WindowHallsEntity.xaml.cs">
+      <DependentUpon>WindowHallsEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\EnumAuthenticationType.cs" />
     <Compile Include="Helpers\EnumDatabaseType.cs" />
     <Compile Include="Helpers\EnumWindowType.cs" />
@@ -138,6 +144,14 @@
       <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Template\WindowBase.cs" />
+    <Page Include="Halls\WindowHallsCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Halls\WindowHallsEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -243,5 +257,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

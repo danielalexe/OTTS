@@ -19,6 +19,6 @@
             <Label x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22">
             </Label>
         </Viewbox>
-        <Controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="CDecimalValue" Background="White" Foreground="Black" StringFormat="C2"></Controls:NumericUpDown>
+        <Controls:NumericUpDown Grid.Row="0" Grid.Column="1" x:Name="CDecimalValue" Background="White" Foreground="Black" StringFormat="N2" Interval="1" HideUpDownButtons="False" Value="0" ButtonsAlignment="Left" UpDownButtonsWidth="30"></Controls:NumericUpDown>
     </Grid>
 </UserControl>

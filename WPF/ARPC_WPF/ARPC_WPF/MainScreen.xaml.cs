@@ -18,6 +18,7 @@ using OTTS_WPF.Helpers;
 using OTTS_WPF.Profesori;
 using OTTS_WPF.Template;
 using MaterialDesignThemes;
+using OTTS_WPF.Halls;
 
 namespace OTTS_WPF
 {
@@ -96,9 +97,9 @@ namespace OTTS_WPF
                     case "Planning":
                         break;
                     case "Teachers":
-                        WindowProfesoriColectie wind = new WindowProfesoriColectie();
-                        wind.MainScreen = this;
-                        CreateTabItem(wind);
+                        WindowProfesoriColectie winTeachers = new WindowProfesoriColectie();
+                        winTeachers.MainScreen = this;
+                        CreateTabItem(winTeachers);
                         break;
                     case "Groups":
                         break;
@@ -109,6 +110,9 @@ namespace OTTS_WPF
                     case "Days":
                         break;
                     case "Halls":
+                        WindowHallsCollection winHalls = new WindowHallsCollection();
+                        winHalls.MainScreen = this;
+                        CreateTabItem(winHalls);
                         break;
                     case "Settings":
                         break;

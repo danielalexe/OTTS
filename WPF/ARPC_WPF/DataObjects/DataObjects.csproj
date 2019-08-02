@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOHall.cs" />
     <Compile Include="DTOProfessor.cs" />
     <Compile Include="DTOProfessorPrefferedHall.cs" />
     <Compile Include="DTOProfessorPrefferedModule.cs" />
