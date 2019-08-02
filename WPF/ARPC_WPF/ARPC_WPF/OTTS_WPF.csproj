@@ -134,6 +134,12 @@
     <Compile Include="LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\WindowModulesCollection.xaml.cs">
+      <DependentUpon>WindowModulesCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\WindowModulesEntity.xaml.cs">
+      <DependentUpon>WindowModulesEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Profesori\WindowProfesoriColectie.xaml.cs">
       <DependentUpon>WindowProfesoriColectie.xaml</DependentUpon>
     </Compile>
@@ -189,6 +195,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\WindowModulesCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\WindowModulesEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Profesori\WindowProfesoriColectie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

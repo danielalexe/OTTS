@@ -16,15 +16,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace OTTS_WPF.Lectures
+namespace OTTS_WPF.Modules
 {
     /// <summary>
-    /// Interaction logic for WindowLecturesCollection.xaml
+    /// Interaction logic for WindowModulesCollection.xaml
     /// </summary>
-    public partial class WindowLecturesCollection : WindowBase
+    public partial class WindowModulesCollection : WindowBase
     {
         public MainScreen MainScreen { get; set; }
-        public WindowLecturesCollection()
+        public WindowModulesCollection()
         {
             InitializeComponent();
             ReloadData();
@@ -45,24 +45,24 @@ namespace OTTS_WPF.Lectures
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 var FilterName = CTextName.CString.ToUpper();
-                var getLectures = (from u in db.LECTURES
+                var getModules = (from u in db.MODULES
                                 where (
                                 (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
                                 &&
                                 u.bACTIVE == true)
-                                select new DTOLecture
+                                select new DTOModule
                                 {
-                                    iID_LECTURE = u.iID_LECTURE,
+                                    iID_MODULE = u.iID_MODULE,
                                     NAME = u.nvNAME
                                 }).ToList();
-                DataGridLectures.ItemsSource = getLectures;
+                DataGridModules.ItemsSource = getModules;
                 RenderColumns();
             }
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            var list = DataGridLectures.SelectedItems;
+            var list = DataGridModules.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -76,12 +76,12 @@ namespace OTTS_WPF.Lectures
                     {
                         using (var db = new OTTSContext(PersistentData.ConnectionString))
                         {
-                            foreach (DTOLecture item in list)
+                            foreach (DTOModule item in list)
                             {
-                                var getLecture = db.LECTURES.FirstOrDefault(z => z.iID_LECTURE == item.iID_LECTURE && z.bACTIVE == true);
-                                if (getLecture != null)
+                                var getModule = db.MODULES.FirstOrDefault(z => z.iID_MODULE == item.iID_MODULE && z.bACTIVE == true);
+                                if (getModule != null)
                                 {
-                                    getLecture.bACTIVE = false;
+                                    getModule.bACTIVE = false;
                                 }
                             }
                             db.SaveChanges();
@@ -95,7 +95,7 @@ namespace OTTS_WPF.Lectures
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
 
-            var list = DataGridLectures.SelectedItems;
+            var list = DataGridModules.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -105,35 +105,35 @@ namespace OTTS_WPF.Lectures
             {
                 if (list.Count > 1)
                 {
-                    MessageBox.Show("Modificarile asupra unei prelegeri se poate face doar la o singura prelegere simultan");
+                    MessageBox.Show("Modificarile asupra unui modul se poate face doar la un singur modul simultan");
                     return;
                 }
                 else
                 {
-                    WindowLecturesEntity lecturesEntity = new WindowLecturesEntity();
-                    lecturesEntity.MainScreen = MainScreen;
-                    lecturesEntity.WindowType = Helpers.EnumWindowType.EDITMODE;
-                    lecturesEntity.ID_LECTURE = ((DTOLecture)DataGridLectures.SelectedItem).iID_LECTURE;
-                    lecturesEntity.WindowLecturesCollection = this;
-                    lecturesEntity.LoadData();
-                    MainScreen.RaiseDownMenu(lecturesEntity, Helpers.EnumWindowType.EDITMODE);
+                    WindowModulesEntity modulesEntity = new WindowModulesEntity();
+                    modulesEntity.MainScreen = MainScreen;
+                    modulesEntity.WindowType = Helpers.EnumWindowType.EDITMODE;
+                    modulesEntity.ID_MODULE = ((DTOModule)DataGridModules.SelectedItem).iID_MODULE;
+                    modulesEntity.WindowModulesCollection = this;
+                    modulesEntity.LoadData();
+                    MainScreen.RaiseDownMenu(modulesEntity, Helpers.EnumWindowType.EDITMODE);
                 }
             }
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            WindowLecturesEntity lecturesEntity = new WindowLecturesEntity();
-            lecturesEntity.MainScreen = MainScreen;
-            lecturesEntity.WindowType = Helpers.EnumWindowType.ADDMODE;
-            lecturesEntity.WindowLecturesCollection = this;
-            MainScreen.RaiseDownMenu(lecturesEntity, Helpers.EnumWindowType.ADDMODE);
+            WindowModulesEntity modulesEntity = new WindowModulesEntity();
+            modulesEntity.MainScreen = MainScreen;
+            modulesEntity.WindowType = Helpers.EnumWindowType.ADDMODE;
+            modulesEntity.WindowModulesCollection = this;
+            MainScreen.RaiseDownMenu(modulesEntity, Helpers.EnumWindowType.ADDMODE);
         }
 
 
         private void RenderColumns()
         {
-            foreach (DataGridColumn c in DataGridLectures.Columns)
+            foreach (DataGridColumn c in DataGridModules.Columns)
             {
                 if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvPAROLA"))
                     c.Visibility = Visibility.Collapsed;

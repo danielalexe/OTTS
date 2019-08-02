@@ -20,6 +20,7 @@ using OTTS_WPF.Template;
 using MaterialDesignThemes;
 using OTTS_WPF.Halls;
 using OTTS_WPF.Lectures;
+using OTTS_WPF.Modules;
 
 namespace OTTS_WPF
 {
@@ -110,6 +111,9 @@ namespace OTTS_WPF
                         CreateTabItem(winLectures);
                         break;
                     case "Modules":
+                        WindowModulesCollection winModules = new WindowModulesCollection();
+                        winModules.MainScreen = this;
+                        CreateTabItem(winModules);
                         break;
                     case "Days":
                         break;
