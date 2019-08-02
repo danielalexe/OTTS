@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTODay.cs" />
     <Compile Include="DTOModule.cs" />
     <Compile Include="DTOLecture.cs" />
     <Compile Include="DTOHall.cs" />

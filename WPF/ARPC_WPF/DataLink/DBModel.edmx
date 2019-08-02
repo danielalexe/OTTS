@@ -25,7 +25,7 @@
           </Key>
           <Property Name="iID_DAY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="nvPRIORITY" Type="int" Nullable="false" />
+          <Property Name="iPRIORITY" Type="int" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -659,7 +659,7 @@
           </Key>
           <Property Name="iID_DAY" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="nvPRIORITY" Type="Int32" Nullable="false" />
+          <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
           <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
@@ -1295,7 +1295,7 @@
               <MappingFragment StoreEntitySet="DAYS">
                 <ScalarProperty Name="iID_DAY" ColumnName="iID_DAY" />
                 <ScalarProperty Name="nvNAME" ColumnName="nvNAME" />
-                <ScalarProperty Name="nvPRIORITY" ColumnName="nvPRIORITY" />
+                <ScalarProperty Name="iPRIORITY" ColumnName="iPRIORITY" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />

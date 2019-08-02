@@ -115,6 +115,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Days\WindowDaysCollection.xaml.cs">
+      <DependentUpon>WindowDaysCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Days\WindowDaysEntity.xaml.cs">
+      <DependentUpon>WindowDaysEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Halls\WindowHallsCollection.xaml.cs">
       <DependentUpon>WindowHallsCollection.xaml</DependentUpon>
     </Compile>
@@ -156,6 +162,14 @@
       <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Template\WindowBase.cs" />
+    <Page Include="Days\WindowDaysCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Days\WindowDaysEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Halls\WindowHallsCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

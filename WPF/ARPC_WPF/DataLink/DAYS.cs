@@ -23,7 +23,7 @@ namespace DataLink
     
         public int iID_DAY { get; set; }
         public string nvNAME { get; set; }
-        public int nvPRIORITY { get; set; }
+        public int iPRIORITY { get; set; }
         public bool bACTIVE { get; set; }
         public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
