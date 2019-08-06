@@ -139,7 +139,7 @@ namespace OTTS_WPF.Halls
         {
             foreach (DataGridColumn c in DataGridHalls.Columns)
             {
-                if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvPAROLA"))
+                if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvCOMBO_DISPLAY"))
                     c.Visibility = Visibility.Collapsed;
                 String aux = c.Header.ToString().ToLower();
                 c.Header = ReplaceFirstCharacterFromString(aux);

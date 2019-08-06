@@ -22,6 +22,8 @@ using OTTS_WPF.Halls;
 using OTTS_WPF.Lectures;
 using OTTS_WPF.Modules;
 using OTTS_WPF.Days;
+using OTTS_WPF.Groups;
+using OTTS_WPF.Semigroups;
 
 namespace OTTS_WPF
 {
@@ -105,6 +107,14 @@ namespace OTTS_WPF
                         CreateTabItem(winTeachers);
                         break;
                     case "Groups":
+                        WindowGroupsCollection winGroups = new WindowGroupsCollection();
+                        winGroups.MainScreen = this;
+                        CreateTabItem(winGroups);
+                        break;
+                    case "Semigroups":
+                        WindowSemigroupsCollection winSemigroups = new WindowSemigroupsCollection();
+                        winSemigroups.MainScreen = this;
+                        CreateTabItem(winSemigroups);
                         break;
                     case "Lectures":
                         WindowLecturesCollection winLectures = new WindowLecturesCollection();

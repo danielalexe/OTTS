@@ -136,7 +136,7 @@ namespace OTTS_WPF.Days
         {
             foreach (DataGridColumn c in DataGridDays.Columns)
             {
-                if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvPAROLA"))
+                if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvCOMBO_DISPLAY"))
                     c.Visibility = Visibility.Collapsed;
                 String aux = c.Header.ToString().ToLower();
                 c.Header = ReplaceFirstCharacterFromString(aux);

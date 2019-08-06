@@ -36,19 +36,35 @@ namespace OTTS_WPF
 
         private void BindComboAuthenticationType()
         {
-            CComboAuthenticationType.CComboBox.ItemsSource = Enum.GetValues(typeof(EnumAuthenticationType)).Cast<EnumAuthenticationType>();
+            List<DTOPlaceholderCombo> list = new List<DTOPlaceholderCombo>();
+            var enumlist = Enum.GetValues(typeof(EnumAuthenticationType)).Cast<EnumAuthenticationType>();
+            foreach (var item in enumlist)
+            {
+                DTOPlaceholderCombo dto = new DTOPlaceholderCombo();
+                dto.nvCOMBO_DISPLAY = item.ToString();
+                list.Add(dto);
+            }
+            CComboAuthenticationType.CComboBox.ItemsSource = list;
             CComboAuthenticationType.CComboBox.DropDownClosed += CComboAuthenticationType_DropDownClosed;
-            CComboAuthenticationType.CComboBox.SelectedItem = EnumAuthenticationType.WindowsAuth;
+            CComboAuthenticationType.CComboBox.SelectedItem = list.FirstOrDefault();
         }
         private void BindComboDatabaseType()
         {
-            CComboDatabaseType.CComboBox.ItemsSource = Enum.GetValues(typeof(EnumDatabaseType)).Cast<EnumDatabaseType>();
-            CComboDatabaseType.CComboBox.SelectedItem = EnumDatabaseType.MicrosoftSQL;
+            List<DTOPlaceholderCombo> list = new List<DTOPlaceholderCombo>();
+            var enumlist = Enum.GetValues(typeof(EnumDatabaseType)).Cast<EnumDatabaseType>();
+            foreach (var item in enumlist)
+            {
+                DTOPlaceholderCombo dto = new DTOPlaceholderCombo();
+                dto.nvCOMBO_DISPLAY = item.ToString();
+                list.Add(dto);
+            }
+            CComboDatabaseType.CComboBox.ItemsSource = list;
+            CComboDatabaseType.CComboBox.SelectedItem = list.FirstOrDefault();
         }
 
         private void CComboAuthenticationType_DropDownClosed(object sender, EventArgs e)
         {
-            if ((EnumAuthenticationType)CComboAuthenticationType.CComboBox.SelectedItem == EnumAuthenticationType.WindowsAuth)
+            if (((DTOPlaceholderCombo)CComboAuthenticationType.CComboBox.SelectedItem).nvCOMBO_DISPLAY == EnumAuthenticationType.WindowsAuth.ToString())
             {
                 CTextUsername.IsEnabled = false;
                 CPasswordPassword.IsEnabled = false;
@@ -119,9 +135,9 @@ namespace OTTS_WPF
             }
             else
             {
-                if ((EnumDatabaseType)CComboDatabaseType.CComboBox.SelectedItem==EnumDatabaseType.MicrosoftSQL)
+                if (((DTOPlaceholderCombo)CComboDatabaseType.CComboBox.SelectedItem).nvCOMBO_DISPLAY==EnumDatabaseType.MicrosoftSQL.ToString())
                 {
-                    if ((EnumAuthenticationType)CComboAuthenticationType.CComboBox.SelectedItem==EnumAuthenticationType.WindowsAuth)
+                    if (((DTOPlaceholderCombo)CComboAuthenticationType.CComboBox.SelectedItem).nvCOMBO_DISPLAY == EnumAuthenticationType.WindowsAuth.ToString())
                     {
                         PersistentData.DatabaseName = CTextDatabaseName.CString;
                         PersistentData.DatabaseServer = CTextDatabaseServer.CString;

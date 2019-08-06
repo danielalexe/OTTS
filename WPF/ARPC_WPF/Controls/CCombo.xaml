@@ -18,6 +18,12 @@
             <Label x:Name="CLabelValue" Background="White" Foreground="Black" Content="Label" FontSize="22">
             </Label>
         </Viewbox>
-        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CComboValue" Background="White" Foreground="Black" FontSize="22"></ComboBox>
+        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CComboValue" Background="White" Foreground="Black" FontSize="22" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock x:Name="CComboTextBlock" Text="{Binding nvCOMBO_DISPLAY}"></TextBlock>
+                </DataTemplate>                
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </UserControl>

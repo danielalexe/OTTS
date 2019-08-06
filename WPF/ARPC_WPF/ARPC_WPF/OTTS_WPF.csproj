@@ -121,12 +121,31 @@
     <Compile Include="Days\WindowDaysEntity.xaml.cs">
       <DependentUpon>WindowDaysEntity.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Groups\WindowGroupsCollection.xaml.cs">
+      <DependentUpon>WindowGroupsCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Groups\WindowGroupsEntity.xaml.cs">
+      <DependentUpon>WindowGroupsEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Groups\WindowGroupsLectures.xaml.cs">
+      <DependentUpon>WindowGroupsLectures.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Groups\WindowGroupsLecturesEntity.xaml.cs">
+      <DependentUpon>WindowGroupsLecturesEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Groups\WindowGroupsModules.xaml.cs">
+      <DependentUpon>WindowGroupsModules.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Groups\WindowGroupsModulesEntity.xaml.cs">
+      <DependentUpon>WindowGroupsModulesEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Halls\WindowHallsCollection.xaml.cs">
       <DependentUpon>WindowHallsCollection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Halls\WindowHallsEntity.xaml.cs">
       <DependentUpon>WindowHallsEntity.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EnumPriorityFilter.cs" />
     <Compile Include="Helpers\EnumAuthenticationType.cs" />
     <Compile Include="Helpers\EnumDatabaseType.cs" />
     <Compile Include="Helpers\EnumWindowType.cs" />
@@ -161,12 +180,42 @@
     <Compile Include="Profesori\WindowProfesoriEntitate.xaml.cs">
       <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Semigroups\WindowSemigroupsCollection.xaml.cs">
+      <DependentUpon>WindowSemigroupsCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Semigroups\WindowSemigroupsEntity.xaml.cs">
+      <DependentUpon>WindowSemigroupsEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Template\WindowBase.cs" />
     <Page Include="Days\WindowDaysCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Days\WindowDaysEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsLectures.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsLecturesEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsModules.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Groups\WindowGroupsModulesEntity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,20 +243,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainScreen.xaml.cs">
       <DependentUpon>MainScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Page Include="Modules\WindowModulesCollection.xaml">
       <SubType>Designer</SubType>
@@ -234,6 +275,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Profesori\WindowProfesoriEntitate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Semigroups\WindowSemigroupsCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Semigroups\WindowSemigroupsEntity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -223,6 +223,17 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Semigroups">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Subtasks"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Semigrupe" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    
                     <ListViewItem Height="60" x:Name="Lectures">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Books"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
