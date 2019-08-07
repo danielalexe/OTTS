@@ -64,6 +64,7 @@
     <Compile Include="DTOGroupLecture.cs" />
     <Compile Include="DTOGroupModule.cs" />
     <Compile Include="DTOGroupType.cs" />
+    <Compile Include="DTOLectureType.cs" />
     <Compile Include="DTOModule.cs" />
     <Compile Include="DTOLecture.cs" />
     <Compile Include="DTOHall.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="DTOProfessorPrefferedModule.cs" />
     <Compile Include="DTOProfessorPrefferedDay.cs" />
     <Compile Include="DTOSemigroup.cs" />
+    <Compile Include="DTOTeachersLectures.cs" />
     <Compile Include="DTOUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

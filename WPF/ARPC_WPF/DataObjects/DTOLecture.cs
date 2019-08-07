@@ -10,5 +10,6 @@ namespace DataObjects
     {
         public int iID_LECTURE { get; set; }
         public string NAME { get; set; }
+        public string nvCOMBO_DISPLAY { get; set; }
     }
 }

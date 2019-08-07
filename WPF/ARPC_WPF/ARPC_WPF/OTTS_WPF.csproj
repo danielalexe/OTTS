@@ -186,6 +186,12 @@
     <Compile Include="Semigroups\WindowSemigroupsEntity.xaml.cs">
       <DependentUpon>WindowSemigroupsEntity.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TeachersLectures\WindowTeachersLecturesCollection.xaml.cs">
+      <DependentUpon>WindowTeachersLecturesCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TeachersLectures\WindowTeachersLecturesEntity.xaml.cs">
+      <DependentUpon>WindowTeachersLecturesEntity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Template\WindowBase.cs" />
     <Page Include="Days\WindowDaysCollection.xaml">
       <SubType>Designer</SubType>
@@ -283,6 +289,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Semigroups\WindowSemigroupsEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeachersLectures\WindowTeachersLecturesCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeachersLectures\WindowTeachersLecturesEntity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

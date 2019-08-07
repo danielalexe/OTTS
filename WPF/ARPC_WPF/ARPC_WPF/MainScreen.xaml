@@ -19,15 +19,15 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
                 <EasingDoubleKeyFrame KeyTime="0" Value="60">
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="200">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="250">
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <metro:GridLengthAnimation To="200" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="250" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
             
         </Storyboard>
         <Storyboard x:Key="DrawerClose" >
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
-                <EasingDoubleKeyFrame KeyTime="0" Value="200">
+                <EasingDoubleKeyFrame KeyTime="0" Value="250">
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0" Value="60">
                 </EasingDoubleKeyFrame>
@@ -185,7 +185,7 @@
                         </materialDesign:PackIcon>
                     </Button>
                 </Grid>
-                <ListView Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="ListViewSideDrawer" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown">
@@ -209,6 +209,16 @@
 
                             </materialDesign:PackIcon>
                             <TextBlock Text="Profesori" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="TeachersLectures">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="NaturePeople" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Alocare Profesori Prelegeri" VerticalAlignment="Center" Margin="20 10" Foreground="White">
 
                             </TextBlock>
                         </StackPanel>
