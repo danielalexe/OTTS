@@ -1,1 +1,2 @@
-# ARPC
+# OTTS
+Open TimeTable Software
