@@ -284,16 +284,6 @@
                             </TextBlock>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="60" x:Name="Settings">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Settings" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
-
-                            </materialDesign:PackIcon>
-                            <TextBlock Text="Setari" VerticalAlignment="Center" Margin="20 10" Foreground="White">
-
-                            </TextBlock>
-                        </StackPanel>
-                    </ListViewItem>
                 </ListView>
             </Grid>
         </Grid>

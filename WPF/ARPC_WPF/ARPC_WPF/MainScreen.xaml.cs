@@ -146,8 +146,6 @@ namespace OTTS_WPF
                         winHalls.MainScreen = this;
                         CreateTabItem(winHalls);
                         break;
-                    case "Settings":
-                        break;
                     default:
                         break;
                 }                
