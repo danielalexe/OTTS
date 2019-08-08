@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataObjects
 {
-    public class DTOPlaceholderCombo
+    public class DTOGenerationNumber
     {
-        public int iID_GENERIC { get; set; }
+        public int iGENERATION_NUMBER { get; set; }
+        public string GENERATION_NUMBER { get; set; }
         public string nvCOMBO_DISPLAY { get; set; }
     }
 }

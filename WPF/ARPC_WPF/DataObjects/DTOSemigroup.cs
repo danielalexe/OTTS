@@ -13,5 +13,6 @@ namespace DataObjects
         public int iID_GROUP { get; set; }
         public string GROUP_NAME { get; set; }
         public int PRIORITY { get; set; }
+        public string nvCOMBO_DISPLAY { get; set; }
     }
 }

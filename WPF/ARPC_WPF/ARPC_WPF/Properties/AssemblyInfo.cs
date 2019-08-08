@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("OTTS_WPF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DAXOSS")]
+[assembly: AssemblyCompany("Daniel Alexe")]
 [assembly: AssemblyProduct("Open TimeTable Software")]
-[assembly: AssemblyCopyright("Copyright © 2019 DAXOSS")]
+[assembly: AssemblyCopyright("Copyright © 2019 Daniel Alexe")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

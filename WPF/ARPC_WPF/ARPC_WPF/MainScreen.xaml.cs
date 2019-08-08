@@ -25,6 +25,7 @@ using OTTS_WPF.Days;
 using OTTS_WPF.Groups;
 using OTTS_WPF.Semigroups;
 using OTTS_WPF.TeachersLectures;
+using OTTS_WPF.Planning;
 
 namespace OTTS_WPF
 {
@@ -101,6 +102,9 @@ namespace OTTS_WPF
                 switch (item.Name)
                 {
                     case "Planning":
+                        WindowPlanningCollection winPlanning = new WindowPlanningCollection();
+                        winPlanning.MainScreen = this;
+                        CreateTabItem(winPlanning);
                         break;
                     case "Teachers":
                         WindowProfesoriColectie winTeachers = new WindowProfesoriColectie();

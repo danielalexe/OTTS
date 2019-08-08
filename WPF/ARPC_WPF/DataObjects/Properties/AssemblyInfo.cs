@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DataObjects")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DAXOSS")]
+[assembly: AssemblyCompany("Daniel Alexe")]
 [assembly: AssemblyProduct("DataObjects")]
-[assembly: AssemblyCopyright("Copyright © 2019 DAXOSS")]
+[assembly: AssemblyCopyright("Copyright © 2019 Daniel Alexe")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

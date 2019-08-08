@@ -49,6 +49,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,7 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTODataGridCellsColors.cs" />
     <Compile Include="DTODay.cs" />
+    <Compile Include="DTOGenerationNumber.cs" />
     <Compile Include="DTOGroup.cs" />
     <Compile Include="DTOGroupLecture.cs" />
     <Compile Include="DTOGroupModule.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="DTOLecture.cs" />
     <Compile Include="DTOHall.cs" />
     <Compile Include="DTOPlaceholderCombo.cs" />
+    <Compile Include="DTOPlanningRow.cs" />
     <Compile Include="DTOProfessor.cs" />
     <Compile Include="DTOProfessorPrefferedHall.cs" />
     <Compile Include="DTOProfessorPrefferedModule.cs" />
