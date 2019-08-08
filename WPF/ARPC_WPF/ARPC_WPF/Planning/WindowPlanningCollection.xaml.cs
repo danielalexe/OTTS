@@ -261,7 +261,22 @@ namespace OTTS_WPF.Planning
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (MessageBox.Show("Sunteti siguri ca vreti sa stergeti toate generarile efectuate pana acum?", "Atentie", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    db.Database.ExecuteSqlCommand("DELETE FROM TIMETABLE_PLANNING");
+                    var getSetting = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1337);
+                    if (getSetting != null)
+                    {
+                        getSetting.iVALUE = 1;
+                        db.SaveChanges();
+                    }
+                }
+                MessageBox.Show("Toate planificarile au fost sterse cu success");
+                BindComboGenerationNumber();
+                ReloadData();
+            }
         }
 
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
