@@ -1,13 +1,13 @@
-﻿<Window x:Class="OTTS_WPF.Profesori.WindowProfesoriSali"
+﻿<Window x:Class="OTTS_WPF.Teachers.WindowTeachersEntity"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OTTS_WPF.Profesori"
+        xmlns:local="clr-namespace:OTTS_WPF.Teachers"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         xmlns:DataControls="clr-namespace:DataControls;assembly=DataControls"
-        Title="Profesor Sali" Height="450" Width="800">
+        Title="Teacher" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="60" MaxHeight="60"/>
@@ -36,7 +36,14 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0">
-            <DataGrid x:Name="DataGridProfesori" AutoGeneratingColumn="DataGridProfesori_AutoGeneratingColumn" Loaded="DataGridProfesori_Loaded" CanUserAddRows="False"/>
+            <StackPanel Orientation="Vertical">
+                <DataControls:CText x:Name="CTextSurname" CLabel="Surname">
+
+                </DataControls:CText>
+                <DataControls:CText x:Name="CTextName" CLabel="Name">
+
+                </DataControls:CText>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

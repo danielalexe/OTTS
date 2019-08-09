@@ -16,15 +16,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace OTTS_WPF.Profesori
+namespace OTTS_WPF.Teachers
 {
     /// <summary>
-    /// Interaction logic for WindowProfesoriColectie.xaml
+    /// Interaction logic for WindowTeachersCollection.xaml
     /// </summary>
-    public partial class WindowProfesoriColectie : WindowBase
+    public partial class WindowTeachersCollection : WindowBase
     {
         public MainScreen MainScreen { get; set; }
-        public WindowProfesoriColectie()
+        public WindowTeachersCollection()
         {
             InitializeComponent();
             ReloadData();
@@ -44,29 +44,29 @@ namespace OTTS_WPF.Profesori
         {
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
-                var FiltruNume = CTextNume.CString.ToUpper();
-                var FiltruPrenume = CTextPrenume.CString.ToUpper();
-                var getProfesori = (from u in db.TEACHERS
+                var FilterName = CTextName.CString.ToUpper();
+                var FilterSurname = CTextSurname.CString.ToUpper();
+                var getTeachers = (from u in db.TEACHERS
                                     where (
-                                    (String.IsNullOrEmpty(FiltruNume) || u.nvNAME.Contains(FiltruNume))
+                                    (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
                                     &&
-                                    (String.IsNullOrEmpty(FiltruPrenume) || u.nvSURNAME.Contains(FiltruPrenume))
+                                    (String.IsNullOrEmpty(FilterSurname) || u.nvSURNAME.Contains(FilterSurname))
                                     &&
                                     u.bACTIVE==true)
-                                    select new DTOProfessor
+                                    select new DTOTeacher
                                     {
-                                        iID_PROFESOR = u.iID_TEACHER,
-                                        NUME = u.nvNAME,
-                                        PRENUME = u.nvSURNAME
+                                        iID_TEACHER = u.iID_TEACHER,
+                                        NAME = u.nvNAME,
+                                        SURNAME = u.nvSURNAME
                                     }).ToList();
-                DataGridProfesori.ItemsSource = getProfesori;
+                DataGridTeachers.ItemsSource = getTeachers;
                 RenderColumns();
             }
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            var list = DataGridProfesori.SelectedItems;
+            var list = DataGridTeachers.SelectedItems;
             if (list.Count==0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -80,12 +80,12 @@ namespace OTTS_WPF.Profesori
                     {
                         using (var db = new OTTSContext(PersistentData.ConnectionString))
                         {
-                            foreach (DTOProfessor item in list)
+                            foreach (DTOTeacher item in list)
                             {
-                                var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.iID_PROFESOR && z.bACTIVE==true);
-                                if (getProfesor != null)
+                                var getTeacher = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER && z.bACTIVE==true);
+                                if (getTeacher != null)
                                 {
-                                    getProfesor.bACTIVE = false;
+                                    getTeacher.bACTIVE = false;
                                 }
                             }
                             db.SaveChanges();
@@ -99,7 +99,7 @@ namespace OTTS_WPF.Profesori
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
 
-            var list = DataGridProfesori.SelectedItems;
+            var list = DataGridTeachers.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -114,30 +114,30 @@ namespace OTTS_WPF.Profesori
                 }
                 else
                 {
-                    WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
-                    profesoriEntitate.MainScreen = MainScreen;
-                    profesoriEntitate.WindowType = Helpers.EnumWindowType.EDITMODE;
-                    profesoriEntitate.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
-                    profesoriEntitate.WindowProfesoriColectie = this;
-                    profesoriEntitate.LoadData();
-                    MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.EDITMODE);
+                    WindowTeachersEntity teachersEntity = new WindowTeachersEntity();
+                    teachersEntity.MainScreen = MainScreen;
+                    teachersEntity.WindowType = Helpers.EnumWindowType.EDITMODE;
+                    teachersEntity.ID_TEACHER = ((DTOTeacher)DataGridTeachers.SelectedItem).iID_TEACHER;
+                    teachersEntity.WindowTeachersCollection = this;
+                    teachersEntity.LoadData();
+                    MainScreen.RaiseDownMenu(teachersEntity, Helpers.EnumWindowType.EDITMODE);
                 }
             }
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            WindowProfesoriEntitate profesoriEntitate = new WindowProfesoriEntitate();
-            profesoriEntitate.MainScreen = MainScreen;
-            profesoriEntitate.WindowType = Helpers.EnumWindowType.ADDMODE;
-            profesoriEntitate.WindowProfesoriColectie = this;
-            MainScreen.RaiseDownMenu(profesoriEntitate, Helpers.EnumWindowType.ADDMODE);
+            WindowTeachersEntity teachersEntity = new WindowTeachersEntity();
+            teachersEntity.MainScreen = MainScreen;
+            teachersEntity.WindowType = Helpers.EnumWindowType.ADDMODE;
+            teachersEntity.WindowTeachersCollection = this;
+            MainScreen.RaiseDownMenu(teachersEntity, Helpers.EnumWindowType.ADDMODE);
         }
 
 
         private void RenderColumns()
         {
-            foreach (DataGridColumn c in DataGridProfesori.Columns)
+            foreach (DataGridColumn c in DataGridTeachers.Columns)
             {
                 if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvCOMBO_DISPLAY"))
                     c.Visibility = Visibility.Collapsed;
@@ -157,9 +157,9 @@ namespace OTTS_WPF.Profesori
             RenderColumns();
         }
 
-        private void ButtonSali_Click(object sender, RoutedEventArgs e)
+        private void ButtonHalls_Click(object sender, RoutedEventArgs e)
         {
-            var list = DataGridProfesori.SelectedItems;
+            var list = DataGridTeachers.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -174,18 +174,18 @@ namespace OTTS_WPF.Profesori
                 }
                 else
                 {
-                    WindowProfesoriSali profesoriSali = new WindowProfesoriSali();
-                    profesoriSali.MainScreen = MainScreen;
-                    profesoriSali.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
-                    profesoriSali.WindowProfesoriColectie = this;
-                    MainScreen.RaiseDownMenu(profesoriSali);
+                    WindowTeachersHalls teachersHalls = new WindowTeachersHalls();
+                    teachersHalls.MainScreen = MainScreen;
+                    teachersHalls.ID_TEACHER = ((DTOTeacher)DataGridTeachers.SelectedItem).iID_TEACHER;
+                    teachersHalls.WindowTeachersCollection = this;
+                    MainScreen.RaiseDownMenu(teachersHalls);
                 }
             }
         }
 
         private void ButtonModules_Click(object sender, RoutedEventArgs e)
         {
-            var list = DataGridProfesori.SelectedItems;
+            var list = DataGridTeachers.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -200,18 +200,18 @@ namespace OTTS_WPF.Profesori
                 }
                 else
                 {
-                    WindowProfesoriModule profesoriModule = new WindowProfesoriModule();
-                    profesoriModule.MainScreen = MainScreen;
-                    profesoriModule.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
-                    profesoriModule.WindowProfesoriColectie = this;
-                    MainScreen.RaiseDownMenu(profesoriModule);
+                    WindowTeachersModules teachersModules = new WindowTeachersModules();
+                    teachersModules.MainScreen = MainScreen;
+                    teachersModules.ID_TEACHER = ((DTOTeacher)DataGridTeachers.SelectedItem).iID_TEACHER;
+                    teachersModules.WindowTeachersCollection = this;
+                    MainScreen.RaiseDownMenu(teachersModules);
                 }
             }
         }
 
-        private void ButtonZile_Click(object sender, RoutedEventArgs e)
+        private void ButtonDays_Click(object sender, RoutedEventArgs e)
         {
-            var list = DataGridProfesori.SelectedItems;
+            var list = DataGridTeachers.SelectedItems;
             if (list.Count == 0)
             {
                 MessageBox.Show("Nici un rand nu este selectat");
@@ -226,11 +226,11 @@ namespace OTTS_WPF.Profesori
                 }
                 else
                 {
-                    WindowProfesoriZile profesoriZile = new WindowProfesoriZile();
-                    profesoriZile.MainScreen = MainScreen;
-                    profesoriZile.ID_PROFESOR = ((DTOProfessor)DataGridProfesori.SelectedItem).iID_PROFESOR;
-                    profesoriZile.WindowProfesoriColectie = this;
-                    MainScreen.RaiseDownMenu(profesoriZile);
+                    WindowTeachersDays teachersDays = new WindowTeachersDays();
+                    teachersDays.MainScreen = MainScreen;
+                    teachersDays.ID_TEACHER = ((DTOTeacher)DataGridTeachers.SelectedItem).iID_TEACHER;
+                    teachersDays.WindowTeachersCollection = this;
+                    MainScreen.RaiseDownMenu(teachersDays);
                 }
             }
         }

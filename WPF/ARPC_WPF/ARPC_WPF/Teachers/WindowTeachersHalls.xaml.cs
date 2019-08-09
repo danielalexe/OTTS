@@ -16,17 +16,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DataObjects;
 
-namespace OTTS_WPF.Profesori
+namespace OTTS_WPF.Teachers
 {
     /// <summary>
-    /// Interaction logic for WindowProfesoriModule.xaml
+    /// Interaction logic for WindowTeachersHalls.xaml
     /// </summary>
-    public partial class WindowProfesoriModule : Window
+    public partial class WindowTeachersHalls : Window
     {
-        public WindowProfesoriColectie WindowProfesoriColectie { get; set; }
+        public WindowTeachersCollection WindowTeachersCollection { get; set; }
         public MainScreen MainScreen { get; set; }
-        public int ID_PROFESOR { get; set; }
-        public WindowProfesoriModule()
+        public int ID_TEACHER { get; set; }
+        public WindowTeachersHalls()
         {
             InitializeComponent();
             LoadData();
@@ -34,35 +34,35 @@ namespace OTTS_WPF.Profesori
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            List<DTOProfessorPrefferedModule> list = (List<DTOProfessorPrefferedModule>)DataGridProfesori.ItemsSource;
+            List<DTOTeacherPrefferedHall> list = (List<DTOTeacherPrefferedHall>)DataGridTeachers.ItemsSource;
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 foreach (var item in list)
                 {
                     if (item.PRIORITY != 0)
                     {
-                        var getPreferintaModul = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true);
-                        if (getPreferintaModul != null)
+                        var getPreferredHall = db.TEACHER_PREFERRED_HALLS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_HALL == item.iID_HALL && z.bACTIVE==true);
+                        if (getPreferredHall != null)
                         {
-                            getPreferintaModul.iPRIORITY = item.PRIORITY;
+                            getPreferredHall.iPRIORITY = item.PRIORITY;
 
-                            getPreferintaModul.dtLASTMODIFIED_DATE = DateTime.UtcNow;
-                            getPreferintaModul.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
+                            getPreferredHall.dtLASTMODIFIED_DATE = DateTime.UtcNow;
+                            getPreferredHall.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
 
                             db.SaveChanges();
                         }
                         else
                         {
-                            TEACHER_PREFERRED_MODULES tpm = new TEACHER_PREFERRED_MODULES();
-                            tpm.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
-                            tpm.dtCREATE_DATE = DateTime.UtcNow;
-                            tpm.bACTIVE = true;
+                            TEACHER_PREFERRED_HALLS tph = new TEACHER_PREFERRED_HALLS();
+                            tph.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+                            tph.dtCREATE_DATE = DateTime.UtcNow;
+                            tph.bACTIVE = true;
 
-                            tpm.iID_MODULE = item.iID_MODULE;
-                            tpm.iID_TEACHER = ID_PROFESOR;
-                            tpm.iPRIORITY = item.PRIORITY;
+                            tph.iID_HALL = item.iID_HALL;
+                            tph.iID_TEACHER = ID_TEACHER;
+                            tph.iPRIORITY = item.PRIORITY;
 
-                            db.TEACHER_PREFERRED_MODULES.Add(tpm);
+                            db.TEACHER_PREFERRED_HALLS.Add(tph);
                             db.SaveChanges();
                         }
                     }
@@ -83,38 +83,38 @@ namespace OTTS_WPF.Profesori
 
         public void LoadData()
         {
-            List<DTOProfessorPrefferedModule> list = new List<DTOProfessorPrefferedModule>();
+            List<DTOTeacherPrefferedHall> list = new List<DTOTeacherPrefferedHall>();
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
 
-                var getModules = db.MODULES.Where(z=>z.bACTIVE==true).ToList();
-                foreach (var item in getModules)
+                var getHalls = db.HALLS.Where(z=>z.bACTIVE==true).ToList();
+                foreach (var item in getHalls)
                 {
-                    DTOProfessorPrefferedModule dto = new DTOProfessorPrefferedModule();
-                    var getPreferredModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true);
-                    if (getPreferredModule != null)
+                    DTOTeacherPrefferedHall dto = new DTOTeacherPrefferedHall();
+                    var getPrefferedHall = db.TEACHER_PREFERRED_HALLS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_HALL == item.iID_HALL && z.bACTIVE==true);
+                    if (getPrefferedHall != null)
                     {
-                        dto.MODULE_NAME = item.nvNAME;
-                        dto.iID_MODULE = item.iID_MODULE;
-                        dto.PRIORITY = getPreferredModule.iPRIORITY;
+                        dto.HALL_NAME = item.nvNAME;
+                        dto.iID_HALL = item.iID_HALL;
+                        dto.PRIORITY = getPrefferedHall.iPRIORITY;
                     }
                     else
                     {
-                        dto.MODULE_NAME = item.nvNAME;
-                        dto.iID_MODULE = item.iID_MODULE;
+                        dto.HALL_NAME = item.nvNAME;
+                        dto.iID_HALL = item.iID_HALL;
                         dto.PRIORITY = 0;
                     }
                     list.Add(dto);
                 }
                 
             }
-            DataGridProfesori.ItemsSource = list;
+            DataGridTeachers.ItemsSource = list;
             RenderColumns();
         }
 
         private void RenderColumns()
         {
-            foreach (DataGridColumn c in DataGridProfesori.Columns)
+            foreach (DataGridColumn c in DataGridTeachers.Columns)
             {
                 if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvCOMBO_DISPLAY"))
                     c.Visibility = Visibility.Collapsed;
@@ -134,7 +134,7 @@ namespace OTTS_WPF.Profesori
             LoadData();
         }
 
-        private void DataGridProfesori_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        private void DataGridTeachers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.Column.Header.ToString() != "PRIORITY")
             {
@@ -142,7 +142,7 @@ namespace OTTS_WPF.Profesori
             }
         }
 
-        private void DataGridProfesori_Loaded(object sender, RoutedEventArgs e)
+        private void DataGridTeachers_Loaded(object sender, RoutedEventArgs e)
         {
             LoadData();
         }

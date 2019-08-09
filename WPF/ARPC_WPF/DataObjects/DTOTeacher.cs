@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataObjects
 {
-    public class DTOProfessor
+    public class DTOTeacher
     {
-        public int iID_PROFESOR { get; set; }
-        public string NUME { get; set; }
-        public string PRENUME { get; set; }
-
+        public int iID_TEACHER { get; set; }
+        public string SURNAME { get; set; }
+        public string NAME { get; set; }
         public string nvCOMBO_DISPLAY { get; set; }
     }
 }

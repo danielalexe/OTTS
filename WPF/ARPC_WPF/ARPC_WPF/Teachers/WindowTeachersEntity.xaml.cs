@@ -15,18 +15,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace OTTS_WPF.Profesori
+namespace OTTS_WPF.Teachers
 {
     /// <summary>
-    /// Interaction logic for WindowProfesoriEntitate.xaml
+    /// Interaction logic for WindowTeachersEntity.xaml
     /// </summary>
-    public partial class WindowProfesoriEntitate : Window
+    public partial class WindowTeachersEntity : Window
     {
-        public WindowProfesoriColectie WindowProfesoriColectie { get; set; }
+        public WindowTeachersCollection WindowTeachersCollection { get; set; }
         public MainScreen MainScreen { get; set; }
         public EnumWindowType WindowType { get;set; }
-        public int ID_PROFESOR { get; set; }
-        public WindowProfesoriEntitate()
+        public int ID_TEACHER { get; set; }
+        public WindowTeachersEntity()
         {
             InitializeComponent();
         }
@@ -37,17 +37,17 @@ namespace OTTS_WPF.Profesori
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    TEACHERS profesor = new TEACHERS();
-                    profesor.nvNAME = CTextNume.CTextBox.Text;
-                    profesor.nvSURNAME = CTextPrenume.CTextBox.Text;
+                    TEACHERS teacher = new TEACHERS();
+                    teacher.nvNAME = CTextName.CTextBox.Text;
+                    teacher.nvSURNAME = CTextSurname.CTextBox.Text;
 
-                    profesor.bACTIVE = true;
-                    profesor.dtCREATE_DATE = DateTime.UtcNow;
-                    profesor.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+                    teacher.bACTIVE = true;
+                    teacher.dtCREATE_DATE = DateTime.UtcNow;
+                    teacher.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
 
-                    db.TEACHERS.Add(profesor);
+                    db.TEACHERS.Add(teacher);
                     db.SaveChanges();
-                    WindowProfesoriColectie.ReloadData();
+                    WindowTeachersCollection.ReloadData();
                     CloseWindow();
                 }
             }
@@ -55,17 +55,17 @@ namespace OTTS_WPF.Profesori
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.bACTIVE==true);
-                    if (getProfesor!=null)
+                    var getTeacher = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.bACTIVE==true);
+                    if (getTeacher!=null)
                     {
-                        getProfesor.nvNAME = CTextNume.CTextBox.Text;
-                        getProfesor.nvSURNAME = CTextPrenume.CTextBox.Text;
+                        getTeacher.nvNAME = CTextName.CTextBox.Text;
+                        getTeacher.nvSURNAME = CTextSurname.CTextBox.Text;
 
-                        getProfesor.dtLASTMODIFIED_DATE = DateTime.UtcNow;
-                        getProfesor.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
+                        getTeacher.dtLASTMODIFIED_DATE = DateTime.UtcNow;
+                        getTeacher.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
 
                         db.SaveChanges();
-                        WindowProfesoriColectie.ReloadData();
+                        WindowTeachersCollection.ReloadData();
                         CloseWindow();
                     }
                 }
@@ -88,11 +88,11 @@ namespace OTTS_WPF.Profesori
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    var getProfesor = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.bACTIVE==true);
-                    if (getProfesor != null)
+                    var getTeacher = db.TEACHERS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.bACTIVE==true);
+                    if (getTeacher != null)
                     {
-                        CTextNume.CTextBox.Text = getProfesor.nvNAME;
-                        CTextPrenume.CTextBox.Text = getProfesor.nvSURNAME;
+                        CTextName.CTextBox.Text = getTeacher.nvNAME;
+                        CTextSurname.CTextBox.Text = getTeacher.nvSURNAME;
                     }
                 }
             }

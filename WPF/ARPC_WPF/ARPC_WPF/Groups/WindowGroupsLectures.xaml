@@ -75,7 +75,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0">
-                <DataGrid x:Name="DataGridLectures" AutoGeneratingColumn="DataGridProfesori_AutoGeneratingColumn"  Loaded="DataGridProfesori_Loaded"  CanUserAddRows="False"/>
+                <DataGrid x:Name="DataGridLectures" AutoGeneratingColumn="DataGridLectures_AutoGeneratingColumn"  Loaded="DataGridLectures_Loaded"  CanUserAddRows="False"/>
             </Grid>
         </Grid>
         <Grid x:Name="GridDownMenu" Grid.Row="1" Grid.Column="0">

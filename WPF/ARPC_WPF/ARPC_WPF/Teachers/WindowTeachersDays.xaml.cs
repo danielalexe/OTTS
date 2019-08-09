@@ -16,17 +16,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DataObjects;
 
-namespace OTTS_WPF.Profesori
+namespace OTTS_WPF.Teachers
 {
     /// <summary>
-    /// Interaction logic for WindowProfesoriZile.xaml
+    /// Interaction logic for WindowTeachersDays.xaml
     /// </summary>
-    public partial class WindowProfesoriZile : Window
+    public partial class WindowTeachersDays : Window
     {
-        public WindowProfesoriColectie WindowProfesoriColectie { get; set; }
+        public WindowTeachersCollection WindowTeachersCollection { get; set; }
         public MainScreen MainScreen { get; set; }
-        public int ID_PROFESOR { get; set; }
-        public WindowProfesoriZile()
+        public int ID_TEACHER { get; set; }
+        public WindowTeachersDays()
         {
             InitializeComponent();
             LoadData();
@@ -34,20 +34,20 @@ namespace OTTS_WPF.Profesori
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            List<DTOProfessorPrefferedDay> list = (List<DTOProfessorPrefferedDay>)DataGridProfesori.ItemsSource;
+            List<DTOTeacherPrefferedDay> list = (List<DTOTeacherPrefferedDay>)DataGridTeachers.ItemsSource;
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 foreach (var item in list)
                 {
                     if (item.PRIORITY != 0)
                     {
-                        var getPreferintaZi = db.TEACHER_PREFERRED_DAYS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.iID_DAY == item.iID_DAY && z.bACTIVE == true);
-                        if (getPreferintaZi != null)
+                        var getPreferredDay = db.TEACHER_PREFERRED_DAYS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_DAY == item.iID_DAY && z.bACTIVE == true);
+                        if (getPreferredDay != null)
                         {
-                            getPreferintaZi.iPRIORITY = item.PRIORITY;
+                            getPreferredDay.iPRIORITY = item.PRIORITY;
 
-                            getPreferintaZi.dtLASTMODIFIED_DATE = DateTime.UtcNow;
-                            getPreferintaZi.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
+                            getPreferredDay.dtLASTMODIFIED_DATE = DateTime.UtcNow;
+                            getPreferredDay.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
 
                             db.SaveChanges();
                         }
@@ -59,7 +59,7 @@ namespace OTTS_WPF.Profesori
                             tpd.bACTIVE = true;
 
                             tpd.iID_DAY = item.iID_DAY;
-                            tpd.iID_TEACHER = ID_PROFESOR;
+                            tpd.iID_TEACHER = ID_TEACHER;
                             tpd.iPRIORITY = item.PRIORITY;
 
                             db.TEACHER_PREFERRED_DAYS.Add(tpd);
@@ -83,20 +83,20 @@ namespace OTTS_WPF.Profesori
 
         public void LoadData()
         {
-            List<DTOProfessorPrefferedDay> list = new List<DTOProfessorPrefferedDay>();
+            List<DTOTeacherPrefferedDay> list = new List<DTOTeacherPrefferedDay>();
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
 
-                var getZile = db.DAYS.Where(z => z.bACTIVE == true).ToList();
-                foreach (var item in getZile)
+                var getDays = db.DAYS.Where(z => z.bACTIVE == true).ToList();
+                foreach (var item in getDays)
                 {
-                    DTOProfessorPrefferedDay dto = new DTOProfessorPrefferedDay();
-                    var getPreferintaZi = db.TEACHER_PREFERRED_DAYS.FirstOrDefault(z => z.iID_TEACHER == ID_PROFESOR && z.iID_DAY == item.iID_DAY && z.bACTIVE == true);
-                    if (getPreferintaZi != null)
+                    DTOTeacherPrefferedDay dto = new DTOTeacherPrefferedDay();
+                    var getPreferredDay = db.TEACHER_PREFERRED_DAYS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_DAY == item.iID_DAY && z.bACTIVE == true);
+                    if (getPreferredDay != null)
                     {
                         dto.DAY_NAME = item.nvNAME;
                         dto.iID_DAY = item.iID_DAY;
-                        dto.PRIORITY = getPreferintaZi.iPRIORITY;
+                        dto.PRIORITY = getPreferredDay.iPRIORITY;
                     }
                     else
                     {
@@ -108,13 +108,13 @@ namespace OTTS_WPF.Profesori
                 }
 
             }
-            DataGridProfesori.ItemsSource = list;
+            DataGridTeachers.ItemsSource = list;
             RenderColumns();
         }
 
         private void RenderColumns()
         {
-            foreach (DataGridColumn c in DataGridProfesori.Columns)
+            foreach (DataGridColumn c in DataGridTeachers.Columns)
             {
                 if (c.Header.ToString().StartsWith("iID_") || c.Header.ToString().StartsWith("nvPASSWORD") || c.Header.ToString().StartsWith("nvCOMBO_DISPLAY"))
                     c.Visibility = Visibility.Collapsed;
@@ -134,7 +134,7 @@ namespace OTTS_WPF.Profesori
             LoadData();
         }
 
-        private void DataGridProfesori_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        private void DataGridTeachers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.Column.Header.ToString() != "PRIORITY")
             {
@@ -142,7 +142,7 @@ namespace OTTS_WPF.Profesori
             }
         }
 
-        private void DataGridProfesori_Loaded(object sender, RoutedEventArgs e)
+        private void DataGridTeachers_Loaded(object sender, RoutedEventArgs e)
         {
             LoadData();
         }

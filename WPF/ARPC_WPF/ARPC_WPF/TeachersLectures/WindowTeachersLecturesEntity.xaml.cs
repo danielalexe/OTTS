@@ -37,16 +37,16 @@ namespace OTTS_WPF.TeachersLectures
 
         private void BindComboTeachers()
         {
-            List<DTOProfessor> list = new List<DTOProfessor>();
+            List<DTOTeacher> list = new List<DTOTeacher>();
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 var getLectureTypess = (from u in db.TEACHERS
                                         where u.bACTIVE == true
-                                        select new DTOProfessor
+                                        select new DTOTeacher
                                         {
-                                            iID_PROFESOR = u.iID_TEACHER,
-                                            NUME = u.nvNAME,
-                                            PRENUME = u.nvSURNAME,
+                                            iID_TEACHER = u.iID_TEACHER,
+                                            NAME = u.nvNAME,
+                                            SURNAME = u.nvSURNAME,
                                             nvCOMBO_DISPLAY = u.nvSURNAME+" "+u.nvNAME
                                         }).ToList();
                 list.AddRange(getLectureTypess);
@@ -103,7 +103,7 @@ namespace OTTS_WPF.TeachersLectures
                     tll.iHOURS = Convert.ToInt32(CDecimalHours.CValue);
                     tll.iID_LECTURE = ((DTOLecture)CComboLectures.CComboBox.SelectedItem).iID_LECTURE;
                     tll.iID_LECTURE_TYPE= ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
-                    tll.iID_TEACHER = ((DTOProfessor)CComboTeachers.CComboBox.SelectedItem).iID_PROFESOR;
+                    tll.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
 
                     tll.bACTIVE = true;
                     tll.dtCREATE_DATE = DateTime.UtcNow;
@@ -137,7 +137,7 @@ namespace OTTS_WPF.TeachersLectures
                         getTeacherLecture.iHOURS = Convert.ToInt32(CDecimalHours.CValue);
                         getTeacherLecture.iID_LECTURE = ((DTOLecture)CComboLectures.CComboBox.SelectedItem).iID_LECTURE;
                         getTeacherLecture.iID_LECTURE_TYPE = ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
-                        getTeacherLecture.iID_TEACHER = ((DTOProfessor)CComboTeachers.CComboBox.SelectedItem).iID_PROFESOR;
+                        getTeacherLecture.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
 
                         getTeacherLecture.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                         getTeacherLecture.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -171,7 +171,7 @@ namespace OTTS_WPF.TeachersLectures
                     {
                         CComboLectures.CComboBox.SelectedItem = ((List<DTOLecture>)CComboLectures.CComboBox.ItemsSource).FirstOrDefault(z=>z.iID_LECTURE==getTeacherLecture.iID_LECTURE);
                         CComboLectureType.CComboBox.SelectedItem = ((List<DTOLectureType>)CComboLectureType.CComboBox.ItemsSource).FirstOrDefault(z => z.iID_LECTURE_TYPE == getTeacherLecture.iID_LECTURE_TYPE);
-                        CComboTeachers.CComboBox.SelectedItem = ((List<DTOProfessor>)CComboTeachers.CComboBox.ItemsSource).FirstOrDefault(z => z.iID_PROFESOR == getTeacherLecture.iID_TEACHER);
+                        CComboTeachers.CComboBox.SelectedItem = ((List<DTOTeacher>)CComboTeachers.CComboBox.ItemsSource).FirstOrDefault(z => z.iID_TEACHER == getTeacherLecture.iID_TEACHER);
                         CDecimalHours.CValue = getTeacherLecture.iHOURS;
                     }
                 }

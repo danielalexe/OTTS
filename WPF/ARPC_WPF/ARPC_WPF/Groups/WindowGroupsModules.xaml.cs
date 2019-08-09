@@ -87,7 +87,7 @@ namespace OTTS_WPF.Groups
             LoadData();
         }
 
-        private void DataGridProfesori_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        private void DataGridModules_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.Column.Header.ToString() != "PRIORITY")
             {
@@ -95,7 +95,7 @@ namespace OTTS_WPF.Groups
             }
         }
 
-        private void DataGridProfesori_Loaded(object sender, RoutedEventArgs e)
+        private void DataGridModules_Loaded(object sender, RoutedEventArgs e)
         {
             LoadData();
         }

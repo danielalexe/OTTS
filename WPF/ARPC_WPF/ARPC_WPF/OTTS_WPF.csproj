@@ -173,20 +173,20 @@
     <Compile Include="Planning\WindowPlanningEntity.xaml.cs">
       <DependentUpon>WindowPlanningEntity.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profesori\WindowProfesoriColectie.xaml.cs">
-      <DependentUpon>WindowProfesoriColectie.xaml</DependentUpon>
+    <Compile Include="Teachers\WindowTeachersCollection.xaml.cs">
+      <DependentUpon>WindowTeachersCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profesori\WindowProfesoriZile.xaml.cs">
-      <DependentUpon>WindowProfesoriZile.xaml</DependentUpon>
+    <Compile Include="Teachers\WindowTeachersDays.xaml.cs">
+      <DependentUpon>WindowTeachersDays.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profesori\WindowProfesoriModule.xaml.cs">
-      <DependentUpon>WindowProfesoriModule.xaml</DependentUpon>
+    <Compile Include="Teachers\WindowTeachersModules.xaml.cs">
+      <DependentUpon>WindowTeachersModules.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profesori\WindowProfesoriSali.xaml.cs">
-      <DependentUpon>WindowProfesoriSali.xaml</DependentUpon>
+    <Compile Include="Teachers\WindowTeachersHalls.xaml.cs">
+      <DependentUpon>WindowTeachersHalls.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profesori\WindowProfesoriEntitate.xaml.cs">
-      <DependentUpon>WindowProfesoriEntitate.xaml</DependentUpon>
+    <Compile Include="Teachers\WindowTeachersEntity.xaml.cs">
+      <DependentUpon>WindowTeachersEntity.xaml</DependentUpon>
     </Compile>
     <Compile Include="Semigroups\WindowSemigroupsCollection.xaml.cs">
       <DependentUpon>WindowSemigroupsCollection.xaml</DependentUpon>
@@ -280,23 +280,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Profesori\WindowProfesoriColectie.xaml">
+    <Page Include="Teachers\WindowTeachersCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Profesori\WindowProfesoriZile.xaml">
+    <Page Include="Teachers\WindowTeachersDays.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Profesori\WindowProfesoriModule.xaml">
+    <Page Include="Teachers\WindowTeachersModules.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Profesori\WindowProfesoriSali.xaml">
+    <Page Include="Teachers\WindowTeachersHalls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Profesori\WindowProfesoriEntitate.xaml">
+    <Page Include="Teachers\WindowTeachersEntity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

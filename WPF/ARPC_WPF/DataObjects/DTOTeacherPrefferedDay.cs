@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataObjects
 {
-    public class DTOProfessorPrefferedDay
+    public class DTOTeacherPrefferedDay
     {
         public int iID_DAY { get; set; }
         public string DAY_NAME { get; set; }

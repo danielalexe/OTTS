@@ -73,10 +73,10 @@
     <Compile Include="DTOHall.cs" />
     <Compile Include="DTOPlaceholderCombo.cs" />
     <Compile Include="DTOPlanningRow.cs" />
-    <Compile Include="DTOProfessor.cs" />
-    <Compile Include="DTOProfessorPrefferedHall.cs" />
-    <Compile Include="DTOProfessorPrefferedModule.cs" />
-    <Compile Include="DTOProfessorPrefferedDay.cs" />
+    <Compile Include="DTOTeacher.cs" />
+    <Compile Include="DTOTeacherPrefferedHall.cs" />
+    <Compile Include="DTOTeacherPrefferedModule.cs" />
+    <Compile Include="DTOTeacherPrefferedDay.cs" />
     <Compile Include="DTOSemigroup.cs" />
     <Compile Include="DTOTeachersLectures.cs" />
     <Compile Include="DTOUser.cs" />

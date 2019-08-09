@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataObjects
 {
-    public class DTOProfessorPrefferedModule
+    public class DTOTeacherPrefferedHall
     {
-        public int iID_MODULE { get; set; }
-        public string MODULE_NAME { get; set; }
+        public int iID_HALL { get; set; }
+        public string HALL_NAME { get; set; }
         public int PRIORITY { get; set; }
     }
 }

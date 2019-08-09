@@ -15,7 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using OTTS_WPF.Helpers;
-using OTTS_WPF.Profesori;
+using OTTS_WPF.Teachers;
 using OTTS_WPF.Template;
 using MaterialDesignThemes;
 using OTTS_WPF.Halls;
@@ -107,7 +107,7 @@ namespace OTTS_WPF
                         CreateTabItem(winPlanning);
                         break;
                     case "Teachers":
-                        WindowProfesoriColectie winTeachers = new WindowProfesoriColectie();
+                        WindowTeachersCollection winTeachers = new WindowTeachersCollection();
                         winTeachers.MainScreen = this;
                         CreateTabItem(winTeachers);
                         break;
