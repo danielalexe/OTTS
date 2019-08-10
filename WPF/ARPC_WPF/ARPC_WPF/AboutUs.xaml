@@ -9,7 +9,7 @@
         xmlns:base="clr-namespace:OTTS_WPF.Template"
         xmlns:DataControls="clr-namespace:DataControls;assembly=DataControls"
         Title="About Us" Height="450" Width="800">
-    <Grid Loaded="Grid_Loaded">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="60" MaxHeight="60"/>
             <RowDefinition Height="5*"/>

@@ -128,6 +128,15 @@ namespace OTTS_WPF
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
+                        if (MessageBox.Show("Este posibil ca versiunea de server local sa nu fie actualizata si de aceea modulul offline sa nu functioneze. Doriti actualizarea server-ului local?", "Atentie", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            Process p = new Process();
+                            p.StartInfo.FileName = "msiexec";
+                            p.StartInfo.Arguments = string.Format("{0} {1}", "/i", @"Offline\SqlLocalDB.msi");
+                            p.Start();
+                            p.WaitForExit();
+                            MessageBox.Show("Instalarea a avut loc cu succes. Va rugam reincercati sa accesati modulul offline.");
+                        }
                         db.Close();
                         return;
                     }
