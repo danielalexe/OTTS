@@ -189,5 +189,12 @@ namespace OTTS_WPF
         {
             Application.Current.Shutdown();
         }
+
+        private void ButtonAboutUs_Click(object sender, RoutedEventArgs e)
+        {
+            AboutUs aboutUs = new AboutUs();
+            aboutUs.MainScreen = this;
+            CreateTabItem(aboutUs);
+        }
     }
 }
