@@ -1,0 +1,292 @@
+﻿<Window x:Class="OTTS_WPF.MainScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OTTS_WPF"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d" MinHeight="580" Height="600" MinWidth="780" Width="1080" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+    <Window.Resources>
+        <Storyboard x:Key="DrawerOpen">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
+                <EasingDoubleKeyFrame KeyTime="0" Value="60">
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="250">
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <metro:GridLengthAnimation To="250" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
+            
+        </Storyboard>
+        <Storyboard x:Key="DrawerClose" >
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(ColumnDefinition.MaxWidth)" Storyboard.TargetName="DynamicColumn">
+                <EasingDoubleKeyFrame KeyTime="0" Value="250">
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="60">
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <metro:GridLengthAnimation To="1*" Duration="00:00:03" Storyboard.TargetName="DynamicColumn" Storyboard.TargetProperty="(ColumnDefinition.Width)"></metro:GridLengthAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="RaiseDownMenu" >
+            <metro:GridLengthAnimation To="0" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
+        <Storyboard x:Key="LowerDownMenu" >
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="30" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
+        <Storyboard x:Key="CloseDownMenu" >
+            <metro:GridLengthAnimation To="1*" Duration="00:00:00" Storyboard.TargetName="DynamicRowTabControl" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+            <metro:GridLengthAnimation To="0" Duration="00:00:00" Storyboard.TargetName="DynamicRowDownMenu" Storyboard.TargetProperty="(RowDefinition.Height)"></metro:GridLengthAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenDrawer">
+            <BeginStoryboard Storyboard="{StaticResource DrawerOpen}">
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseDrawer">
+            <BeginStoryboard Storyboard="{StaticResource DrawerClose}">
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonRaiseDownMenu">
+            <BeginStoryboard Storyboard="{StaticResource RaiseDownMenu}">
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonLowerDownMenu">
+            <BeginStoryboard Storyboard="{StaticResource LowerDownMenu}">
+            </BeginStoryboard>
+        </EventTrigger>
+
+    </Window.Triggers>
+    
+    <Grid x:Name="MainScreenGrid" Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="DynamicColumn" MinWidth="60" MaxWidth="60" />
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="60" MaxHeight="60"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="Offline User" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">
+                        </TextBlock>
+                        <materialDesign:PackIcon Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Kind="Notifications" Foreground="White" Width="30" Height="30">
+
+                        </materialDesign:PackIcon>
+                        <materialDesign:PopupBox Grid.Row="0" Grid.Column="2" Foreground="White" Width="30" Height="30" StaysOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel Width="150">
+                                <Button x:Name="ButtonAboutUs" Content="About Us" Click="ButtonAboutUs_Click" />
+                                <Separator/>
+                                <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
+                                <Button x:Name="ButtonExit" Content="Exit" Click="ButtonExit_Click"></Button>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" x:Name="GridTabControl">
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="DynamicRowTabControl" />
+                        <RowDefinition Height="0" x:Name="DynamicRowDownMenu"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl Grid.Row="0" Grid.Column="0" x:Name="TabControlMain">
+
+                    </TabControl>
+                    <Grid x:Name="GridDownMenu" Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Grid.Row="0" Grid.Column="0" Stretch="Uniform" StretchDirection="DownOnly" Panel.ZIndex="999" HorizontalAlignment="Left"  VerticalAlignment="Center">
+                            <Label x:Name="LabelDownMenu" Content="MenuName" Foreground="White"  FontSize="22">
+                            </Label>
+                        </Viewbox>
+                        <Button x:Name="ButtonRaiseDownMenu" Grid.Row="0" Grid.Column="0" Click="ButtonRaiseDownMenu_Click">
+                            <materialDesign:PackIcon Kind="ArrowUp" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Button x:Name="ButtonLowerDownMenu" Grid.Row="0" Grid.Column="0" Visibility="Collapsed" Click="ButtonLowerDownMenu_Click">
+                            <materialDesign:PackIcon Kind="ArrowDown" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <ContentControl x:Name="GridDownMenuContent">
+                                
+                            </ContentControl>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+        
+        <Grid x:Name="GridMenu" Background="#FF0F0F57">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="60" MaxHeight="60"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" Background="White">
+                    <Button x:Name="ButtonCloseDrawer" Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Collapsed" Click="ButtonCloseDrawer_Click">
+                        <materialDesign:PackIcon Foreground="#FF0F0F57" Kind="ArrowLeft" Width="25" Height="25">
+
+                        </materialDesign:PackIcon>
+                    </Button>
+                    <Button x:Name="ButtonOpenDrawer" Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonOpenDrawer_Click">
+                        <materialDesign:PackIcon Foreground="#FF0F0F57" Kind="Menu" Width="25" Height="25">
+
+                        </materialDesign:PackIcon>
+                    </Button>
+                </Grid>
+                <ListView Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="ListViewSideDrawer" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown">
+
+                            </EventSetter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListViewItem Height="60" x:Name="Planning">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CalendarClock" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Planificare Orar" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Teachers">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Teacher" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Profesori" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="TeachersLectures">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="NaturePeople" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Alocare Profesori Prelegeri" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Groups">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="UserGroup"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Grupe" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Semigroups">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Subtasks"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Semigrupe" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    
+                    <ListViewItem Height="60" x:Name="Lectures">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Books"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Prelegeri" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Modules">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ViewModule"  Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Module" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Days">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ViewWeek" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Zile" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Height="60" x:Name="Halls">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Room" Margin="10"  Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Text="Sali" VerticalAlignment="Center" Margin="20 10" Foreground="White">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Window>
