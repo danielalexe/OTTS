@@ -32,6 +32,7 @@ namespace DataLink
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
+        public int iPRIORITY { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }

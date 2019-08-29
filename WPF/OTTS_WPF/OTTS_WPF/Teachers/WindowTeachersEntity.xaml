@@ -43,6 +43,9 @@
                 <DataControls:CText x:Name="CTextName" CLabel="Name">
 
                 </DataControls:CText>
+                <DataControls:CDecimal x:Name="CDecimalPriority" CLabel="Priority">
+                    
+                </DataControls:CDecimal>
             </StackPanel>
         </Grid>
     </Grid>

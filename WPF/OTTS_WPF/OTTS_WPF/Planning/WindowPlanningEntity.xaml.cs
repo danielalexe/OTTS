@@ -123,8 +123,65 @@ namespace OTTS_WPF.Planning
                         #region Se selecteaza prelegerile ce trebuie parcurse de grupa (Se pot seta prioritati si la acestea)
                         var getPrelegeriNecesare = db.GROUPS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_GROUP == parsedsemigrupa.iID_GROUP).ToList();
                         #endregion
-                        #region Se proceseaza fiecare prelegere in parte
+
+                        #region Prioritizare prelegeri necesare in functie de prioritati profesori
+                        var OrdinePrelegeri = new List<AssociationSet>();
+                        var PrelegeriFinale = new List<GROUPS_LECTURES_LINK>();
                         foreach (var prelegere in getPrelegeriNecesare)
+                        {
+                            AssociationSet set = new AssociationSet();
+                            set.LINK = prelegere;
+
+                            var CurrentPriority = 9999;
+
+                            var getProfesoriEligibiliCurs = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 1).ToList();
+                            if (getProfesoriEligibiliCurs.Count != 0)
+                            {
+                                foreach (var item in getProfesoriEligibiliCurs)
+                                {
+                                    if (item.TEACHERS.iPRIORITY<CurrentPriority)
+                                    {
+                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                    }
+                                }
+                            }
+
+                            var getProfesoriEligibiliSeminar = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 2).ToList();
+                            if (getProfesoriEligibiliSeminar.Count != 0)
+                            {
+                                foreach (var item in getProfesoriEligibiliSeminar)
+                                {
+                                    if (item.TEACHERS.iPRIORITY < CurrentPriority)
+                                    {
+                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                    }
+                                }
+                            }
+
+                            var getProfesoriEligibiliLaborator = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 3).ToList();
+                            if (getProfesoriEligibiliLaborator.Count != 0)
+                            {
+                                foreach (var item in getProfesoriEligibiliLaborator)
+                                {
+                                    if (item.TEACHERS.iPRIORITY < CurrentPriority)
+                                    {
+                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                    }
+                                }
+                            }
+
+                            set.PRIORITY = CurrentPriority;
+                            OrdinePrelegeri.Add(set);
+                        }
+                        OrdinePrelegeri = OrdinePrelegeri.OrderBy(z => z.PRIORITY).ToList();
+                        foreach (var item in OrdinePrelegeri)
+                        {
+                            PrelegeriFinale.Add(item.LINK);
+                        }
+                        #endregion
+
+                        #region Se proceseaza fiecare prelegere in parte
+                        foreach (var prelegere in PrelegeriFinale)
                         {
                             #region Se selecteaza profesorul eligibil pentru curs/seminar/laborator daca sunt mai multi se selecteaza random
                             TEACHERS_LECTURES_LINK ProfesorCurs = null;
@@ -615,6 +672,12 @@ namespace OTTS_WPF.Planning
             MessageBox.Show("Generarea este Gata. Nu s-au putut plasa: " + NoTimeCounter.ToString());
             WindowPlanningCollection.ReloadData();
             CloseWindow();
+        }
+
+        private class AssociationSet
+        {
+            public int PRIORITY { get; set; }
+            public GROUPS_LECTURES_LINK LINK { get; set; }
         }
 
         private void Shuffle<T>(IList<T> list)

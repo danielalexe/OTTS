@@ -40,6 +40,7 @@ namespace OTTS_WPF.Teachers
                     TEACHERS teacher = new TEACHERS();
                     teacher.nvNAME = CTextName.CTextBox.Text;
                     teacher.nvSURNAME = CTextSurname.CTextBox.Text;
+                    teacher.iPRIORITY = Convert.ToInt32(CDecimalPriority.CNumericUpDown.Value);
 
                     teacher.bACTIVE = true;
                     teacher.dtCREATE_DATE = DateTime.UtcNow;
@@ -60,6 +61,7 @@ namespace OTTS_WPF.Teachers
                     {
                         getTeacher.nvNAME = CTextName.CTextBox.Text;
                         getTeacher.nvSURNAME = CTextSurname.CTextBox.Text;
+                        getTeacher.iPRIORITY = Convert.ToInt32(CDecimalPriority.CNumericUpDown.Value);
 
                         getTeacher.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                         getTeacher.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -93,6 +95,7 @@ namespace OTTS_WPF.Teachers
                     {
                         CTextName.CTextBox.Text = getTeacher.nvNAME;
                         CTextSurname.CTextBox.Text = getTeacher.nvSURNAME;
+                        CDecimalPriority.CNumericUpDown.Value = getTeacher.iPRIORITY;
                     }
                 }
             }

@@ -239,6 +239,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
           <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
+          <Property Name="iPRIORITY" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TEACHERS_LECTURES_LINK">
           <Key>
@@ -899,6 +900,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
+          <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="BLOCKED_MODULES" />
           <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_DAYS" />
           <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_HALLS" />
@@ -1268,7 +1270,48 @@
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(OTTSModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(OTTSModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1525,6 +1568,7 @@
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
                 <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
                 <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
+                <ScalarProperty Name="iPRIORITY" ColumnName="iPRIORITY" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1564,6 +1608,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="OTTSModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="OTTSModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="OTTSModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="OTTSModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OTTSModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="OTTSModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OTTSModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="OTTSModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="OTTSModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

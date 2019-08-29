@@ -139,6 +139,12 @@
     <Compile Include="SETTINGS.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="sysdiagrams.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -198,13 +204,10 @@
     <Content Include="Offline\OTTS_log.ldf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Offline\Schemas\0.UpdateSettingsKey.sql">
+    <Content Include="Offline\Schemas\0.InsertSettingsKey.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Offline\Schemas\1.JUNK.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Offline\Schemas\2.JUNKZ.sql">
+    <Content Include="Offline\Schemas\1.Update from v0.1.0 to v0.2.0.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

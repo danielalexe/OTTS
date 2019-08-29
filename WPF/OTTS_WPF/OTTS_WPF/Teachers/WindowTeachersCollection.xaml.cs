@@ -57,7 +57,8 @@ namespace OTTS_WPF.Teachers
                                     {
                                         iID_TEACHER = u.iID_TEACHER,
                                         NAME = u.nvNAME,
-                                        SURNAME = u.nvSURNAME
+                                        SURNAME = u.nvSURNAME,
+                                        PRIORITY = u.iPRIORITY
                                     }).ToList();
                 DataGridTeachers.ItemsSource = getTeachers;
                 RenderColumns();
