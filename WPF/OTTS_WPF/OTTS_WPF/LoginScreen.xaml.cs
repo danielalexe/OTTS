@@ -17,6 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Data.Common;
+using System.Data;
+using System.IO;
 
 namespace OTTS_WPF
 {
@@ -25,6 +28,7 @@ namespace OTTS_WPF
     /// </summary>
     public partial class LoginScreen : Window
     {
+        private static int iDBVersion = 2;
         public LoginScreen()
         {
             InitializeComponent();
@@ -141,6 +145,28 @@ namespace OTTS_WPF
                         return;
                     }
                 }
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    var getDBVersion = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1001 && z.bACTIVE == true);
+                    if (getDBVersion!=null)
+                    {
+                        if (iDBVersion>getDBVersion.iVALUE)
+                        {
+                            /// Schema update is required
+                            /// 
+                            MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata si veti putea continua.");
+                            UpdateSchemaFromVersion(getDBVersion.iVALUE);
+                        }
+                    }
+                    else
+                    {
+                        /// first iteration of the DB
+                        /// Apply all Schema updates.
+                        /// 
+                        MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata si veti putea continua.");
+                        UpdateSchemaFromScratch();
+                    }
+                }
             }
             else
             {
@@ -219,6 +245,87 @@ namespace OTTS_WPF
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void UpdateSchemaFromScratch()
+        {
+            var Files = Directory.GetFiles("" + AppDomain.CurrentDomain.BaseDirectory + "" + "\\Offline\\Schemas\\");
+            foreach (var item in Files)
+            {
+                var AllCommands = File.ReadAllText(item);
+                string[] commands = AllCommands.Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                OTTSContext context = new OTTSContext(); //Instance new Context
+                DbConnection conn = context.Database.Connection; // Get Database connection
+                ConnectionState initialState = conn.State; // Get Initial connection state
+                try
+                {
+                    if (initialState != ConnectionState.Open)
+                        conn.Open();  // open connection if not already open
+
+                    using (DbCommand cmd = conn.CreateCommand())
+                    {
+                        // Iterate the string array and execute each one.
+                        foreach (string thisCommand in commands)
+                        {
+                            cmd.CommandText = thisCommand;
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                finally
+                {
+                    if (initialState != ConnectionState.Open)
+                        conn.Close(); // only close connection if not initially open
+                }
+            }
+
+
+        }
+
+        private void UpdateSchemaFromVersion(int iVersion)
+        {
+            var AllFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "\\Offline\\Schemas\\");
+            List<string> Files = new List<string>();
+            foreach (var item in AllFiles)
+            {
+                var Filename = System.IO.Path.GetFileNameWithoutExtension(item);
+                var FileVersion = Convert.ToInt32(Filename[0]);
+                if (FileVersion>=iVersion)
+                {
+                    Files.Add(item);
+                }
+            }
+            
+            foreach (var item in Files)
+            {
+                var AllCommands = File.ReadAllText(item);
+                string[] commands = AllCommands.Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                OTTSContext context = new OTTSContext(); //Instance new Context
+                DbConnection conn = context.Database.Connection; // Get Database connection
+                ConnectionState initialState = conn.State; // Get Initial connection state
+                try
+                {
+                    if (initialState != ConnectionState.Open)
+                        conn.Open();  // open connection if not already open
+
+                    using (DbCommand cmd = conn.CreateCommand())
+                    {
+                        // Iterate the string array and execute each one.
+                        foreach (string thisCommand in commands)
+                        {
+                            cmd.CommandText = thisCommand;
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                finally
+                {
+                    if (initialState != ConnectionState.Open)
+                        conn.Close(); // only close connection if not initially open
+                }
+            }
+
+
         }
     }
 }
