@@ -121,7 +121,7 @@ namespace OTTS_WPF.Planning
                         var getModuleGenerale = db.GROUPS_MODULES_LINK.Where(z =>z.bACTIVE==true && z.iID_GROUP == parsedsemigrupa.iID_GROUP).OrderByDescending(z => z.iID_MODULE).ToList();
                         #endregion
                         #region Se selecteaza prelegerile ce trebuie parcurse de grupa (Se pot seta prioritati si la acestea)
-                        var getPrelegeriNecesare = db.GROUPS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_GROUP == parsedsemigrupa.iID_GROUP).ToList();
+                        var getPrelegeriNecesare = db.GROUPS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_GROUP == parsedsemigrupa.iID_GROUP && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                         #endregion
 
                         #region Prioritizare prelegeri necesare in functie de prioritati profesori
@@ -134,7 +134,7 @@ namespace OTTS_WPF.Planning
 
                             var CurrentPriority = 9999;
 
-                            var getProfesoriEligibiliCurs = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 1).ToList();
+                            var getProfesoriEligibiliCurs = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 1 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliCurs.Count != 0)
                             {
                                 foreach (var item in getProfesoriEligibiliCurs)
@@ -146,7 +146,7 @@ namespace OTTS_WPF.Planning
                                 }
                             }
 
-                            var getProfesoriEligibiliSeminar = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 2).ToList();
+                            var getProfesoriEligibiliSeminar = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 2 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliSeminar.Count != 0)
                             {
                                 foreach (var item in getProfesoriEligibiliSeminar)
@@ -158,7 +158,7 @@ namespace OTTS_WPF.Planning
                                 }
                             }
 
-                            var getProfesoriEligibiliLaborator = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 3).ToList();
+                            var getProfesoriEligibiliLaborator = db.TEACHERS_LECTURES_LINK.Where(z => z.bACTIVE == true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 3 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliLaborator.Count != 0)
                             {
                                 foreach (var item in getProfesoriEligibiliLaborator)
@@ -188,7 +188,7 @@ namespace OTTS_WPF.Planning
                             TEACHERS_LECTURES_LINK ProfesorSeminar = null;
                             TEACHERS_LECTURES_LINK ProfesorLaborator = null;
 
-                            var getProfesoriEligibiliCurs = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 1).ToList();
+                            var getProfesoriEligibiliCurs = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 1 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliCurs.Count != 0)
                             {
                                 if (getProfesoriEligibiliCurs.Count == 1)
@@ -205,7 +205,7 @@ namespace OTTS_WPF.Planning
                                 }
                             }
 
-                            var getProfesoriEligibiliSeminar = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 2).ToList();
+                            var getProfesoriEligibiliSeminar = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 2 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliSeminar.Count != 0)
                             {
                                 if (getProfesoriEligibiliSeminar.Count == 1)
@@ -222,7 +222,7 @@ namespace OTTS_WPF.Planning
                                 }
                             }
 
-                            var getProfesoriEligibiliLaborator = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 3).ToList();
+                            var getProfesoriEligibiliLaborator = db.TEACHERS_LECTURES_LINK.Where(z =>z.bACTIVE==true && z.iID_LECTURE == prelegere.iID_LECTURE && z.iID_LECTURE_TYPE == 3 && z.iID_SEMESTER == PersistentData.SelectedSemester).ToList();
                             if (getProfesoriEligibiliLaborator.Count != 0)
                             {
                                 if (getProfesoriEligibiliLaborator.Count == 1)
@@ -336,6 +336,8 @@ namespace OTTS_WPF.Planning
                                         z.iID_LECTURE_TYPE == ordine.iID_LECTURE_TYPE
                                         &&
                                         z.iGENERATION_NUMBER == Numar_Generare
+                                        && 
+                                        z.iID_SEMESTER == PersistentData.SelectedSemester
                                         );
                                     if (VerificaPlanificare != null)
                                     {
@@ -352,7 +354,8 @@ namespace OTTS_WPF.Planning
                                                                             where u.iID_SEMIGROUP == parsedsemigrupa.iID_SEMIGROUP
                                                                             && u.bACTIVE==true
                                                                             && u.iGENERATION_NUMBER == Numar_Generare
-                                                                            select u).GroupBy(z => z.iID_DAY).ToList();
+                                                                            && u.iID_SEMESTER == PersistentData.SelectedSemester
+                                                                           select u).GroupBy(z => z.iID_DAY).ToList();
                                         foreach (var item in getModuleZiPlanificateGrupe)
                                         {
                                             if (item.Count() >= 4)
@@ -403,7 +406,9 @@ namespace OTTS_WPF.Planning
                                             //((z.ID_PROFESOR == ProfesorCurent.ID_PROFESOR&&((z.ID_PRELEGERE != ProfesorCurent.ID_PRELEGERE)||(z.ID_PRELEGERE == ProfesorCurent.ID_PRELEGERE &&z.ID_TIP_EXECUTIE != ProfesorCurent.ID_TIP_EXECUTIE)))
                                             //||z.ID_PROFESOR!=ProfesorCurent.ID_PROFESOR)
                                             &&
-                                            z.iGENERATION_NUMBER == Numar_Generare);
+                                            z.iGENERATION_NUMBER == Numar_Generare
+                                            && 
+                                            z.iID_SEMESTER == PersistentData.SelectedSemester);
                                             if (VerificaSuprapunere != null)
                                             {
                                                 //e suprapunere
@@ -436,6 +441,8 @@ namespace OTTS_WPF.Planning
                                                             z.iID_MODULE == ModuleDisponibile.iID_MODULE
                                                             &&
                                                             z.iID_SEMIGROUP == semigrupa.iID_SEMIGROUP
+                                                            && 
+                                                            z.iID_SEMESTER == PersistentData.SelectedSemester
                                                             );
                                                             if (CheckZiModulDisponibilSemigrupa != null)
                                                             {
@@ -452,6 +459,8 @@ namespace OTTS_WPF.Planning
                                                         orarplan.bACTIVE = true;
                                                         orarplan.dtCREATE_DATE = DateTime.UtcNow;
                                                         orarplan.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                                                        orarplan.iID_SEMESTER = PersistentData.SelectedSemester;
 
                                                         orarplan.iID_SEMIGROUP = parsedsemigrupa.iID_SEMIGROUP;
                                                         orarplan.iID_MODULE = ModuleDisponibile.iID_MODULE;
@@ -483,6 +492,8 @@ namespace OTTS_WPF.Planning
                                                             orarplan.bACTIVE = true;
                                                             orarplan.dtCREATE_DATE = DateTime.UtcNow;
                                                             orarplan.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                                                            orarplan.iID_SEMESTER = PersistentData.SelectedSemester;
 
                                                             orarplan.iID_SEMIGROUP = semigrupa.iID_SEMIGROUP;
                                                             orarplan.iID_MODULE = ModuleDisponibile.iID_MODULE;
@@ -520,6 +531,8 @@ namespace OTTS_WPF.Planning
                                                     orarplan.bACTIVE = true;
                                                     orarplan.dtCREATE_DATE = DateTime.UtcNow;
                                                     orarplan.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                                                    orarplan.iID_SEMESTER = PersistentData.SelectedSemester;
 
                                                     orarplan.iID_SEMIGROUP = parsedsemigrupa.iID_SEMIGROUP;
                                                     orarplan.iID_MODULE = ModuleDisponibile.iID_MODULE;

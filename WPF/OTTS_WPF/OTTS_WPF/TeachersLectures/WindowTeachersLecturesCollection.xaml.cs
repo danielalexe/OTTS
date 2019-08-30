@@ -79,6 +79,8 @@ namespace OTTS_WPF.TeachersLectures
                                    &&
                                    (FilterLectureType == -1||u.iID_LECTURE_TYPE == FilterLectureType)
                                    &&
+                                   (u.iID_SEMESTER == PersistentData.SelectedSemester)
+                                   &&
                                    u.bACTIVE == true)
                                    select new DTOTeachersLectures
                                    {

@@ -127,6 +127,8 @@ namespace OTTS_WPF.Planning
                             &&
                             z.iID_DAY == idzi
                             &&
+                            z.iID_SEMESTER == PersistentData.SelectedSemester
+                            &&
                             z.iID_MODULE == idmodul);
                             if (getPlanificareZi != null)
                             {
@@ -135,7 +137,7 @@ namespace OTTS_WPF.Planning
                                 var TipExecutie = getPlanificareZi.iID_LECTURE_TYPE;
 
                                 var TextDeAfisat = "";
-                                var getPrelegere = db.LECTURES.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE == Prelegere);
+                                var getPrelegere = db.LECTURES.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE == Prelegere && z.iID_SEMESTER == PersistentData.SelectedSemester);
                                 if (getPrelegere != null)
                                 {
                                     TextDeAfisat += getPrelegere.nvNAME;

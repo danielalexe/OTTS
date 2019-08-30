@@ -66,6 +66,7 @@
           <Property Name="iID_GROUPS_LECTURES_LINK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="iID_GROUP" Type="int" Nullable="false" />
           <Property Name="iID_LECTURE" Type="int" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="int" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -116,6 +117,7 @@
           </Key>
           <Property Name="iID_LECTURE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="int" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -140,6 +142,18 @@
           </Key>
           <Property Name="iID_PLANNING_TYPE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nvNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
+          <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
+          <Property Name="iLASTMODIFIED_USER" Type="int" />
+        </EntityType>
+        <EntityType Name="SEMESTERS">
+          <Key>
+            <PropertyRef Name="iID_SEMESTER" />
+          </Key>
+          <Property Name="iID_SEMESTER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nvNAME" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -250,6 +264,7 @@
           <Property Name="iID_LECTURE" Type="int" Nullable="false" />
           <Property Name="iID_LECTURE_TYPE" Type="int" Nullable="false" />
           <Property Name="iHOURS" Type="int" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="int" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -269,6 +284,7 @@
           <Property Name="iID_LECTURE_TYPE" Type="int" Nullable="false" />
           <Property Name="iGENERATION_NUMBER" Type="int" Nullable="false" />
           <Property Name="iID_PLANNING_TYPE" Type="int" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="int" Nullable="false" />
           <Property Name="bACTIVE" Type="bit" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
@@ -347,6 +363,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GROUPS_LECTURES_LINK_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="GROUPS_LECTURES_LINK">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GROUPS_MODULES_LINK_GROUPS">
           <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
           <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
@@ -368,6 +396,18 @@
             </Principal>
             <Dependent Role="GROUPS_MODULES_LINK">
               <PropertyRef Name="iID_MODULE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LECTURES_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="LECTURES">
+              <PropertyRef Name="iID_SEMESTER" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -467,6 +507,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TEACHERS_LECTURES_LINK_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="TEACHERS_LECTURES_LINK">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TEACHERS_LECTURES_LINK_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
@@ -546,6 +598,7 @@
           <EntitySet Name="LECTURES" EntityType="Self.LECTURES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MODULES" EntityType="Self.MODULES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PLANNING_TYPE" EntityType="Self.PLANNING_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SEMESTERS" EntityType="Self.SEMESTERS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SEMIGROUPS" EntityType="Self.SEMIGROUPS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SETTINGS" EntityType="Self.SETTINGS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -579,6 +632,10 @@
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_SEMESTERS" Association="Self.FK_GROUPS_LECTURES_LINK_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
+            <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
+          </AssociationSet>
           <AssociationSet Name="FK_GROUPS_MODULES_LINK_GROUPS" Association="Self.FK_GROUPS_MODULES_LINK_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
@@ -586,6 +643,10 @@
           <AssociationSet Name="FK_GROUPS_MODULES_LINK_MODULES" Association="Self.FK_GROUPS_MODULES_LINK_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
             <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LECTURES_SEMESTERS" Association="Self.FK_LECTURES_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
+            <End Role="LECTURES" EntitySet="LECTURES" />
           </AssociationSet>
           <AssociationSet Name="FK_SEMIGROUPS_GROUPS" Association="Self.FK_SEMIGROUPS_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
@@ -617,6 +678,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURES" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURES">
             <End Role="LECTURES" EntitySet="LECTURES" />
+            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_SEMESTERS" Association="Self.FK_TEACHERS_LECTURES_LINK_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
           <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_TEACHERS" Association="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS">
@@ -708,6 +773,7 @@
           <Property Name="iID_GROUPS_LECTURES_LINK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="iID_GROUP" Type="Int32" Nullable="false" />
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="Int32" Nullable="false" />
           <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
@@ -715,6 +781,7 @@
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_LECTURES_LINK_GROUPS" FromRole="GROUPS_LECTURES_LINK" ToRole="GROUPS" />
           <NavigationProperty Name="LECTURES" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="GROUPS_LECTURES_LINK" ToRole="LECTURES" />
+          <NavigationProperty Name="SEMESTERS" Relationship="Self.FK_GROUPS_LECTURES_LINK_SEMESTERS" FromRole="GROUPS_LECTURES_LINK" ToRole="SEMESTERS" />
         </EntityType>
         <EntityType Name="GROUPS_MODULES_LINK">
           <Key>
@@ -764,12 +831,14 @@
           </Key>
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="Int32" Nullable="false" />
           <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="GROUPS_LECTURES_LINK" />
+          <NavigationProperty Name="SEMESTERS" Relationship="Self.FK_LECTURES_SEMESTERS" FromRole="LECTURES" ToRole="SEMESTERS" />
           <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="LECTURES" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
         <EntityType Name="MODULES">
@@ -799,6 +868,21 @@
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="TIMETABLE_PLANNING" Relationship="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE" FromRole="PLANNING_TYPE" ToRole="TIMETABLE_PLANNING" />
+        </EntityType>
+        <EntityType Name="SEMESTERS">
+          <Key>
+            <PropertyRef Name="iID_SEMESTER" />
+          </Key>
+          <Property Name="iID_SEMESTER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nvNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
+          <Property Name="iLASTMODIFIED_USER" Type="Int32" />
+          <NavigationProperty Name="GROUPS_LECTURES_LINK" Relationship="Self.FK_GROUPS_LECTURES_LINK_SEMESTERS" FromRole="SEMESTERS" ToRole="GROUPS_LECTURES_LINK" />
+          <NavigationProperty Name="LECTURES" Relationship="Self.FK_LECTURES_SEMESTERS" FromRole="SEMESTERS" ToRole="LECTURES" />
+          <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_SEMESTERS" FromRole="SEMESTERS" ToRole="TEACHERS_LECTURES_LINK" />
         </EntityType>
         <EntityType Name="SEMIGROUPS">
           <Key>
@@ -916,6 +1000,7 @@
           <Property Name="iID_LECTURE" Type="Int32" Nullable="false" />
           <Property Name="iID_LECTURE_TYPE" Type="Int32" Nullable="false" />
           <Property Name="iHOURS" Type="Int32" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="Int32" Nullable="false" />
           <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
@@ -923,6 +1008,7 @@
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="LECTURE_TYPE" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURE_TYPE" />
           <NavigationProperty Name="LECTURES" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURES" />
+          <NavigationProperty Name="SEMESTERS" Relationship="Self.FK_TEACHERS_LECTURES_LINK_SEMESTERS" FromRole="TEACHERS_LECTURES_LINK" ToRole="SEMESTERS" />
           <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS" FromRole="TEACHERS_LECTURES_LINK" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TIMETABLE_PLANNING">
@@ -938,6 +1024,7 @@
           <Property Name="iID_LECTURE_TYPE" Type="Int32" Nullable="false" />
           <Property Name="iGENERATION_NUMBER" Type="Int32" Nullable="false" />
           <Property Name="iID_PLANNING_TYPE" Type="Int32" Nullable="false" />
+          <Property Name="iID_SEMESTER" Type="Int32" Nullable="false" />
           <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
           <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
@@ -1053,6 +1140,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GROUPS_LECTURES_LINK_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="GROUPS_LECTURES_LINK" Type="Self.GROUPS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="GROUPS_LECTURES_LINK">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GROUPS_MODULES_LINK_MODULES">
           <End Role="MODULES" Type="Self.MODULES" Multiplicity="1" />
           <End Role="GROUPS_MODULES_LINK" Type="Self.GROUPS_MODULES_LINK" Multiplicity="*" />
@@ -1089,6 +1188,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_LECTURES_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="LECTURES">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURES">
           <End Role="LECTURES" Type="Self.LECTURES" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
@@ -1122,6 +1233,18 @@
             </Principal>
             <Dependent Role="TIMETABLE_PLANNING">
               <PropertyRef Name="iID_PLANNING_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_LECTURES_LINK_SEMESTERS">
+          <End Role="SEMESTERS" Type="Self.SEMESTERS" Multiplicity="1" />
+          <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SEMESTERS">
+              <PropertyRef Name="iID_SEMESTER" />
+            </Principal>
+            <Dependent Role="TEACHERS_LECTURES_LINK">
+              <PropertyRef Name="iID_SEMESTER" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1185,6 +1308,7 @@
           <EntitySet Name="LECTURES" EntityType="Self.LECTURES" />
           <EntitySet Name="MODULES" EntityType="Self.MODULES" />
           <EntitySet Name="PLANNING_TYPE" EntityType="Self.PLANNING_TYPE" />
+          <EntitySet Name="SEMESTERS" EntityType="Self.SEMESTERS" />
           <EntitySet Name="SEMIGROUPS" EntityType="Self.SEMIGROUPS" />
           <EntitySet Name="SETTINGS" EntityType="Self.SETTINGS" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
@@ -1230,6 +1354,10 @@
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
           </AssociationSet>
+          <AssociationSet Name="FK_GROUPS_LECTURES_LINK_SEMESTERS" Association="Self.FK_GROUPS_LECTURES_LINK_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
+            <End Role="GROUPS_LECTURES_LINK" EntitySet="GROUPS_LECTURES_LINK" />
+          </AssociationSet>
           <AssociationSet Name="FK_GROUPS_MODULES_LINK_MODULES" Association="Self.FK_GROUPS_MODULES_LINK_MODULES">
             <End Role="MODULES" EntitySet="MODULES" />
             <End Role="GROUPS_MODULES_LINK" EntitySet="GROUPS_MODULES_LINK" />
@@ -1242,6 +1370,10 @@
             <End Role="LECTURE_TYPE" EntitySet="LECTURE_TYPE" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
+          <AssociationSet Name="FK_LECTURES_SEMESTERS" Association="Self.FK_LECTURES_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
+            <End Role="LECTURES" EntitySet="LECTURES" />
+          </AssociationSet>
           <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURES" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURES">
             <End Role="LECTURES" EntitySet="LECTURES" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
@@ -1253,6 +1385,10 @@
           <AssociationSet Name="FK_TIMETABLE_PLANNING_PLANNING_TYPE" Association="Self.FK_TIMETABLE_PLANNING_PLANNING_TYPE">
             <End Role="PLANNING_TYPE" EntitySet="PLANNING_TYPE" />
             <End Role="TIMETABLE_PLANNING" EntitySet="TIMETABLE_PLANNING" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_SEMESTERS" Association="Self.FK_TEACHERS_LECTURES_LINK_SEMESTERS">
+            <End Role="SEMESTERS" EntitySet="SEMESTERS" />
+            <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
           <AssociationSet Name="FK_TEACHER_PREFERRED_DAYS_TEACHERS" Association="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
@@ -1270,48 +1406,7 @@
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHERS_LECTURES_LINK" EntitySet="TEACHERS_LECTURES_LINK" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(OTTSModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(OTTSModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1382,6 +1477,7 @@
                 <ScalarProperty Name="iID_GROUPS_LECTURES_LINK" ColumnName="iID_GROUPS_LECTURES_LINK" />
                 <ScalarProperty Name="iID_GROUP" ColumnName="iID_GROUP" />
                 <ScalarProperty Name="iID_LECTURE" ColumnName="iID_LECTURE" />
+                <ScalarProperty Name="iID_SEMESTER" ColumnName="iID_SEMESTER" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
@@ -1436,6 +1532,7 @@
               <MappingFragment StoreEntitySet="LECTURES">
                 <ScalarProperty Name="iID_LECTURE" ColumnName="iID_LECTURE" />
                 <ScalarProperty Name="nvNAME" ColumnName="nvNAME" />
+                <ScalarProperty Name="iID_SEMESTER" ColumnName="iID_SEMESTER" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
@@ -1461,6 +1558,19 @@
             <EntityTypeMapping TypeName="OTTSModel.PLANNING_TYPE">
               <MappingFragment StoreEntitySet="PLANNING_TYPE">
                 <ScalarProperty Name="iID_PLANNING_TYPE" ColumnName="iID_PLANNING_TYPE" />
+                <ScalarProperty Name="nvNAME" ColumnName="nvNAME" />
+                <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
+                <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
+                <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
+                <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
+                <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SEMESTERS">
+            <EntityTypeMapping TypeName="OTTSModel.SEMESTERS">
+              <MappingFragment StoreEntitySet="SEMESTERS">
+                <ScalarProperty Name="iID_SEMESTER" ColumnName="iID_SEMESTER" />
                 <ScalarProperty Name="nvNAME" ColumnName="nvNAME" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
@@ -1580,6 +1690,7 @@
                 <ScalarProperty Name="iID_LECTURE" ColumnName="iID_LECTURE" />
                 <ScalarProperty Name="iID_LECTURE_TYPE" ColumnName="iID_LECTURE_TYPE" />
                 <ScalarProperty Name="iHOURS" ColumnName="iHOURS" />
+                <ScalarProperty Name="iID_SEMESTER" ColumnName="iID_SEMESTER" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
@@ -1600,6 +1711,7 @@
                 <ScalarProperty Name="iID_LECTURE_TYPE" ColumnName="iID_LECTURE_TYPE" />
                 <ScalarProperty Name="iGENERATION_NUMBER" ColumnName="iGENERATION_NUMBER" />
                 <ScalarProperty Name="iID_PLANNING_TYPE" ColumnName="iID_PLANNING_TYPE" />
+                <ScalarProperty Name="iID_SEMESTER" ColumnName="iID_SEMESTER" />
                 <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
                 <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
@@ -1608,30 +1720,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="OTTSModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="OTTSModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="OTTSModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="OTTSModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="OTTSModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="OTTSModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="OTTSModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="OTTSModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="OTTSModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

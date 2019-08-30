@@ -49,6 +49,8 @@ namespace OTTS_WPF.Lectures
                                 where (
                                 (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
                                 &&
+                                (u.iID_SEMESTER == PersistentData.SelectedSemester)
+                                &&
                                 u.bACTIVE == true)
                                 select new DTOLecture
                                 {

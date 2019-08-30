@@ -50,6 +50,8 @@ namespace OTTS_WPF.Groups
                 var getGroupLecture = (from u in db.LECTURES
                                       where u.bACTIVE == true
                                       &&
+                                      u.iID_SEMESTER == PersistentData.SelectedSemester
+                                      &&
                                       !db.GROUPS_LECTURES_LINK.Any(z => z.iID_GROUP == ID_GROUP && z.iID_LECTURE == u.iID_LECTURE && z.bACTIVE == true)
                                       select new DTOLecture
                                       {
@@ -84,6 +86,8 @@ namespace OTTS_WPF.Groups
                         GROUPS_LECTURES_LINK gll = new GROUPS_LECTURES_LINK();
                         gll.iID_GROUP = ID_GROUP;
                         gll.iID_LECTURE = item.iID_LECTURE;
+
+                        gll.iID_SEMESTER = PersistentData.SelectedSemester;
 
                         gll.bACTIVE = true;
                         gll.iCREATE_USER = PersistentData.LoggedUser.iID_USER;

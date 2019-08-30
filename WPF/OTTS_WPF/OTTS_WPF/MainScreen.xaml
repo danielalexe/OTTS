@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:OTTS_WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:DataControls="clr-namespace:DataControls;assembly=DataControls"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -93,24 +94,28 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="OTTS(Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="OTTS (Open TimeTable Software)" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                     <Grid Grid.Row="0" Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="Offline User" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">
                         </TextBlock>
-                        <materialDesign:PackIcon Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Kind="Notifications" Foreground="White" Width="30" Height="30">
-
-                        </materialDesign:PackIcon>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Foreground="White" x:Name="ComboBoxSemester">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock x:Name="CComboTextBlock" Foreground="White" Text="{Binding nvCOMBO_DISPLAY}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <materialDesign:PopupBox Grid.Row="0" Grid.Column="2" Foreground="White" Width="30" Height="30" StaysOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel Width="150">
                                 <Button x:Name="ButtonAboutUs" Content="About Us" Click="ButtonAboutUs_Click" />

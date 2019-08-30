@@ -39,6 +39,8 @@ namespace OTTS_WPF.Lectures
                     LECTURES lecture = new LECTURES();
                     lecture.nvNAME = CTextName.CTextBox.Text;
 
+                    lecture.iID_SEMESTER = PersistentData.SelectedSemester;
+
                     lecture.bACTIVE = true;
                     lecture.dtCREATE_DATE = DateTime.UtcNow;
                     lecture.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
@@ -57,6 +59,8 @@ namespace OTTS_WPF.Lectures
                     if (getLecture != null)
                     {
                         getLecture.nvNAME = CTextName.CTextBox.Text;
+
+                        getLecture.iID_SEMESTER = PersistentData.SelectedSemester;
 
                         getLecture.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                         getLecture.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;

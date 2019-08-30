@@ -52,6 +52,8 @@ namespace OTTS_WPF.Groups
                                        where
                                        u.iID_GROUP == ID_GROUP
                                        &&
+                                       u.iID_SEMESTER == PersistentData.SelectedSemester
+                                       &&
                                        u.bACTIVE == true
                                        select new DTOGroupLecture
                                        {

@@ -23,6 +23,7 @@ namespace DataLink
         public int iID_LECTURE_TYPE { get; set; }
         public int iGENERATION_NUMBER { get; set; }
         public int iID_PLANNING_TYPE { get; set; }
+        public int iID_SEMESTER { get; set; }
         public bool bACTIVE { get; set; }
         public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }

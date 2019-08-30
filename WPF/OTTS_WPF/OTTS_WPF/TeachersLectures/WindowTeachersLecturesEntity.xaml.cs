@@ -62,6 +62,8 @@ namespace OTTS_WPF.TeachersLectures
             {
                 var getLectures = (from u in db.LECTURES
                                         where u.bACTIVE == true
+                                        &&
+                                        u.iID_SEMESTER == PersistentData.SelectedSemester
                                         select new DTOLecture
                                         {
                                             iID_LECTURE = u.iID_LECTURE,
@@ -105,6 +107,8 @@ namespace OTTS_WPF.TeachersLectures
                     tll.iID_LECTURE_TYPE= ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
                     tll.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
 
+                    tll.iID_SEMESTER = PersistentData.SelectedSemester;
+
                     tll.bACTIVE = true;
                     tll.dtCREATE_DATE = DateTime.UtcNow;
                     tll.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
@@ -138,6 +142,8 @@ namespace OTTS_WPF.TeachersLectures
                         getTeacherLecture.iID_LECTURE = ((DTOLecture)CComboLectures.CComboBox.SelectedItem).iID_LECTURE;
                         getTeacherLecture.iID_LECTURE_TYPE = ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
                         getTeacherLecture.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
+
+                        getTeacherLecture.iID_SEMESTER = PersistentData.SelectedSemester;
 
                         getTeacherLecture.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                         getTeacherLecture.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;

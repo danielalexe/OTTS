@@ -26,6 +26,8 @@ using OTTS_WPF.Groups;
 using OTTS_WPF.Semigroups;
 using OTTS_WPF.TeachersLectures;
 using OTTS_WPF.Planning;
+using DataLink;
+using DataObjects;
 
 namespace OTTS_WPF
 {
@@ -39,6 +41,31 @@ namespace OTTS_WPF
         public MainScreen()
         {
             InitializeComponent();
+            BindComboBoxSemester();
+            ComboBoxSemester.DropDownClosed += ComboBoxSemester_DropDownClosed;
+        }
+
+        private void ComboBoxSemester_DropDownClosed(object sender, EventArgs e)
+        {
+            PersistentData.SelectedSemester = ((DTOSemester)ComboBoxSemester.SelectedItem).iID_SEMESTER;
+        }
+
+        private void BindComboBoxSemester()
+        {
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getSemesters = (from u in db.SEMESTERS
+                                    where u.bACTIVE==true
+                                    select new DTOSemester
+                                    {
+                                        iID_SEMESTER = u.iID_SEMESTER,
+                                        nvNAME = u.nvNAME,
+                                        nvCOMBO_DISPLAY = u.nvNAME
+                                    }).ToList();
+                ComboBoxSemester.ItemsSource = getSemesters;
+                ComboBoxSemester.SelectedItem = getSemesters.FirstOrDefault();
+                PersistentData.SelectedSemester = getSemesters.FirstOrDefault().iID_SEMESTER;
+            }
         }
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)

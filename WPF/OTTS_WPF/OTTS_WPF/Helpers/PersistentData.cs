@@ -12,6 +12,8 @@ namespace OTTS_WPF.Helpers
 {
     public static class PersistentData
     {
+        public static int SelectedSemester
+        { get; set; }
         public static DTOUser LoggedUser
         {
             get;set;

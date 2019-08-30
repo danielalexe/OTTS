@@ -12,18 +12,18 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class LECTURES
+    public partial class SEMESTERS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LECTURES()
+        public SEMESTERS()
         {
             this.GROUPS_LECTURES_LINK = new HashSet<GROUPS_LECTURES_LINK>();
+            this.LECTURES = new HashSet<LECTURES>();
             this.TEACHERS_LECTURES_LINK = new HashSet<TEACHERS_LECTURES_LINK>();
         }
     
-        public int iID_LECTURE { get; set; }
-        public string nvNAME { get; set; }
         public int iID_SEMESTER { get; set; }
+        public string nvNAME { get; set; }
         public bool bACTIVE { get; set; }
         public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
@@ -32,7 +32,8 @@ namespace DataLink
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GROUPS_LECTURES_LINK> GROUPS_LECTURES_LINK { get; set; }
-        public virtual SEMESTERS SEMESTERS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LECTURES> LECTURES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
     }

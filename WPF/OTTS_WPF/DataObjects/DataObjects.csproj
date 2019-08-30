@@ -79,6 +79,7 @@
     <Compile Include="DTOTeacherPrefferedDay.cs" />
     <Compile Include="DTOSemigroup.cs" />
     <Compile Include="DTOTeachersLectures.cs" />
+    <Compile Include="DTOSemester.cs" />
     <Compile Include="DTOUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

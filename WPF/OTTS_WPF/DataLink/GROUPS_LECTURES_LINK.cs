@@ -17,6 +17,7 @@ namespace DataLink
         public int iID_GROUPS_LECTURES_LINK { get; set; }
         public int iID_GROUP { get; set; }
         public int iID_LECTURE { get; set; }
+        public int iID_SEMESTER { get; set; }
         public bool bACTIVE { get; set; }
         public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
@@ -25,5 +26,6 @@ namespace DataLink
     
         public virtual GROUPS GROUPS { get; set; }
         public virtual LECTURES LECTURES { get; set; }
+        public virtual SEMESTERS SEMESTERS { get; set; }
     }
 }
