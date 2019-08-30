@@ -80,10 +80,10 @@ namespace OTTS_WPF.Planning
 
                     #region Selectare Numar Generare
                     int Numar_Generare = 1;
-                    var getSetare = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1337);
-                    if (getSetare != null)
+                    var getSemester = db.SEMESTERS.FirstOrDefault(z => z.iID_SEMESTER == PersistentData.SelectedSemester && z.bACTIVE == true);
+                    if (getSemester != null)
                     {
-                        Numar_Generare = getSetare.iVALUE;
+                        Numar_Generare = getSemester.iGENERATION_NUMBER;
                     }
                     #endregion
 
@@ -673,9 +673,9 @@ namespace OTTS_WPF.Planning
                     }
                     #endregion
                     #region Update Numar Generare
-                    if (getSetare != null)
+                    if (getSemester != null)
                     {
-                        getSetare.iVALUE += 1;
+                        getSemester.iGENERATION_NUMBER += 1;
                         db.SaveChanges();
                     }
                     #endregion
@@ -683,6 +683,7 @@ namespace OTTS_WPF.Planning
             }
             
             MessageBox.Show("Generarea este Gata. Nu s-au putut plasa: " + NoTimeCounter.ToString());
+            WindowPlanningCollection.BindComboGenerationNumber();
             WindowPlanningCollection.ReloadData();
             CloseWindow();
         }

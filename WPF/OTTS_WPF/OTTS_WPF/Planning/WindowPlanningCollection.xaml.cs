@@ -51,15 +51,15 @@ namespace OTTS_WPF.Planning
             }
         }
 
-        private void BindComboGenerationNumber()
+        public void BindComboGenerationNumber()
         {
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
                 int GenerationNumber = 0;
-                var getSetting = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1337);
-                if (getSetting != null)
+                var getSemester = db.SEMESTERS.FirstOrDefault(z => z.iID_SEMESTER == PersistentData.SelectedSemester && z.bACTIVE==true);
+                if (getSemester != null)
                 {
-                    GenerationNumber = getSetting.iVALUE;
+                    GenerationNumber = getSemester.iGENERATION_NUMBER;
                 }
                 if (GenerationNumber != 0)
                 {
@@ -267,11 +267,11 @@ namespace OTTS_WPF.Planning
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    db.Database.ExecuteSqlCommand("DELETE FROM TIMETABLE_PLANNING");
-                    var getSetting = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1337);
-                    if (getSetting != null)
+                    db.Database.ExecuteSqlCommand("DELETE FROM TIMETABLE_PLANNING WHERE iID_SEMESTER = "+PersistentData.SelectedSemester);
+                    var getSemester = db.SEMESTERS.FirstOrDefault(z => z.iID_SEMESTER == PersistentData.SelectedSemester && z.bACTIVE == true);
+                    if (getSemester != null)
                     {
-                        getSetting.iVALUE = 1;
+                        getSemester.iGENERATION_NUMBER = 1;
                         db.SaveChanges();
                     }
                 }

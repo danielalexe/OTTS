@@ -154,8 +154,9 @@ namespace OTTS_WPF
                         {
                             /// Schema update is required
                             /// 
-                            MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata si veti putea continua.");
+                            MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
                             UpdateSchemaFromVersion(getDBVersion.iVALUE);
+                            MessageBox.Show("Actualizarea a fost efectuata cu succes.");
                         }
                     }
                     else
@@ -163,8 +164,9 @@ namespace OTTS_WPF
                         /// first iteration of the DB
                         /// Apply all Schema updates.
                         /// 
-                        MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata si veti putea continua.");
+                        MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
                         UpdateSchemaFromScratch();
+                        MessageBox.Show("Actualizarea a fost efectuata cu succes.");
                     }
                 }
             }
@@ -254,7 +256,7 @@ namespace OTTS_WPF
             {
                 var AllCommands = File.ReadAllText(item);
                 string[] commands = AllCommands.Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
-                OTTSContext context = new OTTSContext(); //Instance new Context
+                OTTSContext context = new OTTSContext(PersistentData.ConnectionString); //Instance new Context
                 DbConnection conn = context.Database.Connection; // Get Database connection
                 ConnectionState initialState = conn.State; // Get Initial connection state
                 try
@@ -300,7 +302,7 @@ namespace OTTS_WPF
             {
                 var AllCommands = File.ReadAllText(item);
                 string[] commands = AllCommands.Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
-                OTTSContext context = new OTTSContext(); //Instance new Context
+                OTTSContext context = new OTTSContext(PersistentData.ConnectionString); //Instance new Context
                 DbConnection conn = context.Database.Connection; // Get Database connection
                 ConnectionState initialState = conn.State; // Get Initial connection state
                 try
