@@ -28,14 +28,14 @@ Currently the app has the following modules:
 4. ***Who uses the app now?***  
 Currently the app is in preliminary test by the TIMF department from the Universitiy of Petroleum and Gas, Romania.
 ## Screenshots:  
-Login Screen
-![alt text](Screenshots/LoginScreen.png "Login Screen")  
+***Login Screen  
+<img src="Screenshots/LoginScreen.png" alt="Login Screen" height="275">  
 Main Menu  
-![alt text](Screenshots/MainMenu_1.png "Main Menu 1")  
-![alt text](Screenshots/MainMenu_2.png "Main Menu 2")  
+<img src="Screenshots/MainMenu_1.png" alt="Main Menu 1" height="271">
+<img src="Screenshots/MainMenu_2.png" alt="Main Menu 2" height="276">  
 TimeTable Planning  
-![alt text](Screenshots/Planning.png "Planning")  
-Groups Menu
-![alt text](Screenshots/Groups.png "Groups")  
-![alt text](Screenshots/GroupsLectures_1.png "Groups Lectures Bottom Slider")  
-![alt text](Screenshots/GroupsLectures_2.png "Groups Lectures Expanded Slider")  
+<img src="Screenshots/Planning.png" alt="Planning" height="332">  
+Groups Menu***  
+<img src="Screenshots/Groups.png" alt="Groups" height="334">  
+<img src="Screenshots/GroupsLectures_1.png" alt="Groups Lectures Bottom Slider" height="348">  
+<img src="Screenshots/GroupsLectures_2.png" alt="Groups Lectures Expanded Slider" height="338">  
