@@ -1,5 +1,4 @@
-# OpenTimeTableSoftware
-Free Time Table Application for use at Universities (Bologna process system).
+# OpenTimeTableSoftware - Free Time Table Application for Universities (Bologna process system)
 ## FAQ:
 1. ***What is this?***  
 This is an application designed to fulfill the need to generate the time table for a faculty, part of an University that adhered to the Bologna process.
