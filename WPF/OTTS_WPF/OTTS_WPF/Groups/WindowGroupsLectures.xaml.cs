@@ -120,10 +120,22 @@ namespace OTTS_WPF.Groups
                         {
                             foreach (DTOGroupLecture item in list)
                             {
-                                var getGroupLecture = db.GROUPS_LECTURES_LINK.FirstOrDefault(z => z.iID_GROUP == item.iID_GROUP && z.iID_LECTURE == item.iID_LECTURE && z.bACTIVE == true);
-                                if (getGroupLecture != null)
+                                var getSelectedGroup = db.GROUPS.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP == item.iID_GROUP);
+                                var getAllSimilarGroups = (from u in db.GROUPS
+                                                           where u.bACTIVE == true
+                                                           &&
+                                                           u.iID_GROUP_TYPE == getSelectedGroup.iID_GROUP_TYPE
+                                                           &&
+                                                           u.iYEAR == getSelectedGroup.iYEAR
+                                                           select u).ToList();
+
+                                foreach (var group in getAllSimilarGroups)
                                 {
-                                    getGroupLecture.bACTIVE = false;
+                                    var getGroupLecture = db.GROUPS_LECTURES_LINK.FirstOrDefault(z => z.iID_GROUP == group.iID_GROUP && z.iID_LECTURE == item.iID_LECTURE && z.bACTIVE == true);
+                                    if (getGroupLecture != null)
+                                    {
+                                        getGroupLecture.bACTIVE = false;
+                                    }
                                 }
                             }
                             db.SaveChanges();

@@ -81,20 +81,39 @@ namespace OTTS_WPF.Groups
             {
                 using (var db = new OTTSContext(PersistentData.ConnectionString))
                 {
-                    foreach (DTOLecture item in list)
+                    var getSelectedGroup = db.GROUPS.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP == ID_GROUP);
+                    var getAllSimilarGroups = (from u in db.GROUPS
+                                               where u.bACTIVE == true
+                                               &&
+                                               u.iID_GROUP_TYPE == getSelectedGroup.iID_GROUP_TYPE
+                                               &&
+                                               u.iYEAR == getSelectedGroup.iYEAR
+                                               select u).ToList();
+                    foreach (var group in getAllSimilarGroups)
                     {
-                        GROUPS_LECTURES_LINK gll = new GROUPS_LECTURES_LINK();
-                        gll.iID_GROUP = ID_GROUP;
-                        gll.iID_LECTURE = item.iID_LECTURE;
+                        foreach (DTOLecture item in list)
+                        {
+                            var CheckLink = db.GROUPS_LECTURES_LINK.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP == group.iID_GROUP && z.iID_LECTURE == item.iID_LECTURE && z.iID_SEMESTER == PersistentData.SelectedSemester);
+                            if (CheckLink==null)
+                            {
+                                GROUPS_LECTURES_LINK gll = new GROUPS_LECTURES_LINK();
+                                gll.iID_GROUP = group.iID_GROUP;
+                                gll.iID_LECTURE = item.iID_LECTURE;
 
-                        gll.iID_SEMESTER = PersistentData.SelectedSemester;
+                                gll.iID_SEMESTER = PersistentData.SelectedSemester;
 
-                        gll.bACTIVE = true;
-                        gll.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
-                        gll.dtCREATE_DATE = DateTime.UtcNow;
+                                gll.bACTIVE = true;
+                                gll.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+                                gll.dtCREATE_DATE = DateTime.UtcNow;
 
-                        db.GROUPS_LECTURES_LINK.Add(gll);
-                        db.SaveChanges();
+                                db.GROUPS_LECTURES_LINK.Add(gll);
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                //it exists so we do not add it
+                            }
+                        }
                     }
                 }
                 WindowGroupsLectures.LoadData();
