@@ -27,7 +27,34 @@ namespace OTTS_WPF.Teachers
         public WindowTeachersCollection()
         {
             InitializeComponent();
+            BindComboGroup();
             ReloadData();
+        }
+
+        private void BindComboGroup()
+        {
+            List<DTOGroup> list = new List<DTOGroup>();
+            DTOGroup dTO = new DTOGroup();
+            dTO.iID_GROUP = -1;
+            dTO.NAME = "Neselectat";
+            dTO.nvCOMBO_DISPLAY = "Neselectat";
+            list.Add(dTO);
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getGroups = (from u in db.GROUPS
+                                 where u.bACTIVE == true
+                                 select new DTOGroup
+                                 {
+                                     iID_GROUP = u.iID_GROUP,
+                                     NAME = u.nvNAME,
+                                     nvCOMBO_DISPLAY = u.nvNAME
+                                 }).ToList();
+                list.AddRange(getGroups);
+            }
+
+            CComboGroup.CComboBox.ItemsSource = list;
+            CComboGroup.CComboBox.SelectedItem = list.FirstOrDefault();
         }
 
         private void ButonClose_Click(object sender, RoutedEventArgs e)
@@ -42,26 +69,67 @@ namespace OTTS_WPF.Teachers
 
         public void ReloadData()
         {
-            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            DTOGroup SelectedGroup = (DTOGroup)CComboGroup.CComboBox.SelectedItem;
+            if (SelectedGroup.iID_GROUP == -1)
             {
-                var FilterName = CTextName.CString.ToUpper();
-                var FilterSurname = CTextSurname.CString.ToUpper();
-                var getTeachers = (from u in db.TEACHERS
-                                    where (
-                                    (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
-                                    &&
-                                    (String.IsNullOrEmpty(FilterSurname) || u.nvSURNAME.Contains(FilterSurname))
-                                    &&
-                                    u.bACTIVE==true)
-                                    select new DTOTeacher
-                                    {
-                                        iID_TEACHER = u.iID_TEACHER,
-                                        NAME = u.nvNAME,
-                                        SURNAME = u.nvSURNAME,
-                                        PRIORITY = u.iPRIORITY
-                                    }).ToList();
-                DataGridTeachers.ItemsSource = getTeachers;
-                RenderColumns();
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    var FilterName = CTextName.CString.ToUpper();
+                    var FilterSurname = CTextSurname.CString.ToUpper();
+                    var getTeachers = (from u in db.TEACHERS
+                                       where (
+                                       (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
+                                       &&
+                                       (String.IsNullOrEmpty(FilterSurname) || u.nvSURNAME.Contains(FilterSurname))
+                                       &&
+                                       u.bACTIVE == true)
+                                       select new DTOTeacher
+                                       {
+                                           iID_TEACHER = u.iID_TEACHER,
+                                           NAME = u.nvNAME,
+                                           SURNAME = u.nvSURNAME,
+                                           PRIORITY = u.iPRIORITY
+                                       }).ToList();
+                    DataGridTeachers.ItemsSource = getTeachers;
+                    RenderColumns();
+                }
+            }
+            else
+            {
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    var FilterName = CTextName.CString.ToUpper();
+                    var FilterSurname = CTextSurname.CString.ToUpper();
+                    var getTeachers = (from u in db.TEACHERS
+                                       join z in db.TEACHERS_LECTURES_LINK on u.iID_TEACHER equals z.iID_TEACHER
+                                       join y in db.GROUPS_LECTURES_LINK on z.iID_LECTURE equals y.iID_LECTURE
+                                       where (
+                                       (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
+                                       &&
+                                       (String.IsNullOrEmpty(FilterSurname) || u.nvSURNAME.Contains(FilterSurname))
+                                       &&
+                                       u.bACTIVE == true
+                                       &&
+                                       z.bACTIVE == true
+                                       &&
+                                       z.iID_TEACHER==u.iID_TEACHER
+                                       &&
+                                       y.bACTIVE==true
+                                       &&
+                                       y.iID_LECTURE==z.iID_LECTURE
+                                       &&
+                                       y.iID_GROUP == SelectedGroup.iID_GROUP
+                                       )
+                                       select new DTOTeacher
+                                       {
+                                           iID_TEACHER = u.iID_TEACHER,
+                                           NAME = u.nvNAME,
+                                           SURNAME = u.nvSURNAME,
+                                           PRIORITY = u.iPRIORITY
+                                       }).Distinct().ToList();
+                    DataGridTeachers.ItemsSource = getTeachers;
+                    RenderColumns();
+                }
             }
         }
 
