@@ -27,7 +27,34 @@ namespace OTTS_WPF.Lectures
         public WindowLecturesCollection()
         {
             InitializeComponent();
+            BindComboGroup();
             ReloadData();
+        }
+
+        private void BindComboGroup()
+        {
+            List<DTOGroup> list = new List<DTOGroup>();
+            DTOGroup dTO = new DTOGroup();
+            dTO.iID_GROUP = -1;
+            dTO.NAME = "Neselectat";
+            dTO.nvCOMBO_DISPLAY = "Neselectat";
+            list.Add(dTO);
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getGroups = (from u in db.GROUPS
+                                 where u.bACTIVE == true
+                                 select new DTOGroup
+                                 {
+                                     iID_GROUP = u.iID_GROUP,
+                                     NAME = u.nvNAME,
+                                     nvCOMBO_DISPLAY = u.nvNAME
+                                 }).ToList();
+                list.AddRange(getGroups);
+            }
+
+            CComboGroup.CComboBox.ItemsSource = list;
+            CComboGroup.CComboBox.SelectedItem = list.FirstOrDefault();
         }
 
         private void ButonClose_Click(object sender, RoutedEventArgs e)
@@ -42,24 +69,60 @@ namespace OTTS_WPF.Lectures
 
         public void ReloadData()
         {
-            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            DTOGroup SelectedGroup = (DTOGroup)CComboGroup.CComboBox.SelectedItem;
+            if (SelectedGroup.iID_GROUP==-1)
             {
-                var FilterName = CTextName.CString.ToUpper();
-                var getLectures = (from u in db.LECTURES
-                                where (
-                                (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
-                                &&
-                                (u.iID_SEMESTER == PersistentData.SelectedSemester)
-                                &&
-                                u.bACTIVE == true)
-                                select new DTOLecture
-                                {
-                                    iID_LECTURE = u.iID_LECTURE,
-                                    NAME = u.nvNAME
-                                }).ToList();
-                DataGridLectures.ItemsSource = getLectures;
-                RenderColumns();
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    var FilterName = CTextName.CString.ToUpper();
+                    var getLectures = (from u in db.LECTURES
+                                       where (
+                                       (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
+                                       &&
+                                       (u.iID_SEMESTER == PersistentData.SelectedSemester)
+                                       &&
+                                       u.bACTIVE == true)
+                                       select new DTOLecture
+                                       {
+                                           iID_LECTURE = u.iID_LECTURE,
+                                           NAME = u.nvNAME
+                                       }).ToList();
+                    DataGridLectures.ItemsSource = getLectures;
+                    RenderColumns();
+                }
             }
+            else
+            {
+                using (var db = new OTTSContext(PersistentData.ConnectionString))
+                {
+                    var FilterName = CTextName.CString.ToUpper();
+                    var getLectures = (from u in db.LECTURES
+                                       from z in db.GROUPS_LECTURES_LINK
+                                       where (
+                                       (String.IsNullOrEmpty(FilterName) || u.nvNAME.Contains(FilterName))
+                                       &&
+                                       (u.iID_SEMESTER == PersistentData.SelectedSemester)
+                                       &&
+                                       u.bACTIVE == true
+                                       &&
+                                       z.bACTIVE==true
+                                       &&
+                                       z.iID_GROUP == SelectedGroup.iID_GROUP
+                                       && 
+                                       z.iID_SEMESTER == PersistentData.SelectedSemester
+                                       &&
+                                       z.iID_LECTURE == u.iID_LECTURE
+                                       )
+                                       select new DTOLecture
+                                       {
+                                           iID_LECTURE = u.iID_LECTURE,
+                                           NAME = u.nvNAME
+                                       }).ToList();
+                    DataGridLectures.ItemsSource = getLectures;
+                    RenderColumns();
+                }
+            }
+            
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)

@@ -53,10 +53,14 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <DataControls:CText x:Name="CTextName" Grid.Row="0" Grid.Column="0" CLabel="Name">
 
             </DataControls:CText>
+            <DataControls:CCombo x:Name="CComboGroup" Grid.Row="0" Grid.Column="1" CLabel="Group">
+                
+            </DataControls:CCombo>
         </Grid>
         <DataGrid Grid.Row="2" Grid.Column="0" x:Name="DataGridLectures" IsReadOnly="True">
 
