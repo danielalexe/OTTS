@@ -21,6 +21,7 @@ namespace DataLink
             this.TEACHER_PREFERRED_DAYS = new HashSet<TEACHER_PREFERRED_DAYS>();
             this.TEACHER_PREFERRED_HALLS = new HashSet<TEACHER_PREFERRED_HALLS>();
             this.TEACHER_PREFERRED_MODULES = new HashSet<TEACHER_PREFERRED_MODULES>();
+            this.TEACHERS_GROUP_TYPES_PRIORITY = new HashSet<TEACHERS_GROUP_TYPES_PRIORITY>();
             this.TEACHERS_LECTURES_LINK = new HashSet<TEACHERS_LECTURES_LINK>();
         }
     
@@ -32,7 +33,6 @@ namespace DataLink
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
-        public int iPRIORITY { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BLOCKED_MODULES> BLOCKED_MODULES { get; set; }
@@ -42,6 +42,8 @@ namespace DataLink
         public virtual ICollection<TEACHER_PREFERRED_HALLS> TEACHER_PREFERRED_HALLS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEACHER_PREFERRED_MODULES> TEACHER_PREFERRED_MODULES { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEACHERS_GROUP_TYPES_PRIORITY> TEACHERS_GROUP_TYPES_PRIORITY { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
     }

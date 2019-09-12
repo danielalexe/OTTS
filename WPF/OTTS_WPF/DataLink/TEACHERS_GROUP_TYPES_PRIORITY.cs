@@ -12,26 +12,19 @@ namespace DataLink
     using System;
     using System.Collections.Generic;
     
-    public partial class GROUP_TYPES
+    public partial class TEACHERS_GROUP_TYPES_PRIORITY
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public GROUP_TYPES()
-        {
-            this.GROUPS = new HashSet<GROUPS>();
-            this.TEACHERS_GROUP_TYPES_PRIORITY = new HashSet<TEACHERS_GROUP_TYPES_PRIORITY>();
-        }
-    
+        public int iID_TEACHER_GROUP_TYPE_PRIORITY { get; set; }
+        public int iID_TEACHER { get; set; }
         public int iID_GROUP_TYPE { get; set; }
-        public string nvNAME { get; set; }
+        public int iPRIORITY { get; set; }
         public bool bACTIVE { get; set; }
         public System.DateTime dtCREATE_DATE { get; set; }
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GROUPS> GROUPS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEACHERS_GROUP_TYPES_PRIORITY> TEACHERS_GROUP_TYPES_PRIORITY { get; set; }
+        public virtual GROUP_TYPES GROUP_TYPES { get; set; }
+        public virtual TEACHERS TEACHERS { get; set; }
     }
 }

@@ -254,7 +254,20 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
           <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
+        </EntityType>
+        <EntityType Name="TEACHERS_GROUP_TYPES_PRIORITY">
+          <Key>
+            <PropertyRef Name="iID_TEACHER_GROUP_TYPE_PRIORITY" />
+          </Key>
+          <Property Name="iID_TEACHER_GROUP_TYPE_PRIORITY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="iID_TEACHER" Type="int" Nullable="false" />
+          <Property Name="iID_GROUP_TYPE" Type="int" Nullable="false" />
           <Property Name="iPRIORITY" Type="int" Nullable="false" />
+          <Property Name="bACTIVE" Type="bit" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="datetime" Nullable="false" />
+          <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
+          <Property Name="iCREATE_USER" Type="int" Nullable="false" />
+          <Property Name="iLASTMODIFIED_USER" Type="int" />
         </EntityType>
         <EntityType Name="TEACHERS_LECTURES_LINK">
           <Key>
@@ -271,6 +284,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
           <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
+          <Property Name="iMAXIMUM_ALLOCATION" Type="int" />
         </EntityType>
         <EntityType Name="TIMETABLE_PLANNING">
           <Key>
@@ -484,6 +498,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES">
+          <End Role="GROUP_TYPES" Type="Self.GROUP_TYPES" Multiplicity="1" />
+          <End Role="TEACHERS_GROUP_TYPES_PRIORITY" Type="Self.TEACHERS_GROUP_TYPES_PRIORITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUP_TYPES">
+              <PropertyRef Name="iID_GROUP_TYPE" />
+            </Principal>
+            <Dependent Role="TEACHERS_GROUP_TYPES_PRIORITY">
+              <PropertyRef Name="iID_GROUP_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHERS_GROUP_TYPES_PRIORITY" Type="Self.TEACHERS_GROUP_TYPES_PRIORITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="TEACHERS_GROUP_TYPES_PRIORITY">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
           <End Role="LECTURE_TYPE" Type="Self.LECTURE_TYPE" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
@@ -607,6 +645,7 @@
           <EntitySet Name="TEACHER_PREFERRED_HALLS" EntityType="Self.TEACHER_PREFERRED_HALLS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEACHER_PREFERRED_MODULES" EntityType="Self.TEACHER_PREFERRED_MODULES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEACHERS" EntityType="Self.TEACHERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEACHERS_GROUP_TYPES_PRIORITY" EntityType="Self.TEACHERS_GROUP_TYPES_PRIORITY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEACHERS_LECTURES_LINK" EntityType="Self.TEACHERS_LECTURES_LINK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIMETABLE_PLANNING" EntityType="Self.TIMETABLE_PLANNING" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_BLOCKED_MODULES_DAYS" Association="Self.FK_BLOCKED_MODULES_DAYS">
@@ -672,6 +711,14 @@
           <AssociationSet Name="FK_TEACHER_PREFFERED_HALLS_HALLS" Association="Self.FK_TEACHER_PREFFERED_HALLS_HALLS">
             <End Role="HALLS" EntitySet="HALLS" />
             <End Role="TEACHER_PREFERRED_HALLS" EntitySet="TEACHER_PREFERRED_HALLS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES" Association="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES">
+            <End Role="GROUP_TYPES" EntitySet="GROUP_TYPES" />
+            <End Role="TEACHERS_GROUP_TYPES_PRIORITY" EntitySet="TEACHERS_GROUP_TYPES_PRIORITY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS" Association="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHERS_GROUP_TYPES_PRIORITY" EntitySet="TEACHERS_GROUP_TYPES_PRIORITY" />
           </AssociationSet>
           <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" Association="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE">
             <End Role="LECTURE_TYPE" EntitySet="LECTURE_TYPE" />
@@ -747,6 +794,7 @@
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
           <NavigationProperty Name="GROUPS" Relationship="Self.FK_GROUPS_GROUP_TYPES" FromRole="GROUP_TYPES" ToRole="GROUPS" />
+          <NavigationProperty Name="TEACHERS_GROUP_TYPES_PRIORITY" Relationship="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES" FromRole="GROUP_TYPES" ToRole="TEACHERS_GROUP_TYPES_PRIORITY" />
         </EntityType>
         <EntityType Name="GROUPS">
           <Key>
@@ -986,12 +1034,28 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
-          <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BLOCKED_MODULES" Relationship="Self.FK_BLOCKED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="BLOCKED_MODULES" />
           <NavigationProperty Name="TEACHER_PREFERRED_DAYS" Relationship="Self.FK_TEACHER_PREFERRED_DAYS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_DAYS" />
           <NavigationProperty Name="TEACHER_PREFERRED_HALLS" Relationship="Self.FK_TEACHER_PREFERRED_HALLS_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_HALLS" />
           <NavigationProperty Name="TEACHER_PREFERRED_MODULES" Relationship="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" FromRole="TEACHERS" ToRole="TEACHER_PREFERRED_MODULES" />
+          <NavigationProperty Name="TEACHERS_GROUP_TYPES_PRIORITY" Relationship="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS" FromRole="TEACHERS" ToRole="TEACHERS_GROUP_TYPES_PRIORITY" />
           <NavigationProperty Name="TEACHERS_LECTURES_LINK" Relationship="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS" FromRole="TEACHERS" ToRole="TEACHERS_LECTURES_LINK" />
+        </EntityType>
+        <EntityType Name="TEACHERS_GROUP_TYPES_PRIORITY">
+          <Key>
+            <PropertyRef Name="iID_TEACHER_GROUP_TYPE_PRIORITY" />
+          </Key>
+          <Property Name="iID_TEACHER_GROUP_TYPE_PRIORITY" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="iID_TEACHER" Type="Int32" Nullable="false" />
+          <Property Name="iID_GROUP_TYPE" Type="Int32" Nullable="false" />
+          <Property Name="iPRIORITY" Type="Int32" Nullable="false" />
+          <Property Name="bACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="dtCREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
+          <Property Name="iLASTMODIFIED_USER" Type="Int32" />
+          <NavigationProperty Name="GROUP_TYPES" Relationship="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES" FromRole="TEACHERS_GROUP_TYPES_PRIORITY" ToRole="GROUP_TYPES" />
+          <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS" FromRole="TEACHERS_GROUP_TYPES_PRIORITY" ToRole="TEACHERS" />
         </EntityType>
         <EntityType Name="TEACHERS_LECTURES_LINK">
           <Key>
@@ -1008,6 +1072,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
+          <Property Name="iMAXIMUM_ALLOCATION" Type="Int32" />
           <NavigationProperty Name="LECTURE_TYPE" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURE_TYPE" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURE_TYPE" />
           <NavigationProperty Name="LECTURES" Relationship="Self.FK_TEACHERS_LECTURES_LINK_LECTURES" FromRole="TEACHERS_LECTURES_LINK" ToRole="LECTURES" />
           <NavigationProperty Name="SEMESTERS" Relationship="Self.FK_TEACHERS_LECTURES_LINK_SEMESTERS" FromRole="TEACHERS_LECTURES_LINK" ToRole="SEMESTERS" />
@@ -1090,6 +1155,18 @@
               <PropertyRef Name="iID_GROUP_TYPE" />
             </Principal>
             <Dependent Role="GROUPS">
+              <PropertyRef Name="iID_GROUP_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES">
+          <End Role="GROUP_TYPES" Type="Self.GROUP_TYPES" Multiplicity="1" />
+          <End Role="TEACHERS_GROUP_TYPES_PRIORITY" Type="Self.TEACHERS_GROUP_TYPES_PRIORITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUP_TYPES">
+              <PropertyRef Name="iID_GROUP_TYPE" />
+            </Principal>
+            <Dependent Role="TEACHERS_GROUP_TYPES_PRIORITY">
               <PropertyRef Name="iID_GROUP_TYPE" />
             </Dependent>
           </ReferentialConstraint>
@@ -1286,6 +1363,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS">
+          <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
+          <End Role="TEACHERS_GROUP_TYPES_PRIORITY" Type="Self.TEACHERS_GROUP_TYPES_PRIORITY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEACHERS">
+              <PropertyRef Name="iID_TEACHER" />
+            </Principal>
+            <Dependent Role="TEACHERS_GROUP_TYPES_PRIORITY">
+              <PropertyRef Name="iID_TEACHER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TEACHERS_LECTURES_LINK_TEACHERS">
           <End Role="TEACHERS" Type="Self.TEACHERS" Multiplicity="1" />
           <End Role="TEACHERS_LECTURES_LINK" Type="Self.TEACHERS_LECTURES_LINK" Multiplicity="*" />
@@ -1318,6 +1407,7 @@
           <EntitySet Name="TEACHER_PREFERRED_HALLS" EntityType="Self.TEACHER_PREFERRED_HALLS" />
           <EntitySet Name="TEACHER_PREFERRED_MODULES" EntityType="Self.TEACHER_PREFERRED_MODULES" />
           <EntitySet Name="TEACHERS" EntityType="Self.TEACHERS" />
+          <EntitySet Name="TEACHERS_GROUP_TYPES_PRIORITY" EntityType="Self.TEACHERS_GROUP_TYPES_PRIORITY" />
           <EntitySet Name="TEACHERS_LECTURES_LINK" EntityType="Self.TEACHERS_LECTURES_LINK" />
           <EntitySet Name="TIMETABLE_PLANNING" EntityType="Self.TIMETABLE_PLANNING" />
           <AssociationSet Name="FK_BLOCKED_MODULES_DAYS" Association="Self.FK_BLOCKED_MODULES_DAYS">
@@ -1339,6 +1429,10 @@
           <AssociationSet Name="FK_GROUPS_GROUP_TYPES" Association="Self.FK_GROUPS_GROUP_TYPES">
             <End Role="GROUP_TYPES" EntitySet="GROUP_TYPES" />
             <End Role="GROUPS" EntitySet="GROUPS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES" Association="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES">
+            <End Role="GROUP_TYPES" EntitySet="GROUP_TYPES" />
+            <End Role="TEACHERS_GROUP_TYPES_PRIORITY" EntitySet="TEACHERS_GROUP_TYPES_PRIORITY" />
           </AssociationSet>
           <AssociationSet Name="FK_GROUPS_LECTURES_LINK_GROUPS" Association="Self.FK_GROUPS_LECTURES_LINK_GROUPS">
             <End Role="GROUPS" EntitySet="GROUPS" />
@@ -1403,6 +1497,10 @@
           <AssociationSet Name="FK_TEACHERS_PREFERRED_MODULES_TEACHERS" Association="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
             <End Role="TEACHER_PREFERRED_MODULES" EntitySet="TEACHER_PREFERRED_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS" Association="Self.FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS">
+            <End Role="TEACHERS" EntitySet="TEACHERS" />
+            <End Role="TEACHERS_GROUP_TYPES_PRIORITY" EntitySet="TEACHERS_GROUP_TYPES_PRIORITY" />
           </AssociationSet>
           <AssociationSet Name="FK_TEACHERS_LECTURES_LINK_TEACHERS" Association="Self.FK_TEACHERS_LECTURES_LINK_TEACHERS">
             <End Role="TEACHERS" EntitySet="TEACHERS" />
@@ -1681,7 +1779,21 @@
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
                 <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
                 <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEACHERS_GROUP_TYPES_PRIORITY">
+            <EntityTypeMapping TypeName="OTTSModel.TEACHERS_GROUP_TYPES_PRIORITY">
+              <MappingFragment StoreEntitySet="TEACHERS_GROUP_TYPES_PRIORITY">
+                <ScalarProperty Name="iID_TEACHER_GROUP_TYPE_PRIORITY" ColumnName="iID_TEACHER_GROUP_TYPE_PRIORITY" />
+                <ScalarProperty Name="iID_TEACHER" ColumnName="iID_TEACHER" />
+                <ScalarProperty Name="iID_GROUP_TYPE" ColumnName="iID_GROUP_TYPE" />
                 <ScalarProperty Name="iPRIORITY" ColumnName="iPRIORITY" />
+                <ScalarProperty Name="bACTIVE" ColumnName="bACTIVE" />
+                <ScalarProperty Name="dtCREATE_DATE" ColumnName="dtCREATE_DATE" />
+                <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
+                <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
+                <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1699,6 +1811,7 @@
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
                 <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
                 <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
+                <ScalarProperty Name="iMAXIMUM_ALLOCATION" ColumnName="iMAXIMUM_ALLOCATION" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -44,6 +44,7 @@ namespace DataLink
         public virtual DbSet<TEACHER_PREFERRED_HALLS> TEACHER_PREFERRED_HALLS { get; set; }
         public virtual DbSet<TEACHER_PREFERRED_MODULES> TEACHER_PREFERRED_MODULES { get; set; }
         public virtual DbSet<TEACHERS> TEACHERS { get; set; }
+        public virtual DbSet<TEACHERS_GROUP_TYPES_PRIORITY> TEACHERS_GROUP_TYPES_PRIORITY { get; set; }
         public virtual DbSet<TEACHERS_LECTURES_LINK> TEACHERS_LECTURES_LINK { get; set; }
         public virtual DbSet<TIMETABLE_PLANNING> TIMETABLE_PLANNING { get; set; }
     }

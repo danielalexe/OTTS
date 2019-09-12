@@ -139,9 +139,13 @@ namespace OTTS_WPF.Planning
                             {
                                 foreach (var item in getProfesoriEligibiliCurs)
                                 {
-                                    if (item.TEACHERS.iPRIORITY<CurrentPriority)
+                                    var getTeacherPriorityByGroupType = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE && z.iID_TEACHER == item.iID_TEACHER);
+                                    if (getTeacherPriorityByGroupType!=null)
                                     {
-                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                        if (getTeacherPriorityByGroupType.iPRIORITY<CurrentPriority)
+                                        {
+                                            CurrentPriority = getTeacherPriorityByGroupType.iPRIORITY;
+                                        }
                                     }
                                 }
                             }
@@ -151,9 +155,13 @@ namespace OTTS_WPF.Planning
                             {
                                 foreach (var item in getProfesoriEligibiliSeminar)
                                 {
-                                    if (item.TEACHERS.iPRIORITY < CurrentPriority)
+                                    var getTeacherPriorityByGroupType = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE && z.iID_TEACHER == item.iID_TEACHER);
+                                    if (getTeacherPriorityByGroupType != null)
                                     {
-                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                        if (getTeacherPriorityByGroupType.iPRIORITY < CurrentPriority)
+                                        {
+                                            CurrentPriority = getTeacherPriorityByGroupType.iPRIORITY;
+                                        }
                                     }
                                 }
                             }
@@ -163,9 +171,13 @@ namespace OTTS_WPF.Planning
                             {
                                 foreach (var item in getProfesoriEligibiliLaborator)
                                 {
-                                    if (item.TEACHERS.iPRIORITY < CurrentPriority)
+                                    var getTeacherPriorityByGroupType = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE && z.iID_TEACHER == item.iID_TEACHER);
+                                    if (getTeacherPriorityByGroupType != null)
                                     {
-                                        CurrentPriority = item.TEACHERS.iPRIORITY;
+                                        if (getTeacherPriorityByGroupType.iPRIORITY < CurrentPriority)
+                                        {
+                                            CurrentPriority = getTeacherPriorityByGroupType.iPRIORITY;
+                                        }
                                     }
                                 }
                             }

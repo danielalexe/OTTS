@@ -40,7 +40,6 @@ namespace OTTS_WPF.Teachers
                     TEACHERS teacher = new TEACHERS();
                     teacher.nvNAME = CTextName.CTextBox.Text;
                     teacher.nvSURNAME = CTextSurname.CTextBox.Text;
-                    teacher.iPRIORITY = Convert.ToInt32(CDecimalPriority.CNumericUpDown.Value);
 
                     teacher.bACTIVE = true;
                     teacher.dtCREATE_DATE = DateTime.UtcNow;
@@ -48,6 +47,31 @@ namespace OTTS_WPF.Teachers
 
                     db.TEACHERS.Add(teacher);
                     db.SaveChanges();
+
+                    TEACHERS_GROUP_TYPES_PRIORITY prop = new TEACHERS_GROUP_TYPES_PRIORITY();
+                    prop.iID_TEACHER = teacher.iID_TEACHER;
+                    prop.iID_GROUP_TYPE = 1;
+                    prop.iPRIORITY = Convert.ToInt32(CDecimalBachelorPriority.CNumericUpDown.Value);
+
+                    prop.bACTIVE = true;
+                    prop.dtCREATE_DATE = DateTime.UtcNow;
+                    prop.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                    db.TEACHERS_GROUP_TYPES_PRIORITY.Add(prop);
+                    db.SaveChanges();
+
+                    prop = new TEACHERS_GROUP_TYPES_PRIORITY();
+                    prop.iID_TEACHER = teacher.iID_TEACHER;
+                    prop.iID_GROUP_TYPE = 2;
+                    prop.iPRIORITY = Convert.ToInt32(CDecimalMastersPriority.CNumericUpDown.Value);
+
+                    prop.bACTIVE = true;
+                    prop.dtCREATE_DATE = DateTime.UtcNow;
+                    prop.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                    db.TEACHERS_GROUP_TYPES_PRIORITY.Add(prop);
+                    db.SaveChanges();
+
                     WindowTeachersCollection.ReloadData();
                     CloseWindow();
                 }
@@ -61,7 +85,48 @@ namespace OTTS_WPF.Teachers
                     {
                         getTeacher.nvNAME = CTextName.CTextBox.Text;
                         getTeacher.nvSURNAME = CTextSurname.CTextBox.Text;
-                        getTeacher.iPRIORITY = Convert.ToInt32(CDecimalPriority.CNumericUpDown.Value);
+
+                        var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 1);
+                        if (getBachelorPriority!=null)
+                        {
+                            getBachelorPriority.iPRIORITY = Convert.ToInt32(CDecimalBachelorPriority.CNumericUpDown.Value);
+                        }
+                        else
+                        {
+                            //create it
+                            TEACHERS_GROUP_TYPES_PRIORITY prop = new TEACHERS_GROUP_TYPES_PRIORITY();
+                            prop.iID_TEACHER = getTeacher.iID_TEACHER;
+                            prop.iID_GROUP_TYPE = 1;
+                            prop.iPRIORITY = Convert.ToInt32(CDecimalBachelorPriority.CNumericUpDown.Value);
+
+                            prop.bACTIVE = true;
+                            prop.dtCREATE_DATE = DateTime.UtcNow;
+                            prop.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                            db.TEACHERS_GROUP_TYPES_PRIORITY.Add(prop);
+                            db.SaveChanges();
+                        }
+                        var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 2);
+                        if (getMastersPriority!=null)
+                        {
+                            getMastersPriority.iPRIORITY = Convert.ToInt32(CDecimalMastersPriority.CNumericUpDown.Value);
+                        }
+                        else
+                        {
+                            //create it
+                            TEACHERS_GROUP_TYPES_PRIORITY prop = new TEACHERS_GROUP_TYPES_PRIORITY();
+                            prop.iID_TEACHER = getTeacher.iID_TEACHER;
+                            prop.iID_GROUP_TYPE = 2;
+                            prop.iPRIORITY = Convert.ToInt32(CDecimalMastersPriority.CNumericUpDown.Value);
+
+                            prop.bACTIVE = true;
+                            prop.dtCREATE_DATE = DateTime.UtcNow;
+                            prop.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+
+                            db.TEACHERS_GROUP_TYPES_PRIORITY.Add(prop);
+                            db.SaveChanges();
+                        }
+
 
                         getTeacher.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                         getTeacher.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -95,7 +160,25 @@ namespace OTTS_WPF.Teachers
                     {
                         CTextName.CTextBox.Text = getTeacher.nvNAME;
                         CTextSurname.CTextBox.Text = getTeacher.nvSURNAME;
-                        CDecimalPriority.CNumericUpDown.Value = getTeacher.iPRIORITY;
+
+                        var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 1);
+                        if (getBachelorPriority!=null)
+                        {
+                            CDecimalBachelorPriority.CNumericUpDown.Value = getBachelorPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            CDecimalBachelorPriority.CNumericUpDown.Value = 0;
+                        }
+                        var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 2);
+                        if (getMastersPriority!=null)
+                        {
+                            CDecimalMastersPriority.CNumericUpDown.Value = getMastersPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            CDecimalMastersPriority.CNumericUpDown.Value = 0;
+                        }
                     }
                 }
             }

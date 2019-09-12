@@ -4,33 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b3bcd96b083144f5a1415176d45cc096" Name="Diagram1">
-        <EntityTypeShape EntityType="OTTSModel.BLOCKED_MODULES" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.DAYS" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.GROUP_TYPES" Width="1.5" PointX="8.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.GROUPS" Width="1.5" PointX="11" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.GROUPS_LECTURES_LINK" Width="1.5" PointX="13.25" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.GROUPS_MODULES_LINK" Width="1.5" PointX="16.25" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.HALLS" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.LECTURE_TYPE" Width="1.5" PointX="3.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.LECTURES" Width="1.5" PointX="3.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.MODULES" Width="1.5" PointX="0.75" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.PLANNING_TYPE" Width="1.5" PointX="13.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.SEMESTERS" Width="1.5" PointX="1.5" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.SEMIGROUPS" Width="1.5" PointX="13.25" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.SETTINGS" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_DAYS" Width="1.5" PointX="6" PointY="10" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_HALLS" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_MODULES" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TEACHERS" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TEACHERS_LECTURES_LINK" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OTTSModel.TIMETABLE_PLANNING" Width="1.5" PointX="16" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="d84cd30a8ead40eba6f19202bc20bf64" Name="Diagram1">
+        <EntityTypeShape EntityType="OTTSModel.BLOCKED_MODULES" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.DAYS" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.GROUP_TYPES" Width="1.5" PointX="3.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.GROUPS" Width="1.5" PointX="6" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.GROUPS_LECTURES_LINK" Width="1.5" PointX="8.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.GROUPS_MODULES_LINK" Width="1.5" PointX="8.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.HALLS" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.LECTURE_TYPE" Width="1.5" PointX="3.75" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.LECTURES" Width="1.5" PointX="3.75" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.MODULES" Width="1.5" PointX="0.75" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.PLANNING_TYPE" Width="1.5" PointX="8.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.SEMESTERS" Width="1.5" PointX="1.5" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.SEMIGROUPS" Width="1.5" PointX="8.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.SETTINGS" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_DAYS" Width="1.5" PointX="6" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_HALLS" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHER_PREFERRED_MODULES" Width="1.5" PointX="3" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHERS" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHERS_GROUP_TYPES_PRIORITY" Width="1.5" PointX="6" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TEACHERS_LECTURES_LINK" Width="1.5" PointX="6" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OTTSModel.TIMETABLE_PLANNING" Width="1.5" PointX="11" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="OTTSModel.FK_BLOCKED_MODULES_DAYS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_BLOCKED_MODULES_MODULES" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_BLOCKED_MODULES_TEACHERS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_TEACHER_PREFERRED_DAYS_DAYS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_GROUPS_GROUP_TYPES" ManuallyRouted="false" />
+        <AssociationConnector Association="OTTSModel.FK_TEACHERS_GROUP_TYPES_PRIORITY_GROUP_TYPES" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_GROUPS_LECTURES_LINK_GROUPS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_GROUPS_MODULES_LINK_GROUPS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_SEMIGROUPS_GROUPS" ManuallyRouted="false" />
@@ -47,6 +49,7 @@
         <AssociationConnector Association="OTTSModel.FK_TEACHER_PREFERRED_DAYS_TEACHERS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_TEACHER_PREFERRED_HALLS_TEACHERS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" ManuallyRouted="false" />
+        <AssociationConnector Association="OTTSModel.FK_TEACHERS_GROUP_TYPES_PRIORITY_TEACHERS" ManuallyRouted="false" />
         <AssociationConnector Association="OTTSModel.FK_TEACHERS_LECTURES_LINK_TEACHERS" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

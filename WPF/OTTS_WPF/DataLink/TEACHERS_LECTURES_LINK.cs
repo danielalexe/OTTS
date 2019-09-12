@@ -25,6 +25,7 @@ namespace DataLink
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
+        public Nullable<int> iMAXIMUM_ALLOCATION { get; set; }
     
         public virtual LECTURE_TYPE LECTURE_TYPE { get; set; }
         public virtual LECTURES LECTURES { get; set; }

@@ -87,9 +87,29 @@ namespace OTTS_WPF.Teachers
                                        {
                                            iID_TEACHER = u.iID_TEACHER,
                                            NAME = u.nvNAME,
-                                           SURNAME = u.nvSURNAME,
-                                           PRIORITY = u.iPRIORITY
+                                           SURNAME = u.nvSURNAME
                                        }).ToList();
+                    foreach (var item in getTeachers)
+                    {
+                        var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 1);
+                        if (getBachelorPriority!=null)
+                        {
+                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            item.BACHELOR_PRIORITY = 0;
+                        }
+                        var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 2);
+                        if (getMastersPriority!=null)
+                        {
+                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            item.MASTERS_PRIORITY = 0;
+                        }
+                    }
                     DataGridTeachers.ItemsSource = getTeachers;
                     RenderColumns();
                 }
@@ -124,9 +144,29 @@ namespace OTTS_WPF.Teachers
                                        {
                                            iID_TEACHER = u.iID_TEACHER,
                                            NAME = u.nvNAME,
-                                           SURNAME = u.nvSURNAME,
-                                           PRIORITY = u.iPRIORITY
+                                           SURNAME = u.nvSURNAME
                                        }).Distinct().ToList();
+                    foreach (var item in getTeachers)
+                    {
+                        var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 1);
+                        if (getBachelorPriority != null)
+                        {
+                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            item.BACHELOR_PRIORITY = 0;
+                        }
+                        var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 2);
+                        if (getMastersPriority != null)
+                        {
+                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY;
+                        }
+                        else
+                        {
+                            item.MASTERS_PRIORITY = 0;
+                        }
+                    }
                     DataGridTeachers.ItemsSource = getTeachers;
                     RenderColumns();
                 }
@@ -155,6 +195,16 @@ namespace OTTS_WPF.Teachers
                                 if (getTeacher != null)
                                 {
                                     getTeacher.bACTIVE = false;
+                                    var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.Where(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 1).ToList();
+                                    foreach (var prop in getBachelorPriority)
+                                    {
+                                        prop.bACTIVE = false;
+                                    }
+                                    var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.Where(z => z.bACTIVE == true && z.iID_TEACHER == getTeacher.iID_TEACHER && z.iID_GROUP_TYPE == 2).ToList();
+                                    foreach (var prop in getMastersPriority)
+                                    {
+                                        prop.bACTIVE = false;
+                                    }
                                 }
                             }
                             db.SaveChanges();

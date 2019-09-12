@@ -148,6 +148,9 @@
     <Compile Include="TEACHERS.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TEACHERS_GROUP_TYPES_PRIORITY.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TEACHERS_LECTURES_LINK.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>

@@ -28,7 +28,7 @@ namespace OTTS_WPF
     /// </summary>
     public partial class LoginScreen : Window
     {
-        private static int iDBVersion = 2;
+        private static int iDBVersion = 3;
         public LoginScreen()
         {
             InitializeComponent();
@@ -157,6 +157,11 @@ namespace OTTS_WPF
                             MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
                             UpdateSchemaFromVersion(getDBVersion.iVALUE);
                             MessageBox.Show("Actualizarea a fost efectuata cu succes.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Baza de date Offline apartine unei versiuni mai noi a aplicatiei. Va rugam descarcati versiunea actualizata a aplicatiei de pe: https://github.com/danielalexe/OTTS/releases.");
+                            return;
                         }
                     }
                     else
