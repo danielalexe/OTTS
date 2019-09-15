@@ -49,6 +49,9 @@
                 <DataControls:CDecimal x:Name="CDecimalHours" CLabel="Hours">
                     
                 </DataControls:CDecimal>
+                <DataControls:CDecimal x:Name="CDecimalMaximumAllocation" CLabel="Maximum Allocation">
+
+                </DataControls:CDecimal>
             </StackPanel>
         </Grid>
     </Grid>

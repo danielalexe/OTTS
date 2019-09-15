@@ -111,6 +111,8 @@ namespace OTTS_WPF.Planning
                     //}
                     #endregion
 
+                    List<MaxAllocationPrevention> SelectorStopper = new List<MaxAllocationPrevention>();
+
                     #region Se Proceseaza Fiecare Grupa in Parte
                     foreach (var parsedsemigrupa in OrdineSemiGrupe)
                     {
@@ -210,10 +212,75 @@ namespace OTTS_WPF.Planning
                                 }
                                 else
                                 {
-                                    //alegem unul din ei
-                                    Random rand = new Random();
-                                    var ales = rand.Next(0, getProfesoriEligibiliCurs.Count);
-                                    ProfesorCurs = getProfesoriEligibiliCurs[ales];
+                                    ///ST1: Preia prioritati profesori daca exista
+                                    ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                    ///ST3: Grupare profesori pe prioritati
+                                    ///ST4: Shuffle si apoi selectie
+                                    ///
+
+                                    //ST1
+                                    List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                    foreach (var item in getProfesoriEligibiliCurs)
+                                    {
+                                        DTOTeacher dto = new DTOTeacher();
+                                        dto.iID_TEACHER = item.iID_TEACHER;
+                                        dto.MASTERS_PRIORITY = 999;
+                                        var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                        if (getPrioritate!=null)
+                                        {
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                        }
+                                        Prioritati.Add(dto);
+                                    }
+                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST2
+                                    var CleansedPrioriati = new List<DTOTeacher>();
+                                    foreach (var item in Prioritati)
+                                    {
+                                        var getLectureType = getProfesoriEligibiliCurs.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                        var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                        z.iID_LECTURE == prelegere.iID_LECTURE
+                                        &&
+                                        z.iID_LECTURE_TYPE == getLectureType
+                                        &&
+                                        z.iID_SEMESTER == PersistentData.SelectedSemester
+                                        &&
+                                        z.iID_TEACHER == item.iID_TEACHER
+                                        );
+                                        if (CheckIfIsInStopperNow!=null)
+                                        {
+                                            if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION==CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                            {
+                                                //do not add
+                                            }
+                                            else
+                                            {
+                                                CleansedPrioriati.Add(item);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CleansedPrioriati.Add(item);
+                                        }
+                                    }
+
+                                    //ST3
+                                    var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST4
+                                    List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                    foreach (var grupare in Grupati)
+                                    {
+                                        var OrdineInitiala = grupare.ToList();
+                                        Shuffle(OrdineInitiala);
+                                        ShuffledTeachers.AddRange(OrdineInitiala);
+                                    }
+                                    ProfesorCurs = getProfesoriEligibiliCurs.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+
+                                    ////alegem unul din ei
+                                    //Random rand = new Random();
+                                    //var ales = rand.Next(0, getProfesoriEligibiliCurs.Count);
+                                    //ProfesorCurs = getProfesoriEligibiliCurs[ales];
+                                    //adsadadsadsadadssad;
                                 }
                             }
 
@@ -227,10 +294,75 @@ namespace OTTS_WPF.Planning
                                 }
                                 else
                                 {
-                                    //alegem unul din ei
-                                    Random rand = new Random();
-                                    var ales = rand.Next(0, getProfesoriEligibiliSeminar.Count);
-                                    ProfesorSeminar = getProfesoriEligibiliSeminar[ales];
+                                    ///ST1: Preia prioritati profesori daca exista
+                                    ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                    ///ST3: Grupare profesori pe prioritati
+                                    ///ST4: Shuffle si apoi selectie
+                                    ///
+
+                                    //ST1
+                                    List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                    foreach (var item in getProfesoriEligibiliSeminar)
+                                    {
+                                        DTOTeacher dto = new DTOTeacher();
+                                        dto.iID_TEACHER = item.iID_TEACHER;
+                                        dto.MASTERS_PRIORITY = 999;
+                                        var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                        if (getPrioritate != null)
+                                        {
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                        }
+                                        Prioritati.Add(dto);
+                                    }
+                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST2
+                                    var CleansedPrioriati = new List<DTOTeacher>();
+                                    foreach (var item in Prioritati)
+                                    {
+                                        var getLectureType = getProfesoriEligibiliSeminar.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                        var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                        z.iID_LECTURE == prelegere.iID_LECTURE
+                                        &&
+                                        z.iID_LECTURE_TYPE == getLectureType
+                                        &&
+                                        z.iID_SEMESTER == PersistentData.SelectedSemester
+                                        &&
+                                        z.iID_TEACHER == item.iID_TEACHER
+                                        );
+                                        if (CheckIfIsInStopperNow != null)
+                                        {
+                                            if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION == CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                            {
+                                                //do not add
+                                            }
+                                            else
+                                            {
+                                                CleansedPrioriati.Add(item);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CleansedPrioriati.Add(item);
+                                        }
+                                    }
+
+                                    //ST3
+                                    var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST4
+                                    List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                    foreach (var grupare in Grupati)
+                                    {
+                                        var OrdineInitiala = grupare.ToList();
+                                        Shuffle(OrdineInitiala);
+                                        ShuffledTeachers.AddRange(OrdineInitiala);
+                                    }
+                                    ProfesorSeminar = getProfesoriEligibiliSeminar.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+
+                                    ////alegem unul din ei
+                                    //Random rand = new Random();
+                                    //var ales = rand.Next(0, getProfesoriEligibiliSeminar.Count);
+                                    //ProfesorSeminar = getProfesoriEligibiliSeminar[ales];
+                                    //adsadadsadsadadssad;
                                 }
                             }
 
@@ -244,10 +376,75 @@ namespace OTTS_WPF.Planning
                                 }
                                 else
                                 {
-                                    //alegem unul din ei
-                                    Random rand = new Random();
-                                    var ales = rand.Next(0, getProfesoriEligibiliLaborator.Count);
-                                    ProfesorLaborator = getProfesoriEligibiliLaborator[ales];
+                                    ///ST1: Preia prioritati profesori daca exista
+                                    ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                    ///ST3: Grupare profesori pe prioritati
+                                    ///ST4: Shuffle si apoi selectie
+                                    ///
+
+                                    //ST1
+                                    List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                    foreach (var item in getProfesoriEligibiliLaborator)
+                                    {
+                                        DTOTeacher dto = new DTOTeacher();
+                                        dto.iID_TEACHER = item.iID_TEACHER;
+                                        dto.MASTERS_PRIORITY = 999;
+                                        var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                        if (getPrioritate != null)
+                                        {
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                        }
+                                        Prioritati.Add(dto);
+                                    }
+                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST2
+                                    var CleansedPrioriati = new List<DTOTeacher>();
+                                    foreach (var item in Prioritati)
+                                    {
+                                        var getLectureType = getProfesoriEligibiliLaborator.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                        var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                        z.iID_LECTURE == prelegere.iID_LECTURE
+                                        &&
+                                        z.iID_LECTURE_TYPE == getLectureType
+                                        &&
+                                        z.iID_SEMESTER == PersistentData.SelectedSemester
+                                        &&
+                                        z.iID_TEACHER == item.iID_TEACHER
+                                        );
+                                        if (CheckIfIsInStopperNow != null)
+                                        {
+                                            if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION == CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                            {
+                                                //do not add
+                                            }
+                                            else
+                                            {
+                                                CleansedPrioriati.Add(item);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CleansedPrioriati.Add(item);
+                                        }
+                                    }
+
+                                    //ST3
+                                    var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                    //ST4
+                                    List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                    foreach (var grupare in Grupati)
+                                    {
+                                        var OrdineInitiala = grupare.ToList();
+                                        Shuffle(OrdineInitiala);
+                                        ShuffledTeachers.AddRange(OrdineInitiala);
+                                    }
+                                    ProfesorLaborator = getProfesoriEligibiliLaborator.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+
+                                    ////alegem unul din ei
+                                    //Random rand = new Random();
+                                    //var ales = rand.Next(0, getProfesoriEligibiliLaborator.Count);
+                                    //ProfesorLaborator = getProfesoriEligibiliLaborator[ales];
+                                    //adsadadsadsadadssad;
                                 }
                             }
                             #endregion
@@ -495,6 +692,34 @@ namespace OTTS_WPF.Planning
                                                         db.TIMETABLE_PLANNING.Add(orarplan);
                                                         db.SaveChanges();
 
+                                                        var CheckIfIsInStopper = SelectorStopper.FirstOrDefault(z =>
+                                                        z.iID_LECTURE == prelegere.iID_LECTURE
+                                                        &&
+                                                        z.iID_LECTURE_TYPE == ProfesorCurent.iID_LECTURE_TYPE
+                                                        &&
+                                                        z.iID_SEMESTER == ProfesorCurent.iID_SEMESTER
+                                                        &&
+                                                        z.iID_TEACHER == ProfesorCurent.iID_TEACHER
+                                                        );
+                                                        if (CheckIfIsInStopper != null)
+                                                        {
+                                                            CheckIfIsInStopper.iCURRENT_ALLOCATION+=1;
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ProfesorCurent.iMAXIMUM_ALLOCATION != null)
+                                                            {
+                                                                MaxAllocationPrevention preventer = new MaxAllocationPrevention();
+                                                                preventer.iID_LECTURE = prelegere.iID_LECTURE;
+                                                                preventer.iID_LECTURE_TYPE = ProfesorCurent.iID_LECTURE_TYPE;
+                                                                preventer.iID_SEMESTER = ProfesorCurent.iID_SEMESTER;
+                                                                preventer.iID_TEACHER = ProfesorCurent.iID_TEACHER;
+                                                                preventer.iMAXIMUM_ALLOCATION = ProfesorCurent.iMAXIMUM_ALLOCATION;
+                                                                preventer.iCURRENT_ALLOCATION = 1;
+                                                                SelectorStopper.Add(preventer);
+                                                            }
+                                                        }
+
                                                         var backupTipPlanificare = orarplan.iID_PLANNING_TYPE;
 
                                                         foreach (var semigrupa in getSemiGrupeLinkate)
@@ -526,6 +751,35 @@ namespace OTTS_WPF.Planning
 
                                                             db.TIMETABLE_PLANNING.Add(orarplan);
                                                             db.SaveChanges();
+
+                                                            CheckIfIsInStopper = SelectorStopper.FirstOrDefault(z =>
+                                                            z.iID_LECTURE == prelegere.iID_LECTURE
+                                                            &&
+                                                            z.iID_LECTURE_TYPE == ProfesorCurent.iID_LECTURE_TYPE
+                                                            &&
+                                                            z.iID_SEMESTER == ProfesorCurent.iID_SEMESTER
+                                                            &&
+                                                            z.iID_TEACHER == ProfesorCurent.iID_TEACHER
+                                                            );
+                                                            if (CheckIfIsInStopper != null)
+                                                            {
+                                                                CheckIfIsInStopper.iCURRENT_ALLOCATION += 1;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (ProfesorCurent.iMAXIMUM_ALLOCATION != null)
+                                                                {
+                                                                    MaxAllocationPrevention preventer = new MaxAllocationPrevention();
+                                                                    preventer.iID_LECTURE = prelegere.iID_LECTURE;
+                                                                    preventer.iID_LECTURE_TYPE = ProfesorCurent.iID_LECTURE_TYPE;
+                                                                    preventer.iID_SEMESTER = ProfesorCurent.iID_SEMESTER;
+                                                                    preventer.iID_TEACHER = ProfesorCurent.iID_TEACHER;
+                                                                    preventer.iMAXIMUM_ALLOCATION = ProfesorCurent.iMAXIMUM_ALLOCATION;
+                                                                    preventer.iCURRENT_ALLOCATION = 1;
+                                                                    SelectorStopper.Add(preventer);
+                                                                }
+                                                            }
+
                                                         }
                                                     }
                                                     else
@@ -566,6 +820,34 @@ namespace OTTS_WPF.Planning
 
                                                     db.TIMETABLE_PLANNING.Add(orarplan);
                                                     db.SaveChanges();
+
+                                                    var CheckIfIsInStopper = SelectorStopper.FirstOrDefault(z =>
+                                                        z.iID_LECTURE == prelegere.iID_LECTURE
+                                                        &&
+                                                        z.iID_LECTURE_TYPE == ProfesorCurent.iID_LECTURE_TYPE
+                                                        &&
+                                                        z.iID_SEMESTER == ProfesorCurent.iID_SEMESTER
+                                                        &&
+                                                        z.iID_TEACHER == ProfesorCurent.iID_TEACHER
+                                                        );
+                                                    if (CheckIfIsInStopper != null)
+                                                    {
+                                                        CheckIfIsInStopper.iCURRENT_ALLOCATION += 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ProfesorCurent.iMAXIMUM_ALLOCATION != null)
+                                                        {
+                                                            MaxAllocationPrevention preventer = new MaxAllocationPrevention();
+                                                            preventer.iID_LECTURE = prelegere.iID_LECTURE;
+                                                            preventer.iID_LECTURE_TYPE = ProfesorCurent.iID_LECTURE_TYPE;
+                                                            preventer.iID_SEMESTER = ProfesorCurent.iID_SEMESTER;
+                                                            preventer.iID_TEACHER = ProfesorCurent.iID_TEACHER;
+                                                            preventer.iMAXIMUM_ALLOCATION = ProfesorCurent.iMAXIMUM_ALLOCATION;
+                                                            preventer.iCURRENT_ALLOCATION = 1;
+                                                            SelectorStopper.Add(preventer);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -595,9 +877,78 @@ namespace OTTS_WPF.Planning
                                                         else
                                                         {
                                                             ProfesoriBlocati.Add(ProfesorCurent);
-                                                            ProfesorCurent = (from u in getProfesoriEligibiliLaborator
-                                                                                where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
-                                                                                select u).ToList().FirstOrDefault();
+                                                            ///ST0: Eliminare blocati deja
+                                                            ///ST1: Preia prioritati profesori daca exista
+                                                            ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                                            ///ST3: Grupare profesori pe prioritati
+                                                            ///ST4: Shuffle si apoi selectie
+                                                            ///
+
+                                                            var EliminareBlocati = (from u in getProfesoriEligibiliLaborator
+                                                                                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                                                    select u).ToList();
+
+                                                            //ST1
+                                                            List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                                            foreach (var item in EliminareBlocati)
+                                                            {
+                                                                DTOTeacher dto = new DTOTeacher();
+                                                                dto.iID_TEACHER = item.iID_TEACHER;
+                                                                dto.MASTERS_PRIORITY = 999;
+                                                                var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                                                if (getPrioritate != null)
+                                                                {
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                }
+                                                                Prioritati.Add(dto);
+                                                            }
+                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST2
+                                                            var CleansedPrioriati = new List<DTOTeacher>();
+                                                            foreach (var item in Prioritati)
+                                                            {
+                                                                var getLectureType = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                                                var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                                                z.iID_LECTURE == prelegere.iID_LECTURE
+                                                                &&
+                                                                z.iID_LECTURE_TYPE == getLectureType
+                                                                &&
+                                                                z.iID_SEMESTER == PersistentData.SelectedSemester
+                                                                &&
+                                                                z.iID_TEACHER == item.iID_TEACHER
+                                                                );
+                                                                if (CheckIfIsInStopperNow != null)
+                                                                {
+                                                                    if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION == CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                                                    {
+                                                                        //do not add
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        CleansedPrioriati.Add(item);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    CleansedPrioriati.Add(item);
+                                                                }
+                                                            }
+
+                                                            //ST3
+                                                            var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST4
+                                                            List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                                            foreach (var grupare in Grupati)
+                                                            {
+                                                                var OrdineInitiala = grupare.ToList();
+                                                                Shuffle(OrdineInitiala);
+                                                                ShuffledTeachers.AddRange(OrdineInitiala);
+                                                            }
+                                                            ProfesorCurent = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+                                                            //adsadadsadsadadssad;
+                                                            //ProfesorCurent = (from u in getProfesoriEligibiliLaborator
+                                                            //                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                            //                    select u).ToList().FirstOrDefault();
                                                             ZileBlocate.Clear();
                                                             ModuleBlocate.Clear();
                                                         }
@@ -622,9 +973,78 @@ namespace OTTS_WPF.Planning
                                                         else
                                                         {
                                                             ProfesoriBlocati.Add(ProfesorCurent);
-                                                            ProfesorCurent = (from u in getProfesoriEligibiliSeminar
-                                                                                where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
-                                                                                select u).ToList().FirstOrDefault();
+                                                            ///ST0: Eliminare blocati deja
+                                                            ///ST1: Preia prioritati profesori daca exista
+                                                            ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                                            ///ST3: Grupare profesori pe prioritati
+                                                            ///ST4: Shuffle si apoi selectie
+                                                            ///
+
+                                                            var EliminareBlocati = (from u in getProfesoriEligibiliSeminar
+                                                                                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                                                    select u).ToList();
+
+                                                            //ST1
+                                                            List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                                            foreach (var item in EliminareBlocati)
+                                                            {
+                                                                DTOTeacher dto = new DTOTeacher();
+                                                                dto.iID_TEACHER = item.iID_TEACHER;
+                                                                dto.MASTERS_PRIORITY = 999;
+                                                                var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                                                if (getPrioritate != null)
+                                                                {
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                }
+                                                                Prioritati.Add(dto);
+                                                            }
+                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST2
+                                                            var CleansedPrioriati = new List<DTOTeacher>();
+                                                            foreach (var item in Prioritati)
+                                                            {
+                                                                var getLectureType = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                                                var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                                                z.iID_LECTURE == prelegere.iID_LECTURE
+                                                                &&
+                                                                z.iID_LECTURE_TYPE == getLectureType
+                                                                &&
+                                                                z.iID_SEMESTER == PersistentData.SelectedSemester
+                                                                &&
+                                                                z.iID_TEACHER == item.iID_TEACHER
+                                                                );
+                                                                if (CheckIfIsInStopperNow != null)
+                                                                {
+                                                                    if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION == CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                                                    {
+                                                                        //do not add
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        CleansedPrioriati.Add(item);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    CleansedPrioriati.Add(item);
+                                                                }
+                                                            }
+
+                                                            //ST3
+                                                            var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST4
+                                                            List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                                            foreach (var grupare in Grupati)
+                                                            {
+                                                                var OrdineInitiala = grupare.ToList();
+                                                                Shuffle(OrdineInitiala);
+                                                                ShuffledTeachers.AddRange(OrdineInitiala);
+                                                            }
+                                                            ProfesorCurent = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+                                                            //adsadadsadsadadssad;
+                                                            //ProfesorCurent = (from u in getProfesoriEligibiliSeminar
+                                                            //                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                            //                    select u).ToList().FirstOrDefault();
                                                             ZileBlocate.Clear();
                                                             ModuleBlocate.Clear();
                                                         }
@@ -650,9 +1070,78 @@ namespace OTTS_WPF.Planning
                                                         else
                                                         {
                                                             ProfesoriBlocati.Add(ProfesorCurent);
-                                                            ProfesorCurent = (from u in getProfesoriEligibiliCurs
-                                                                                where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
-                                                                                select u).ToList().FirstOrDefault();
+                                                            ///ST0: Eliminare blocati deja
+                                                            ///ST1: Preia prioritati profesori daca exista
+                                                            ///ST2: Eliminare profesori care deja au fost alocati deja daca acestia au un maxim precizat
+                                                            ///ST3: Grupare profesori pe prioritati
+                                                            ///ST4: Shuffle si apoi selectie
+                                                            ///
+
+                                                            var EliminareBlocati = (from u in getProfesoriEligibiliCurs
+                                                                                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                                                    select u).ToList();
+
+                                                            //ST1
+                                                            List<DTOTeacher> Prioritati = new List<DTOTeacher>();
+                                                            foreach (var item in EliminareBlocati)
+                                                            {
+                                                                DTOTeacher dto = new DTOTeacher();
+                                                                dto.iID_TEACHER = item.iID_TEACHER;
+                                                                dto.MASTERS_PRIORITY = 999;
+                                                                var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
+                                                                if (getPrioritate != null)
+                                                                {
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                }
+                                                                Prioritati.Add(dto);
+                                                            }
+                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST2
+                                                            var CleansedPrioriati = new List<DTOTeacher>();
+                                                            foreach (var item in Prioritati)
+                                                            {
+                                                                var getLectureType = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == item.iID_TEACHER).iID_LECTURE_TYPE;
+                                                                var CheckIfIsInStopperNow = SelectorStopper.FirstOrDefault(z =>
+                                                                z.iID_LECTURE == prelegere.iID_LECTURE
+                                                                &&
+                                                                z.iID_LECTURE_TYPE == getLectureType
+                                                                &&
+                                                                z.iID_SEMESTER == PersistentData.SelectedSemester
+                                                                &&
+                                                                z.iID_TEACHER == item.iID_TEACHER
+                                                                );
+                                                                if (CheckIfIsInStopperNow != null)
+                                                                {
+                                                                    if (CheckIfIsInStopperNow.iMAXIMUM_ALLOCATION == CheckIfIsInStopperNow.iCURRENT_ALLOCATION)
+                                                                    {
+                                                                        //do not add
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        CleansedPrioriati.Add(item);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    CleansedPrioriati.Add(item);
+                                                                }
+                                                            }
+
+                                                            //ST3
+                                                            var Grupati = CleansedPrioriati.GroupBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            //ST4
+                                                            List<DTOTeacher> ShuffledTeachers = new List<DTOTeacher>();
+                                                            foreach (var grupare in Grupati)
+                                                            {
+                                                                var OrdineInitiala = grupare.ToList();
+                                                                Shuffle(OrdineInitiala);
+                                                                ShuffledTeachers.AddRange(OrdineInitiala);
+                                                            }
+                                                            ProfesorCurent = EliminareBlocati.FirstOrDefault(z => z.iID_TEACHER == ShuffledTeachers.FirstOrDefault().iID_TEACHER);
+                                                            //adsadadsadsadadssad;
+                                                            //ProfesorCurent = (from u in getProfesoriEligibiliCurs
+                                                            //                    where !ProfesoriBlocati.Any(z => z.iID_TEACHERS_LECTURES_LINK == u.iID_TEACHERS_LECTURES_LINK)
+                                                            //                    select u).ToList().FirstOrDefault();
                                                             ZileBlocate.Clear();
                                                             ModuleBlocate.Clear();
                                                         }
@@ -704,6 +1193,16 @@ namespace OTTS_WPF.Planning
         {
             public int PRIORITY { get; set; }
             public GROUPS_LECTURES_LINK LINK { get; set; }
+        }
+
+        private class MaxAllocationPrevention
+        {
+            public int iID_TEACHER { get; set; }
+            public int iID_LECTURE { get; set; }
+            public int iID_LECTURE_TYPE { get; set; }
+            public int iID_SEMESTER { get; set; }
+            public int? iMAXIMUM_ALLOCATION { get; set; }
+            public int iCURRENT_ALLOCATION { get; set; }
         }
 
         private void Shuffle<T>(IList<T> list)

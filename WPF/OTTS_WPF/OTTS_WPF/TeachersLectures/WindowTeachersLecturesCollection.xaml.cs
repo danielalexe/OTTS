@@ -91,8 +91,20 @@ namespace OTTS_WPF.TeachersLectures
                                        TEACHER_NAME = u.TEACHERS.nvSURNAME+" "+u.TEACHERS.nvNAME,
                                        iID_LECTURE_TYPE = u.iID_LECTURE_TYPE,
                                        LECTURE_TYPE = u.LECTURE_TYPE.nvNAME,
-                                       HOURS = u.iHOURS
+                                       HOURS = u.iHOURS,
+                                       iID_MAXIMUM_ALLOCATION_VALUE = u.iMAXIMUM_ALLOCATION
                                    }).ToList();
+                foreach (var item in getTeachersLectures)
+                {
+                    if (item.iID_MAXIMUM_ALLOCATION_VALUE==null)
+                    {
+                        item.MAXIMUM_ALLOCATION = "N/A";
+                    }
+                    else
+                    {
+                        item.MAXIMUM_ALLOCATION = item.iID_MAXIMUM_ALLOCATION_VALUE.Value.ToString();
+                    }
+                }
                 DataGridTeachersLectures.ItemsSource = getTeachersLectures;
                 RenderColumns();
             }

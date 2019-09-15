@@ -106,6 +106,14 @@ namespace OTTS_WPF.TeachersLectures
                     tll.iID_LECTURE = ((DTOLecture)CComboLectures.CComboBox.SelectedItem).iID_LECTURE;
                     tll.iID_LECTURE_TYPE= ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
                     tll.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
+                    if (Convert.ToInt32(CDecimalMaximumAllocation.CValue)==0)
+                    {
+                        tll.iMAXIMUM_ALLOCATION = null;
+                    }
+                    else
+                    {
+                        tll.iMAXIMUM_ALLOCATION = Convert.ToInt32(CDecimalMaximumAllocation.CValue);
+                    }
 
                     tll.iID_SEMESTER = PersistentData.SelectedSemester;
 
@@ -142,6 +150,14 @@ namespace OTTS_WPF.TeachersLectures
                         getTeacherLecture.iID_LECTURE = ((DTOLecture)CComboLectures.CComboBox.SelectedItem).iID_LECTURE;
                         getTeacherLecture.iID_LECTURE_TYPE = ((DTOLectureType)CComboLectureType.CComboBox.SelectedItem).iID_LECTURE_TYPE;
                         getTeacherLecture.iID_TEACHER = ((DTOTeacher)CComboTeachers.CComboBox.SelectedItem).iID_TEACHER;
+                        if (Convert.ToInt32(CDecimalMaximumAllocation.CValue) == 0)
+                        {
+                            getTeacherLecture.iMAXIMUM_ALLOCATION = null;
+                        }
+                        else
+                        {
+                            getTeacherLecture.iMAXIMUM_ALLOCATION = Convert.ToInt32(CDecimalMaximumAllocation.CValue);
+                        }
 
                         getTeacherLecture.iID_SEMESTER = PersistentData.SelectedSemester;
 
@@ -178,6 +194,14 @@ namespace OTTS_WPF.TeachersLectures
                         CComboLectures.CComboBox.SelectedItem = ((List<DTOLecture>)CComboLectures.CComboBox.ItemsSource).FirstOrDefault(z=>z.iID_LECTURE==getTeacherLecture.iID_LECTURE);
                         CComboLectureType.CComboBox.SelectedItem = ((List<DTOLectureType>)CComboLectureType.CComboBox.ItemsSource).FirstOrDefault(z => z.iID_LECTURE_TYPE == getTeacherLecture.iID_LECTURE_TYPE);
                         CComboTeachers.CComboBox.SelectedItem = ((List<DTOTeacher>)CComboTeachers.CComboBox.ItemsSource).FirstOrDefault(z => z.iID_TEACHER == getTeacherLecture.iID_TEACHER);
+                        if (getTeacherLecture.iMAXIMUM_ALLOCATION!=null)
+                        {
+                            CDecimalMaximumAllocation.CValue = getTeacherLecture.iMAXIMUM_ALLOCATION;
+                        }
+                        else
+                        {
+                            CDecimalMaximumAllocation.CValue = 0;
+                        }
                         CDecimalHours.CValue = getTeacherLecture.iHOURS;
                     }
                 }

@@ -16,5 +16,7 @@ namespace DataObjects
         public int iID_LECTURE_TYPE { get; set; }
         public string LECTURE_TYPE { get; set; }
         public int HOURS { get; set; }
+        public int? iID_MAXIMUM_ALLOCATION_VALUE { get; set; }
+        public string MAXIMUM_ALLOCATION { get; set; }
     }
 }
