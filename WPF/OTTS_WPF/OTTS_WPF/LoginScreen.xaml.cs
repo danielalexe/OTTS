@@ -160,8 +160,11 @@ namespace OTTS_WPF
                         }
                         else
                         {
-                            MessageBox.Show("Baza de date Offline apartine unei versiuni mai noi a aplicatiei. Va rugam descarcati versiunea actualizata a aplicatiei de pe: https://github.com/danielalexe/OTTS/releases.");
-                            return;
+                            if (iDBVersion<getDBVersion.iVALUE)
+                            {
+                                MessageBox.Show("Baza de date Offline apartine unei versiuni mai noi a aplicatiei. Va rugam descarcati versiunea actualizata a aplicatiei de pe: https://github.com/danielalexe/OTTS/releases.");
+                                return;
+                            }
                         }
                     }
                     else
@@ -296,7 +299,7 @@ namespace OTTS_WPF
             foreach (var item in AllFiles)
             {
                 var Filename = System.IO.Path.GetFileNameWithoutExtension(item);
-                var FileVersion = Convert.ToInt32(Filename[0]);
+                var FileVersion = Convert.ToInt32(Filename.Substring(0,Filename.IndexOf('.')).ToString());
                 if (FileVersion>=iVersion)
                 {
                     Files.Add(item);
