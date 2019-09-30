@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OTTS_WPF_NETCORE", "OTTS_WPF_NETCORE\OTTS_WPF_NETCORE.csproj", "{EF89C6DF-48F0-4549-8DF9-A751198D0772}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF89C6DF-48F0-4549-8DF9-A751198D0772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF89C6DF-48F0-4549-8DF9-A751198D0772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF89C6DF-48F0-4549-8DF9-A751198D0772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF89C6DF-48F0-4549-8DF9-A751198D0772}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78226827-73A8-4F25-A51D-321FB79DB037}
+	EndGlobalSection
+EndGlobal
