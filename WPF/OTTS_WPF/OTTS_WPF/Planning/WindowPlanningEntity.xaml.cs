@@ -89,6 +89,9 @@ namespace OTTS_WPF.Planning
 
                     #region Stabilire Ordine de generare a grupelor Master2=>Licenta3=>Master1=>Licenta2=>Licenta1 in functie de prioritate
                     List<SEMIGROUPS> OrdineSemiGrupe = new List<SEMIGROUPS>();
+
+                    //TODO amestecai
+                    Shuffle(getSemiGrupe);
                     OrdineSemiGrupe.AddRange(getSemiGrupe);
                     //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 2 && z.GRUPE.ID_TIP_GRUPA == 2).ToList());
                     //OrdineGrupe.AddRange(getSemiGrupe.Where(z => z.GRUPE.AN == 3 && z.GRUPE.ID_TIP_GRUPA == 1).ToList());
@@ -471,7 +474,8 @@ namespace OTTS_WPF.Planning
                                 //stabilire module si zile in functie de profesor
                                 var getPrioritatiZileProfesor = db.TEACHER_PREFERRED_DAYS.Where(z =>z.bACTIVE==true && z.iID_TEACHER == ordine.iID_TEACHER).OrderBy(i => i.iPRIORITY).ToList();
                                 var getPrioritatiModuleProfesor = db.TEACHER_PREFERRED_MODULES.Where(z =>z.bACTIVE==true && z.iID_TEACHER == ordine.iID_TEACHER).OrderBy(i => i.iPRIORITY).ToList();
-
+                                //todo ar trebuii sa am undeva sa pos sa le iau specific pentru tipul de grupa
+                                
                                 List<DAYS> getZile = new List<DAYS>();
                                 foreach (var zi in getZileGenerale)
                                 {
