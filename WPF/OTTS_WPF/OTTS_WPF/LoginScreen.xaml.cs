@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Data.Common;
 using System.Data;
 using System.IO;
+using System.ComponentModel;
 
 namespace OTTS_WPF
 {
@@ -114,23 +115,30 @@ namespace OTTS_WPF
             CPasswordPassword.IsEnabled = false;
         }
 
-        private void ButtonLogin_Click(object sender, RoutedEventArgs e)
+
+        public void DatabaseCheckWorking(object sender, DoWorkEventArgs e)
         {
-            if (RadioOffline.IsChecked==true)
+            DTOUser user = new DTOUser();
+            user.iID_USER = 1;
+            user.nvUSERNUME = "OfflineUser";
+            PersistentData.LoggedUser = user;
+            PersistentData.ConnectionString = PersistentData.GetConnectionString_Offline();
+
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                TheLoader.CurrentOperation.Text = "Se verifica serverul local...";
+            }));
+
+            using (var db = new EntityConnection(PersistentData.ConnectionString))
             {
-                DTOUser user = new DTOUser();
-                user.iID_USER = 1;
-                user.nvUSERNUME = "OfflineUser";
-                PersistentData.LoggedUser = user;
-                PersistentData.ConnectionString = PersistentData.GetConnectionString_Offline();
-                using (var db = new EntityConnection(PersistentData.ConnectionString))
+                try
                 {
-                    try
-                    {
-                        db.Open();
-                    }
-                    catch (Exception ex)
-                    {
+                    db.Open();
+                }
+                catch (Exception ex)
+                {
+                    ErrorCounter++;
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        TheLoader.Hide();
                         MessageBox.Show(ex.Message);
                         if (MessageBox.Show("Este posibil ca versiunea de server local sa nu fie actualizata si de aceea modulul offline sa nu functioneze. Doriti actualizarea server-ului local?", "Atentie", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                         {
@@ -141,42 +149,91 @@ namespace OTTS_WPF
                             p.WaitForExit();
                             MessageBox.Show("Instalarea a avut loc cu succes. Va rugam reincercati sa accesati modulul offline.");
                         }
-                        db.Close();
-                        return;
-                    }
+                    }));
+                    db.Close();
+                    return;
                 }
-                using (var db = new OTTSContext(PersistentData.ConnectionString))
+            }
+
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                TheLoader.CurrentOperation.Text = "Se verifica versiunea bazei de date locala...";
+            }));
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getDBVersion = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1001 && z.bACTIVE == true);
+                if (getDBVersion != null)
                 {
-                    var getDBVersion = db.SETTINGS.FirstOrDefault(z => z.iKEY == 1001 && z.bACTIVE == true);
-                    if (getDBVersion!=null)
+                    if (iDBVersion > getDBVersion.iVALUE)
                     {
-                        if (iDBVersion>getDBVersion.iVALUE)
-                        {
-                            /// Schema update is required
-                            /// 
-                            MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
-                            UpdateSchemaFromVersion(getDBVersion.iVALUE);
-                            MessageBox.Show("Actualizarea a fost efectuata cu succes.");
-                        }
-                        else
-                        {
-                            if (iDBVersion<getDBVersion.iVALUE)
-                            {
-                                MessageBox.Show("Baza de date Offline apartine unei versiuni mai noi a aplicatiei. Va rugam descarcati versiunea actualizata a aplicatiei de pe: https://github.com/danielalexe/OTTS/releases.");
-                                return;
-                            }
-                        }
+                        /// Schema update is required
+                        ///
+                        Application.Current.Dispatcher.Invoke(new Action(() => {
+                            TheLoader.CurrentOperation.Text = "Se actualizeaza schema bazei de date locala...";
+                        }));
+                        //MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
+                        UpdateSchemaFromVersion(getDBVersion.iVALUE);
+                        //MessageBox.Show("Actualizarea a fost efectuata cu succes.");
                     }
                     else
                     {
-                        /// first iteration of the DB
-                        /// Apply all Schema updates.
-                        /// 
-                        MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
-                        UpdateSchemaFromScratch();
-                        MessageBox.Show("Actualizarea a fost efectuata cu succes.");
+                        if (iDBVersion < getDBVersion.iVALUE)
+                        {
+                            ErrorCounter++;
+                            Application.Current.Dispatcher.Invoke(new Action(() => {
+                                TheLoader.Hide();
+                                MessageBox.Show("Baza de date Offline apartine unei versiuni mai noi a aplicatiei. Va rugam descarcati versiunea actualizata a aplicatiei de pe: https://github.com/danielalexe/OTTS/releases.");
+                            }));
+                            return;
+                        }
                     }
                 }
+                else
+                {
+                    /// first iteration of the DB
+                    /// Apply all Schema updates.
+                    /// 
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        TheLoader.CurrentOperation.Text = "Se actualizeaza schema bazei de date locala...";
+                    }));
+                    //MessageBox.Show("O actualizare a schemei bazei de date exista. Actualizarea va fi aplicata dupa ce veti apasa ok.");
+                    UpdateSchemaFromScratch();
+                    //MessageBox.Show("Actualizarea a fost efectuata cu succes.");
+                }
+            }
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                TheLoader.CurrentOperation.Text = "Se finalizeaza verificarile...";
+            }));
+        }
+
+        public void DatabaseCheckCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (ErrorCounter==0)
+            {
+                TheLoader.Hide();
+                Hide();
+                MainScreen mainmenu = new MainScreen();
+                mainmenu.SourceScreen = this;
+                mainmenu.Show();
+            }
+        }
+
+        LoadingScreen TheLoader;
+        int ErrorCounter;
+
+        private void ButtonLogin_Click(object senter, RoutedEventArgs e)
+        {
+            if (RadioOffline.IsChecked==true)
+            {
+                ErrorCounter = 0;
+                TheLoader = new LoadingScreen();
+                TheLoader.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                TheLoader.CurrentOperation.Text = "Se incepe verificarea bazei de date locale...";
+                BackgroundWorker bgWorker = new BackgroundWorker();
+                bgWorker.DoWork += (sender, error) => DatabaseCheckWorking(sender, error);
+                bgWorker.RunWorkerCompleted += DatabaseCheckCompleted;
+                bgWorker.RunWorkerAsync();
+                TheLoader.Show();
             }
             else
             {
@@ -246,10 +303,10 @@ namespace OTTS_WPF
                     return;
                 }
             }
-            Hide();
-            MainScreen mainmenu = new MainScreen();
-            mainmenu.SourceScreen = this;
-            mainmenu.Show();
+            //Hide();
+            //MainScreen mainmenu = new MainScreen();
+            //mainmenu.SourceScreen = this;
+            //mainmenu.Show();
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)

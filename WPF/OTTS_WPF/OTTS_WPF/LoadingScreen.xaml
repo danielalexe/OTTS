@@ -1,0 +1,26 @@
+﻿<Window x:Class="OTTS_WPF.LoadingScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OTTS_WPF"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Loading" Height="400" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Controls:ProgressRing IsActive="True" Grid.Row="0" Grid.Column="0" />
+        <TextBlock Grid.Row="1" Grid.Column="0" x:Name="CurrentOperation" Text="LOADING..." VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" x:Name="TimeoutText" Text="Timeout in 60 seconds" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <Button Grid.Column="0" Grid.Row="3" x:Name="ButtonAbort" Content="Inchide Aplicatia" Click="ButtonAbort_Click"></Button>
+    </Grid> 
+</Window>
