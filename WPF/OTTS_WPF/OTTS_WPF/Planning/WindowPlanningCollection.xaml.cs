@@ -497,7 +497,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == TheSemiGroup.lLIST_EXPORT[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\" align=\"center\">";
                             HTMLBIG += "Luni";
                             HTMLBIG += "</td>";
                         }
@@ -521,7 +521,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == TheSemiGroup.lLIST_EXPORT[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\" align=\"center\">";
                             HTMLBIG += "Marti";
                             HTMLBIG += "</td>";
                         }
@@ -545,7 +545,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == TheSemiGroup.lLIST_EXPORT[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\" align=\"center\">";
                             HTMLBIG += "Miercuri";
                             HTMLBIG += "</td>";
                         }
@@ -569,7 +569,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == TheSemiGroup.lLIST_EXPORT[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\" align=\"center\">";
                             HTMLBIG += "Joi";
                             HTMLBIG += "</td>";
                         }
@@ -593,7 +593,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == TheSemiGroup.lLIST_EXPORT[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\" align=\"center\">";
                             HTMLBIG += "Vineri";
                             HTMLBIG += "</td>";
                         }
@@ -675,7 +675,7 @@ namespace OTTS_WPF.Planning
                         }
                         if (module==listmodules[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\" align=\"center\">";
                             HTMLBIG += "Luni";
                             HTMLBIG += "</td>";
                         }
@@ -690,11 +690,27 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
                         HTMLBIG += "</td>";
 
+                        List<string> templist = new List<string>();
                         foreach (var stuff in OrderedByName)
                         {
                             var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
-                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
-                            HTMLBIG += getStuff.MONDAY;
+                            templist.Add(getStuff.MONDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount==templist.Count)
+                        {
+                            foreach (var getStuff in templist)
+                            {
+                                HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                                HTMLBIG += getStuff;
+                                HTMLBIG += "</td>";
+                            }
+                        }
+                        else
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" colspan=\"" + templist.Count + "\" align=\"center\">";
+                            HTMLBIG += templist.FirstOrDefault();
                             HTMLBIG += "</td>";
                         }
                         HTMLBIG += "</tr>";
@@ -704,7 +720,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == listmodules[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\" align=\"center\">";
                             HTMLBIG += "Marți";
                             HTMLBIG += "</td>";
                         }
@@ -719,11 +735,27 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
                         HTMLBIG += "</td>";
 
+                        List<string> templist = new List<string>();
                         foreach (var stuff in OrderedByName)
                         {
                             var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
-                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
-                            HTMLBIG += getStuff.TUESDAY;
+                            templist.Add(getStuff.TUESDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            foreach (var getStuff in templist)
+                            {
+                                HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                                HTMLBIG += getStuff;
+                                HTMLBIG += "</td>";
+                            }
+                        }
+                        else
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" colspan=\"" + templist.Count + "\" align=\"center\">";
+                            HTMLBIG += templist.FirstOrDefault();
                             HTMLBIG += "</td>";
                         }
                         HTMLBIG += "</tr>";
@@ -733,7 +765,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == listmodules[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\" align=\"center\">";
                             HTMLBIG += "Miercuri";
                             HTMLBIG += "</td>";
                         }
@@ -748,11 +780,27 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
                         HTMLBIG += "</td>";
 
+                        List<string> templist = new List<string>();
                         foreach (var stuff in OrderedByName)
                         {
                             var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
-                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
-                            HTMLBIG += getStuff.WEDNESDAY;
+                            templist.Add(getStuff.WEDNESDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            foreach (var getStuff in templist)
+                            {
+                                HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                                HTMLBIG += getStuff;
+                                HTMLBIG += "</td>";
+                            }
+                        }
+                        else
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" colspan=\"" + templist.Count + "\" align=\"center\">";
+                            HTMLBIG += templist.FirstOrDefault();
                             HTMLBIG += "</td>";
                         }
                         HTMLBIG += "</tr>";
@@ -762,7 +810,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == listmodules[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\" align=\"center\">";
                             HTMLBIG += "Joi";
                             HTMLBIG += "</td>";
                         }
@@ -777,11 +825,27 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
                         HTMLBIG += "</td>";
 
+                        List<string> templist = new List<string>();
                         foreach (var stuff in OrderedByName)
                         {
                             var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
-                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
-                            HTMLBIG += getStuff.THURSDAY;
+                            templist.Add(getStuff.THURSDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            foreach (var getStuff in templist)
+                            {
+                                HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                                HTMLBIG += getStuff;
+                                HTMLBIG += "</td>";
+                            }
+                        }
+                        else
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" colspan=\"" + templist.Count + "\" align=\"center\">";
+                            HTMLBIG += templist.FirstOrDefault();
                             HTMLBIG += "</td>";
                         }
                         HTMLBIG += "</tr>";
@@ -791,7 +855,7 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += "<tr>";
                         if (module == listmodules[0])
                         {
-                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\" align=\"center\">";
                             HTMLBIG += "Vineri";
                             HTMLBIG += "</td>";
                         }
@@ -806,13 +870,31 @@ namespace OTTS_WPF.Planning
                         HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
                         HTMLBIG += "</td>";
 
+
+                        List<string> templist = new List<string>();
                         foreach (var stuff in OrderedByName)
                         {
                             var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
-                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
-                            HTMLBIG += getStuff.FRIDAY;
+                            templist.Add(getStuff.FRIDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            foreach (var getStuff in templist)
+                            {
+                                HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                                HTMLBIG += getStuff;
+                                HTMLBIG += "</td>";
+                            }
+                        }
+                        else
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" colspan=\"" + templist.Count + "\" align=\"center\">";
+                            HTMLBIG += templist.FirstOrDefault();
                             HTMLBIG += "</td>";
                         }
+
                         HTMLBIG += "</tr>";
                     }
                     HTMLBIG += "</table>";
