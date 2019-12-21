@@ -20,6 +20,21 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0" Background="#FF174699">
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="ButtonExportHtml" Click="ButtonExportHtml_Click"  Margin="5 0 0 0"  Height="50">
+                    <materialDesign:PackIcon Kind="Xml" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonExportExcel" Click="ButtonExportExcel_Click"  Margin="5 0 0 0"  Height="50">
+                    <materialDesign:PackIcon Kind="FileExcel" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button x:Name="ButtonExportPdf" Click="ButtonExportPdf_Click"  Margin="5 0 0 0"  Height="50">
+                    <materialDesign:PackIcon Kind="FilePdf" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
                 <Button x:Name="ButtonGenerate" Click="ButtonGenerate_Click"  Margin="5 0 0 0"  Height="50">
                     <materialDesign:PackIcon Kind="Pickaxe" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 

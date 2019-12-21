@@ -73,6 +73,7 @@
     <Compile Include="DTOLecture.cs" />
     <Compile Include="DTOHall.cs" />
     <Compile Include="DTOPlaceholderCombo.cs" />
+    <Compile Include="DTOPlanningExport.cs" />
     <Compile Include="DTOPlanningRow.cs" />
     <Compile Include="DTOTeacher.cs" />
     <Compile Include="DTOTeacherPrefferedHall.cs" />

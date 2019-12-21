@@ -171,6 +171,7 @@
     <Compile Include="Helpers\EnumAuthenticationType.cs" />
     <Compile Include="Helpers\EnumDatabaseType.cs" />
     <Compile Include="Helpers\EnumWindowType.cs" />
+    <Compile Include="Helpers\HelperModules.cs" />
     <Compile Include="Helpers\PersistentData.cs" />
     <Compile Include="Lectures\WindowLecturesCollection.xaml.cs">
       <DependentUpon>WindowLecturesCollection.xaml</DependentUpon>

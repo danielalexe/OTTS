@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
+using System.IO;
 
 namespace OTTS_WPF.Planning
 {
@@ -64,11 +65,16 @@ namespace OTTS_WPF.Planning
                 if (GenerationNumber != 0)
                 {
                     List<DTOGenerationNumber> list = new List<DTOGenerationNumber>();
-                    for (int i = 1; i <= GenerationNumber; i++)
+                    for (int i = 1; i < GenerationNumber; i++)
                     {
                         DTOGenerationNumber dto = new DTOGenerationNumber();
                         dto.iGENERATION_NUMBER = i;
                         dto.nvCOMBO_DISPLAY = i.ToString();
+                        var getFirstGeneratedItem = db.TIMETABLE_PLANNING.FirstOrDefault(z => z.iID_SEMESTER == PersistentData.SelectedSemester && z.bACTIVE == true && z.iGENERATION_NUMBER == i);
+                        if (getFirstGeneratedItem!=null)
+                        {
+                            dto.nvCOMBO_DISPLAY = i.ToString()+" ("+getFirstGeneratedItem.dtCREATE_DATE.ToString("dd/MM/yyyy HH:mm:ss")+")";
+                        }
                         list.Add(dto);
                     }
 
@@ -94,6 +100,11 @@ namespace OTTS_WPF.Planning
         {
             using (var db = new OTTSContext(PersistentData.ConnectionString))
             {
+                if (CComboGeneration.CComboBox.SelectedItem == null || CComboSemigroup.CComboBox.SelectedItem ==null)
+                {
+                    return;
+                }
+
                 var FilterGenerationNumber = ((DTOGenerationNumber)CComboGeneration.CComboBox.SelectedItem).iGENERATION_NUMBER;
                 var FilterSemigroup = ((DTOSemigroup)CComboSemigroup.CComboBox.SelectedItem).iID_SEMIGROUP;
 
@@ -313,6 +324,528 @@ namespace OTTS_WPF.Planning
             ReloadData();
         }
 
+        private void ButtonExportPdf_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void ButtonExportExcel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonExportHtml_Click(object sender, RoutedEventArgs e)
+        {
+            if (CComboGeneration.CComboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            var FilterGenerationNumber = ((DTOGenerationNumber)CComboGeneration.CComboBox.SelectedItem).iGENERATION_NUMBER;
+
+            List<DTOPlanningExport> listexport = new List<DTOPlanningExport>();
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getSemigroups = db.SEMIGROUPS.Where(z => z.bACTIVE == true).ToList();
+                foreach(var getSemigroup in getSemigroups)
+                {
+                    DTOPlanningExport dtoexport = new DTOPlanningExport();
+                    dtoexport.iID_GROUP = getSemigroup.iID_GROUP;
+                    dtoexport.iID_SEMIGROUP = getSemigroup.iID_SEMIGROUP;
+                    dtoexport.nvSEMIGROUP_NAME = getSemigroup.nvNAME;
+                    dtoexport.iID_GROUP_TYPE = getSemigroup.GROUPS.iID_GROUP_TYPE;
+                    dtoexport.iYEAR = getSemigroup.GROUPS.iYEAR;
+                    
+
+                    List<DTOPlanningRow> list = new List<DTOPlanningRow>();
+
+                    var getDays = db.DAYS.ToList();
+                    var getModules = db.GROUPS_MODULES_LINK.Where(z => z.bACTIVE == true && z.iID_GROUP == getSemigroup.iID_GROUP).ToList();
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        DTOPlanningRow dto = new DTOPlanningRow();
+                        dto.MODULE_NAME = getModules[i].MODULES.nvNAME;
+                        list.Add(dto);
+                    }
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        for (int j = 0; j < getDays.Count; j++)
+                        {
+                            var idzi = getDays[j].iID_DAY;
+                            var idmodul = getModules[i].iID_MODULE;
+
+                            var getPlanificareZi = db.TIMETABLE_PLANNING.FirstOrDefault(z => z.bACTIVE == true &&
+                            z.iID_SEMIGROUP == getSemigroup.iID_SEMIGROUP
+                            &&
+                            z.iGENERATION_NUMBER == FilterGenerationNumber
+                            &&
+                            z.iID_DAY == idzi
+                            &&
+                            z.iID_SEMESTER == PersistentData.SelectedSemester
+                            &&
+                            z.iID_MODULE == idmodul);
+                            if (getPlanificareZi != null)
+                            {
+                                var Prelegere = getPlanificareZi.iID_LECTURE;
+                                var Profesor = getPlanificareZi.iID_TEACHER;
+                                var TipExecutie = getPlanificareZi.iID_LECTURE_TYPE;
+
+                                var TextDeAfisat = "";
+                                var getPrelegere = db.LECTURES.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE == Prelegere && z.iID_SEMESTER == PersistentData.SelectedSemester);
+                                if (getPrelegere != null)
+                                {
+                                    TextDeAfisat += getPrelegere.nvNAME;
+                                }
+                                var getTipExecutie = db.LECTURE_TYPE.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE_TYPE == TipExecutie);
+                                if (getTipExecutie != null)
+                                {
+                                    TextDeAfisat += " (" + getTipExecutie.nvNAME + ")";
+                                }
+                                var getProfesor = db.TEACHERS.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == Profesor);
+                                if (getProfesor != null)
+                                {
+                                    TextDeAfisat += " (" + getProfesor.nvSURNAME + " " + getProfesor.nvNAME + ")";
+                                }
+                                switch (j)
+                                {
+                                    case 0:
+                                        list[i].MONDAY = TextDeAfisat;
+                                        break;
+                                    case 1:
+                                        list[i].TUESDAY = TextDeAfisat;
+                                        break;
+                                    case 2:
+                                        list[i].WEDNESDAY = TextDeAfisat;
+                                        break;
+                                    case 3:
+                                        list[i].THURSDAY = TextDeAfisat;
+                                        break;
+                                    case 4:
+                                        list[i].FRIDAY = TextDeAfisat;
+                                        break;
+                                    case 5:
+                                        list[i].SATURDAY = TextDeAfisat;
+                                        break;
+                                    case 6:
+                                        list[i].SUNDAY = TextDeAfisat;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                //nu pune nimic
+                            }
+                        }
+                    }
+
+                    dtoexport.lLIST_EXPORT = list;
+                    listexport.Add(dtoexport);
+                }
+            }
+
+            var ByGroup = listexport.GroupBy(z => z.iID_GROUP).ToList();
+
+            var HTMLBIG = "";
+            HTMLBIG += "<html>";
+            HTMLBIG += "<head></head>";
+            HTMLBIG += "<body>";
+
+            foreach (var item in ByGroup)
+            {
+                if (item.Count()==1)
+                {
+                    var TheSemiGroup = item.FirstOrDefault();
+                    //single semigroup
+                    
+                    HTMLBIG += "<p align=\"center\">Facultatea Litere și Științe</p>";
+                    HTMLBIG += "<p align=\"center\">2019-2020</p>";
+                    if (TheSemiGroup.iID_GROUP_TYPE==1)
+                    {
+                        HTMLBIG += "<p align=\"center\">Specializarea INFORMATICĂ</p>";
+                    }
+                    else
+                    {
+                        HTMLBIG += "<p align=\"center\">Specializarea TAPI</p>";
+                    }
+                    HTMLBIG += "<p align=\"center\">Anul " + TheSemiGroup.iYEAR.ToString()+"</p>";
+                    HTMLBIG += "<p align=\"center\">Semestrul " + PersistentData.SelectedSemester.ToString()+"</p>";
+
+                    HTMLBIG += "<table style=\"width: 100 %;border: 3px solid black; \" align=\"center\">";
+
+                    HTMLBIG += "<tr>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Zi";
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Număr modul";
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Interval Orar";
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += TheSemiGroup.nvSEMIGROUP_NAME;
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "</tr>";
+
+                    foreach (var module in TheSemiGroup.lLIST_EXPORT)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == TheSemiGroup.lLIST_EXPORT[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "Luni";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MODULE_NAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MONDAY;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in TheSemiGroup.lLIST_EXPORT)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == TheSemiGroup.lLIST_EXPORT[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "Marti";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MODULE_NAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.TUESDAY;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in TheSemiGroup.lLIST_EXPORT)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == TheSemiGroup.lLIST_EXPORT[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "Miercuri";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MODULE_NAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.WEDNESDAY;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in TheSemiGroup.lLIST_EXPORT)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == TheSemiGroup.lLIST_EXPORT[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "Joi";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MODULE_NAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.THURSDAY;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in TheSemiGroup.lLIST_EXPORT)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == TheSemiGroup.lLIST_EXPORT[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + TheSemiGroup.lLIST_EXPORT.Count + "\">";
+                            HTMLBIG += "Vineri";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.MODULE_NAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.FRIDAY;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "</tr>";
+                    }
+
+                    HTMLBIG += "</table>";
+                    HTMLBIG += "<br><br>";
+                }
+                else
+                {
+                    //multiple semigroups
+                    var OrderedByName = item.OrderBy(z => z.nvSEMIGROUP_NAME).ToList();
+
+                    HTMLBIG += "<p align=\"center\">Facultatea Litere și Științe</p>";
+                    HTMLBIG += "<p align=\"center\">2019-2020</p>";
+                    if (OrderedByName.FirstOrDefault().iID_GROUP_TYPE == 1)
+                    {
+                        HTMLBIG += "<p align=\"center\">Specializarea INFORMATICĂ</p>";
+                    }
+                    else
+                    {
+                        HTMLBIG += "<p align=\"center\">Specializarea TAPI</p>";
+                    }
+                    HTMLBIG += "<p align=\"center\">Anul " + OrderedByName.FirstOrDefault().iYEAR.ToString() + "</p>";
+                    HTMLBIG += "<p align=\"center\">Semestrul " + PersistentData.SelectedSemester.ToString() + "</p>";
+
+                    HTMLBIG += "<table style=\"width: 100 %;border: 3px solid black; \" align=\"center\">";
+
+                    HTMLBIG += "<tr>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Zi";
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Număr modul";
+                    HTMLBIG += "</th>";
+                    HTMLBIG += "<th align=\"center\">";
+                    HTMLBIG += "Interval Orar";
+                    HTMLBIG += "</th>";
+                    foreach (var semigroup in OrderedByName)
+                    {
+                        HTMLBIG += "<th align=\"center\">";
+                        HTMLBIG += semigroup.nvSEMIGROUP_NAME;
+                        HTMLBIG += "</th>";
+                    }
+                    HTMLBIG += "</tr>";
+
+
+                    List<MODULES> listmodules = new List<MODULES>();
+
+                    using (var db = new OTTSContext(PersistentData.ConnectionString))
+                    {
+                        var getModules = db.MODULES.Where(z => z.bACTIVE == true).ToList();
+                        listmodules = getModules;
+                    }
+
+                    foreach (var module in listmodules)
+                    {
+                        //if (module==listmodules[listmodules.Count-1])
+                        //{
+                        //    HTMLBIG += "<tr style=\"border-bottom: 3px solid;\">";
+                        //}
+                        //else
+                        {
+                            HTMLBIG += "<tr>";
+                        }
+                        if (module==listmodules[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "Luni";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.nvNAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
+                        HTMLBIG += "</td>";
+
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
+                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                            HTMLBIG += getStuff.MONDAY;
+                            HTMLBIG += "</td>";
+                        }
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in listmodules)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == listmodules[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "Marți";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }                        
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.nvNAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
+                        HTMLBIG += "</td>";
+
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
+                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                            HTMLBIG += getStuff.TUESDAY;
+                            HTMLBIG += "</td>";
+                        }
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in listmodules)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == listmodules[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "Miercuri";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }                        
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.nvNAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
+                        HTMLBIG += "</td>";
+
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
+                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                            HTMLBIG += getStuff.WEDNESDAY;
+                            HTMLBIG += "</td>";
+                        }
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in listmodules)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == listmodules[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "Joi";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }                        
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.nvNAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
+                        HTMLBIG += "</td>";
+
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
+                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                            HTMLBIG += getStuff.THURSDAY;
+                            HTMLBIG += "</td>";
+                        }
+                        HTMLBIG += "</tr>";
+                    }
+                    foreach (var module in listmodules)
+                    {
+                        HTMLBIG += "<tr>";
+                        if (module == listmodules[0])
+                        {
+                            HTMLBIG += "<td style=\"border: 1px solid black;\" rowspan=\"" + listmodules.Count + "\">";
+                            HTMLBIG += "Vineri";
+                            HTMLBIG += "</td>";
+                        }
+                        else
+                        {
+
+                        }                        
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += module.nvNAME;
+                        HTMLBIG += "</td>";
+                        HTMLBIG += "<td align=\"center\" style=\"border: 1px solid black;\">";
+                        HTMLBIG += Helpers.HelperModules.GetModuleInterval(module.nvNAME);
+                        HTMLBIG += "</td>";
+
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == module.nvNAME);
+                            HTMLBIG += "<td style=\"border: 1px solid black;\">";
+                            HTMLBIG += getStuff.FRIDAY;
+                            HTMLBIG += "</td>";
+                        }
+                        HTMLBIG += "</tr>";
+                    }
+                    HTMLBIG += "</table>";
+                    HTMLBIG += "<br><br>";
+
+                }
+            }
+
+            HTMLBIG += "</body>";
+            HTMLBIG += "</html>";
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "ExportPlanificareOrar"; // Default file name
+            dlg.DefaultExt = ".html"; // Default file extension
+            dlg.Filter = "Html documents (.html)|*.html"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                bool exists = System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(filename));
+                if (!exists)
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filename));
+                using (StreamWriter w = new StreamWriter(filename, true))
+                {
+                    w.Write(HTMLBIG);
+                }
+            }
+            MessageBox.Show("Fisierul a fost exportat cu succes");
+        }
     }
 }
