@@ -13,19 +13,19 @@ namespace OTTS_WPF.Helpers
             switch (nvMODULE_NAME)
             {
                 case "M1":
-                    return "8:00-9:40";
+                    return "8:00 - 9:40";
                 case "M2":
-                    return "9:50-11:30";
+                    return "9:50 - 11:30";
                 case "M3":
-                    return "11:40-13:20";
+                    return "11:40 - 13:20";
                 case "M4":
-                    return "13:30-15:10";
+                    return "13:30 - 15:10";
                 case "M5":
-                    return "15:20-17:00";
+                    return "15:20 - 17:00";
                 case "M6":
-                    return "17:10-18:50";
+                    return "17:10 - 18:50";
                 case "M7":
-                    return "19:00-20:40";
+                    return "19:00 - 20:40";
                 default:
                     return "";
             }

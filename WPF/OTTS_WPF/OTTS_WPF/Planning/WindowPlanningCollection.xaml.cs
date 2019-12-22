@@ -12,13 +12,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using System.IO;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using MigraDoc.DocumentObjectModel.Tables;
 
 namespace OTTS_WPF.Planning
 {
@@ -195,7 +197,7 @@ namespace OTTS_WPF.Planning
                                     DTODataGridCellsColors cellcolor = new DTODataGridCellsColors();
                                     cellcolor.iROW = i;
                                     cellcolor.iCOLUMN = j+1;
-                                    cellcolor.CColor = Colors.Green;
+                                    cellcolor.CColor = System.Windows.Media.Colors.Green;
                                     listColors.Add(cellcolor);
                                 }
                                 else
@@ -203,7 +205,7 @@ namespace OTTS_WPF.Planning
                                     DTODataGridCellsColors cellcolor = new DTODataGridCellsColors();
                                     cellcolor.iROW = i;
                                     cellcolor.iCOLUMN = j+1;
-                                    cellcolor.CColor = Colors.Orange;
+                                    cellcolor.CColor = System.Windows.Media.Colors.Orange;
                                     listColors.Add(cellcolor);
                                 }
                             }
@@ -324,9 +326,1036 @@ namespace OTTS_WPF.Planning
             ReloadData();
         }
 
+        private static MigraDoc.DocumentObjectModel.Color TableAccent = new MigraDoc.DocumentObjectModel.Color(255, 255, 204);
+        private static MigraDoc.DocumentObjectModel.Color TableBorder = new MigraDoc.DocumentObjectModel.Color(0, 0, 0);
+        private static MigraDoc.DocumentObjectModel.Color TableWhite = new MigraDoc.DocumentObjectModel.Color(255, 255, 255);
+
+
+
         private void ButtonExportPdf_Click(object sender, RoutedEventArgs e)
         {
+            if (CComboGeneration.CComboBox.SelectedItem == null)
+            {
+                return;
+            }
 
+            var FilterGenerationNumber = ((DTOGenerationNumber)CComboGeneration.CComboBox.SelectedItem).iGENERATION_NUMBER;
+
+            List<DTOPlanningExport> listexport = new List<DTOPlanningExport>();
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getSemigroups = db.SEMIGROUPS.Where(z => z.bACTIVE == true).ToList();
+                foreach (var getSemigroup in getSemigroups)
+                {
+                    DTOPlanningExport dtoexport = new DTOPlanningExport();
+                    dtoexport.iID_GROUP = getSemigroup.iID_GROUP;
+                    dtoexport.iID_SEMIGROUP = getSemigroup.iID_SEMIGROUP;
+                    dtoexport.nvSEMIGROUP_NAME = getSemigroup.nvNAME;
+                    dtoexport.iID_GROUP_TYPE = getSemigroup.GROUPS.iID_GROUP_TYPE;
+                    dtoexport.iYEAR = getSemigroup.GROUPS.iYEAR;
+
+
+                    List<DTOPlanningRow> list = new List<DTOPlanningRow>();
+
+                    var getDays = db.DAYS.ToList();
+                    var getModules = db.GROUPS_MODULES_LINK.Where(z => z.bACTIVE == true && z.iID_GROUP == getSemigroup.iID_GROUP).ToList();
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        DTOPlanningRow dto = new DTOPlanningRow();
+                        dto.MODULE_NAME = getModules[i].MODULES.nvNAME;
+                        list.Add(dto);
+                    }
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        for (int j = 0; j < getDays.Count; j++)
+                        {
+                            var idzi = getDays[j].iID_DAY;
+                            var idmodul = getModules[i].iID_MODULE;
+
+                            var getPlanificareZi = db.TIMETABLE_PLANNING.FirstOrDefault(z => z.bACTIVE == true &&
+                            z.iID_SEMIGROUP == getSemigroup.iID_SEMIGROUP
+                            &&
+                            z.iGENERATION_NUMBER == FilterGenerationNumber
+                            &&
+                            z.iID_DAY == idzi
+                            &&
+                            z.iID_SEMESTER == PersistentData.SelectedSemester
+                            &&
+                            z.iID_MODULE == idmodul);
+                            if (getPlanificareZi != null)
+                            {
+                                var Prelegere = getPlanificareZi.iID_LECTURE;
+                                var Profesor = getPlanificareZi.iID_TEACHER;
+                                var TipExecutie = getPlanificareZi.iID_LECTURE_TYPE;
+
+                                var TextDeAfisat = "";
+                                var getPrelegere = db.LECTURES.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE == Prelegere && z.iID_SEMESTER == PersistentData.SelectedSemester);
+                                if (getPrelegere != null)
+                                {
+                                    TextDeAfisat += getPrelegere.nvNAME;
+                                }
+                                var getTipExecutie = db.LECTURE_TYPE.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE_TYPE == TipExecutie);
+                                if (getTipExecutie != null)
+                                {
+                                    TextDeAfisat += " (" + getTipExecutie.nvNAME + ")";
+                                }
+                                var getProfesor = db.TEACHERS.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == Profesor);
+                                if (getProfesor != null)
+                                {
+                                    TextDeAfisat += " (" + getProfesor.nvSURNAME + " " + getProfesor.nvNAME + ")";
+                                }
+                                switch (j)
+                                {
+                                    case 0:
+                                        list[i].MONDAY = TextDeAfisat;
+                                        break;
+                                    case 1:
+                                        list[i].TUESDAY = TextDeAfisat;
+                                        break;
+                                    case 2:
+                                        list[i].WEDNESDAY = TextDeAfisat;
+                                        break;
+                                    case 3:
+                                        list[i].THURSDAY = TextDeAfisat;
+                                        break;
+                                    case 4:
+                                        list[i].FRIDAY = TextDeAfisat;
+                                        break;
+                                    case 5:
+                                        list[i].SATURDAY = TextDeAfisat;
+                                        break;
+                                    case 6:
+                                        list[i].SUNDAY = TextDeAfisat;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                //nu pune nimic
+                            }
+                        }
+                    }
+
+                    dtoexport.lLIST_EXPORT = list;
+                    listexport.Add(dtoexport);
+                }
+            }
+
+            var ByGroup = listexport.GroupBy(z => new { z.iID_GROUP_TYPE,z.iYEAR}).ToList();
+
+            Document document = new Document();
+            document.Info.Title = "OTTS - Planning Export";
+            document.Info.Subject = "";
+            document.Info.Author = "OTTS";
+            document.DefaultPageSetup.Orientation = MigraDoc.DocumentObjectModel.Orientation.Portrait;
+
+            // Get the predefined style Normal.
+            MigraDoc.DocumentObjectModel.Style style = document.Styles["Normal"];
+            // Because all styles are derived from Normal, the next line changes the 
+            // font of the whole document. Or, more exactly, it changes the font of
+            // all styles and paragraphs that do not redefine the font.
+            style.Font.Name = "Verdana";
+
+            style = document.Styles[StyleNames.Header];
+            style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+
+            style = document.Styles[StyleNames.Footer];
+            style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
+
+            // Create a new style called Table based on style Normal
+            style = document.Styles.AddStyle("Table", "Normal");
+            style.Font.Name = "Verdana";
+            style.Font.Name = "Times New Roman";
+            style.Font.Size = 9;
+
+            // Create a new style called Reference based on style Normal
+            style = document.Styles.AddStyle("Reference", "Normal");
+            style.ParagraphFormat.SpaceBefore = "5mm";
+            style.ParagraphFormat.SpaceAfter = "5mm";
+            style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
+
+            foreach (var item in ByGroup)
+            {
+                if (item.Count() == 1)
+                {
+                    var TheSemiGroup = item.FirstOrDefault();
+                    //single semigroup
+
+                    // Each MigraDoc document needs at least one section.
+                    MigraDoc.DocumentObjectModel.Section section = document.AddSection();
+                    section.PageSetup.LeftMargin = Unit.FromCentimeter(0.8);
+                    section.PageSetup.RightMargin = Unit.FromCentimeter(2.3);
+                    section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
+                    section.PageSetup.BottomMargin = Unit.FromCentimeter(1.8);
+
+                    MigraDoc.DocumentObjectModel.Paragraph paragraphz = section.AddParagraph();
+                    paragraphz.AddText("Facultatea Litere și Științe");
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddText("2019-2020");
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Right;
+                    paragraphz.AddLineBreak();
+                    paragraphz = section.AddParagraph();
+                    if (TheSemiGroup.iID_GROUP_TYPE == 1)
+                    {
+                        paragraphz.AddText("Specializarea INFORMATICĂ");
+                    }
+                    else
+                    {
+                        paragraphz.AddText("Specializarea TAPI");
+                    }                    
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz.AddLineBreak();
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddTab();
+                    paragraphz.AddTab();
+                    paragraphz.AddSpace(2);
+                    paragraphz.AddText("Anul "+ TheSemiGroup.iYEAR.ToString());
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz.AddLineBreak();
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddTab();
+                    paragraphz.AddTab();
+                    paragraphz.AddSpace(2);
+                    paragraphz.AddText("Semestrul "+ PersistentData.SelectedSemester.ToString());
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+
+                    Table table = new Table();
+                    table = document.LastSection.AddTable();
+                    table.Style = "Table";
+                    table.Borders.Color = TableBorder;
+                    table.Borders.Width = 0.25;
+                    table.Borders.Left.Width = 0.5;
+                    table.Borders.Right.Width = 0.5;
+                    table.Rows.LeftIndent = 0;
+
+                    // Before you can add a row, you must define the columns
+                    Column column;
+                    column = table.AddColumn(Unit.FromCentimeter(1.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(1.0));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(2.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(12.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+
+                    Row row1;
+                    row1 = table.AddRow();
+
+                    row1.Cells[0].Borders.Top.Width = 0;
+                    row1.Cells[0].Borders.Bottom.Width = 0;
+                    row1.Cells[0].Borders.Left.Width = 0;
+                    row1.Cells[0].Borders.Right.Width = 0;
+                    row1.Cells[1].Borders.Top.Width = 0;
+                    row1.Cells[1].Borders.Bottom.Width = 0;
+                    row1.Cells[1].Borders.Left.Width = 0;
+                    row1.Cells[1].Borders.Right.Width = 0;
+                    row1.Cells[2].Borders.Top.Width = 0;
+                    row1.Cells[2].Borders.Bottom.Width = 0;
+                    row1.Cells[2].Borders.Left.Width = 0;
+                    row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+
+                    row1.Cells[3].Shading.Color = TableAccent;
+                    row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                    row1.Cells[3].Format.Font.Bold = true;
+                    row1.Cells[3].Format.Font.Size = 10;
+                    row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[3].Format.FirstLineIndent = 1;
+                    row1.Cells[3].AddParagraph(TheSemiGroup.nvSEMIGROUP_NAME);
+                    row1.TopPadding = 1.5;
+
+                    for (int i = 0; i < TheSemiGroup.lLIST_EXPORT.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Luni");
+                            row1.Cells[0].MergeDown = TheSemiGroup.lLIST_EXPORT.Count-1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME));
+
+                        row1.Cells[3].Shading.Color = TableWhite;
+                        row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[3].Format.Font.Size = 8;
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].Format.FirstLineIndent = 1;
+                        row1.Cells[3].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MONDAY == null ? "" : TheSemiGroup.lLIST_EXPORT[i].MONDAY);
+
+                        if (i == TheSemiGroup.lLIST_EXPORT.Count-1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < TheSemiGroup.lLIST_EXPORT.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Marți");
+                            row1.Cells[0].MergeDown = TheSemiGroup.lLIST_EXPORT.Count-1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME));
+
+                        row1.Cells[3].Shading.Color = TableWhite;
+                        row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[3].Format.Font.Size = 8;
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].Format.FirstLineIndent = 1;
+                        row1.Cells[3].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].TUESDAY == null ? "" : TheSemiGroup.lLIST_EXPORT[i].TUESDAY);
+
+                        if (i == TheSemiGroup.lLIST_EXPORT.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < TheSemiGroup.lLIST_EXPORT.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Miercuri");
+                            row1.Cells[0].MergeDown = TheSemiGroup.lLIST_EXPORT.Count-1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME));
+
+                        row1.Cells[3].Shading.Color = TableWhite;
+                        row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[3].Format.Font.Size = 8;
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].Format.FirstLineIndent = 1;
+                        row1.Cells[3].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].WEDNESDAY == null ? "" : TheSemiGroup.lLIST_EXPORT[i].WEDNESDAY);
+
+                        if (i == TheSemiGroup.lLIST_EXPORT.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < TheSemiGroup.lLIST_EXPORT.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Joi");
+                            row1.Cells[0].MergeDown = TheSemiGroup.lLIST_EXPORT.Count-1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME));
+
+                        row1.Cells[3].Shading.Color = TableWhite;
+                        row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[3].Format.Font.Size = 8;
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].Format.FirstLineIndent = 1;
+                        row1.Cells[3].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].THURSDAY == null ? "" : TheSemiGroup.lLIST_EXPORT[i].THURSDAY);
+
+                        if (i == TheSemiGroup.lLIST_EXPORT.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < TheSemiGroup.lLIST_EXPORT.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Vineri");
+                            row1.Cells[0].MergeDown = TheSemiGroup.lLIST_EXPORT.Count-1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(TheSemiGroup.lLIST_EXPORT[i].MODULE_NAME));
+
+                        row1.Cells[3].Shading.Color = TableWhite;
+                        row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[3].Format.Font.Size = 8;
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].Format.FirstLineIndent = 1;
+                        row1.Cells[3].AddParagraph(TheSemiGroup.lLIST_EXPORT[i].FRIDAY == null ? "" : TheSemiGroup.lLIST_EXPORT[i].FRIDAY);
+
+
+                        row1.TopPadding = 1.5;
+                    }
+
+                    //table.SetEdge(0, table.Rows.Count - 1, 4, 1, Edge.Box, BorderStyle.Single, 0.75);
+                }
+                else
+                {
+                    //multiple semigroups
+                    var OrderedByName = item.OrderBy(z => z.nvSEMIGROUP_NAME).ToList();
+
+                    // Each MigraDoc document needs at least one section.
+                    MigraDoc.DocumentObjectModel.Section section = document.AddSection();
+                    section.PageSetup.LeftMargin = Unit.FromCentimeter(0.8);
+                    section.PageSetup.RightMargin = Unit.FromCentimeter(2.3);
+                    section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
+                    section.PageSetup.BottomMargin = Unit.FromCentimeter(1.8);
+
+                    MigraDoc.DocumentObjectModel.Paragraph paragraphz = section.AddParagraph();
+                    paragraphz.AddText("Facultatea Litere și Științe");
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddText("2019-2020");
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Right;
+                    paragraphz.AddLineBreak();
+                    if (OrderedByName.FirstOrDefault().iID_GROUP_TYPE == 1)
+                    {
+                        paragraphz.AddText("Specializarea INFORMATICĂ");
+                    }
+                    else
+                    {
+                        paragraphz.AddText("Specializarea TAPI");
+                    }
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz.AddLineBreak();
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddTab();
+                    paragraphz.AddTab();
+                    paragraphz.AddSpace(2);
+                    paragraphz.AddText("Anul " + OrderedByName.FirstOrDefault().iYEAR.ToString());
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    paragraphz.AddLineBreak();
+                    paragraphz = section.AddParagraph();
+                    paragraphz.AddTab();
+                    paragraphz.AddTab();
+                    paragraphz.AddSpace(2);
+                    paragraphz.AddText("Semestrul " + PersistentData.SelectedSemester.ToString());
+                    paragraphz.Format.Font.Size = 10;
+                    paragraphz.Format.Font.Bold = true;
+                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
+
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+                    paragraphz.AddLineBreak();
+
+                    Table table = new Table();
+                    table = document.LastSection.AddTable();
+                    table.Style = "Table";
+                    table.Borders.Color = TableBorder;
+                    table.Borders.Width = 0.25;
+                    table.Borders.Left.Width = 0.5;
+                    table.Borders.Right.Width = 0.5;
+                    table.Rows.LeftIndent = 0;
+
+                    // Before you can add a row, you must define the columns
+                    Column column;
+                    column = table.AddColumn(Unit.FromCentimeter(1.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(1.0));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(2.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    foreach (var semigroup in OrderedByName)
+                    {
+                        column = table.AddColumn(Unit.FromCentimeter(12.5/OrderedByName.Count));
+                        column.Format.Alignment = ParagraphAlignment.Center;
+                        column.Format.Font.Size = 8;
+                    }
+
+                    Row row1;
+                    row1 = table.AddRow();
+
+                    row1.Cells[0].Borders.Top.Width = 0;
+                    row1.Cells[0].Borders.Bottom.Width = 0;
+                    row1.Cells[0].Borders.Left.Width = 0;
+                    row1.Cells[0].Borders.Right.Width = 0;
+                    row1.Cells[1].Borders.Top.Width = 0;
+                    row1.Cells[1].Borders.Bottom.Width = 0;
+                    row1.Cells[1].Borders.Left.Width = 0;
+                    row1.Cells[1].Borders.Right.Width = 0;
+                    row1.Cells[2].Borders.Top.Width = 0;
+                    row1.Cells[2].Borders.Bottom.Width = 0;
+                    row1.Cells[2].Borders.Left.Width = 0;
+                    row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+
+                    for (int i = 0; i < OrderedByName.Count; i++)
+                    {
+                        row1.Cells[i+3].Shading.Color = TableAccent;
+                        row1.Cells[i+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[i+3].Format.Font.Bold = true;
+                        row1.Cells[i+3].Format.Font.Size = 10;
+                        if (i!=OrderedByName.Count-1)
+                        {
+                            row1.Cells[i + 3].Borders.Right.Width = Unit.FromMillimeter(1);
+                        }
+                        row1.Cells[i+3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[i+3].Format.FirstLineIndent = 1;
+                        row1.Cells[i+3].AddParagraph(OrderedByName[i].nvSEMIGROUP_NAME);
+                    }
+                    row1.TopPadding = 1.5;
+
+
+                    List<MODULES> listmodules = new List<MODULES>();
+
+                    using (var db = new OTTSContext(PersistentData.ConnectionString))
+                    {
+                        var getModules = db.MODULES.Where(z => z.bACTIVE == true).ToList();
+                        listmodules = getModules;
+                    }
+
+                    for (int i = 0; i < listmodules.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Luni");
+                            row1.Cells[0].MergeDown = listmodules.Count - 1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(listmodules[i].nvNAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(listmodules[i].nvNAME));
+
+                        List<string> templist = new List<string>();
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == listmodules[i].nvNAME);
+                            templist.Add(getStuff.MONDAY == null? "":getStuff.MONDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            for (int z = 0; z < templist.Count; z++)
+                            {
+                                row1.Cells[z+3].Shading.Color = TableWhite;
+                                row1.Cells[z+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                                row1.Cells[z+3].Format.Font.Size = 8;
+                                row1.Cells[z+3].Format.Alignment = ParagraphAlignment.Center;
+                                row1.Cells[z+3].Format.FirstLineIndent = 1;
+                                row1.Cells[z+3].AddParagraph(templist[z]);
+                            }
+                        }
+                        else
+                        {
+                            row1.Cells[3].Shading.Color = TableWhite;
+                            row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[3].Format.Font.Size = 8;
+                            row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[3].Format.FirstLineIndent = 1;
+                            row1.Cells[3].AddParagraph(templist.FirstOrDefault());
+                            row1.Cells[3].MergeRight = templist.Count - 1;
+                        }
+
+                        if (i == listmodules.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < listmodules.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Marți");
+                            row1.Cells[0].MergeDown = listmodules.Count - 1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(listmodules[i].nvNAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(listmodules[i].nvNAME));
+
+                        List<string> templist = new List<string>();
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == listmodules[i].nvNAME);
+                            templist.Add(getStuff.TUESDAY == null? "":getStuff.TUESDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            for (int z = 0; z < templist.Count; z++)
+                            {
+                                row1.Cells[z+3].Shading.Color = TableWhite;
+                                row1.Cells[z+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                                row1.Cells[z+3].Format.Font.Size = 8;
+                                row1.Cells[z+3].Format.Alignment = ParagraphAlignment.Center;
+                                row1.Cells[z+3].Format.FirstLineIndent = 1;
+                                row1.Cells[z+3].AddParagraph(templist[z]);
+                            }
+                        }
+                        else
+                        {
+                            row1.Cells[3].Shading.Color = TableWhite;
+                            row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[3].Format.Font.Size = 8;
+                            row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[3].Format.FirstLineIndent = 1;
+                            row1.Cells[3].AddParagraph(templist.FirstOrDefault());
+                            row1.Cells[3].MergeRight = templist.Count - 1;
+                        }
+
+                        if (i == listmodules.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < listmodules.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Miercuri");
+                            row1.Cells[0].MergeDown = listmodules.Count - 1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(listmodules[i].nvNAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(listmodules[i].nvNAME));
+
+                        List<string> templist = new List<string>();
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == listmodules[i].nvNAME);
+                            templist.Add(getStuff.WEDNESDAY == null? "":getStuff.WEDNESDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            for (int z = 0; z < templist.Count; z++)
+                            {
+                                row1.Cells[z+3].Shading.Color = TableWhite;
+                                row1.Cells[z+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                                row1.Cells[z+3].Format.Font.Size = 8;
+                                row1.Cells[z+3].Format.Alignment = ParagraphAlignment.Center;
+                                row1.Cells[z+3].Format.FirstLineIndent = 1;
+                                row1.Cells[z+3].AddParagraph(templist[z]);
+                            }
+                        }
+                        else
+                        {
+                            row1.Cells[3].Shading.Color = TableWhite;
+                            row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[3].Format.Font.Size = 8;
+                            row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[3].Format.FirstLineIndent = 1;
+                            row1.Cells[3].AddParagraph(templist.FirstOrDefault());
+                            row1.Cells[3].MergeRight = templist.Count - 1;
+                        }
+
+                        if (i == listmodules.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < listmodules.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Joi");
+                            row1.Cells[0].MergeDown = listmodules.Count - 1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(listmodules[i].nvNAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(listmodules[i].nvNAME));
+
+                        List<string> templist = new List<string>();
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == listmodules[i].nvNAME);
+                            templist.Add(getStuff.THURSDAY == null? "":getStuff.THURSDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            for (int z = 0; z < templist.Count; z++)
+                            {
+                                row1.Cells[z+3].Shading.Color = TableWhite;
+                                row1.Cells[z+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                                row1.Cells[z+3].Format.Font.Size = 8;
+                                row1.Cells[z+3].Format.Alignment = ParagraphAlignment.Center;
+                                row1.Cells[z+3].Format.FirstLineIndent = 1;
+                                row1.Cells[z+3].AddParagraph(templist[z]);
+                            }
+                        }
+                        else
+                        {
+                            row1.Cells[3].Shading.Color = TableWhite;
+                            row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[3].Format.Font.Size = 8;
+                            row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[3].Format.FirstLineIndent = 1;
+                            row1.Cells[3].AddParagraph(templist.FirstOrDefault());
+                            row1.Cells[3].MergeRight = templist.Count - 1;
+                        }
+
+                        if (i == listmodules.Count - 1)
+                        {
+                            row1.Borders.Bottom.Width = Unit.FromMillimeter(1);
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+                    for (int i = 0; i < listmodules.Count; i++)
+                    {
+                        row1 = table.AddRow();
+                        if (i == 0)
+                        {
+                            row1.Cells[0].Shading.Color = TableAccent;
+                            row1.Cells[0].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[0].Format.Font.Bold = true;
+                            row1.Cells[0].Format.Font.Size = 9;
+                            row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[0].Format.FirstLineIndent = 1;
+                            row1.Cells[0].AddParagraph("Vineri");
+                            row1.Cells[0].MergeDown = listmodules.Count - 1;
+                        }
+                        else
+                        {
+
+                        }
+                        row1.Cells[1].Shading.Color = TableAccent;
+                        row1.Cells[1].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[1].Format.Font.Bold = true;
+                        row1.Cells[1].Format.Font.Size = 9;
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].Format.FirstLineIndent = 1;
+                        row1.Cells[1].AddParagraph(listmodules[i].nvNAME);
+
+                        row1.Cells[2].Shading.Color = TableAccent;
+                        row1.Cells[2].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                        row1.Cells[2].Format.Font.Bold = true;
+                        row1.Cells[2].Format.Font.Size = 9;
+                        row1.Cells[2].Borders.Right.Width = Unit.FromMillimeter(1);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].Format.FirstLineIndent = 1;
+                        row1.Cells[2].AddParagraph(Helpers.HelperModules.GetModuleInterval(listmodules[i].nvNAME));
+
+                        List<string> templist = new List<string>();
+                        foreach (var stuff in OrderedByName)
+                        {
+                            var getStuff = stuff.lLIST_EXPORT.FirstOrDefault(z => z.MODULE_NAME == listmodules[i].nvNAME);
+                            templist.Add(getStuff.FRIDAY == null? "":getStuff.FRIDAY);
+                        }
+
+                        var DistinctCount = templist.Distinct().ToList().Count;
+                        if (DistinctCount == templist.Count)
+                        {
+                            for (int z = 0; z < templist.Count; z++)
+                            {
+                                row1.Cells[z+3].Shading.Color = TableWhite;
+                                row1.Cells[z+3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                                row1.Cells[z+3].Format.Font.Size = 8;
+                                row1.Cells[z+3].Format.Alignment = ParagraphAlignment.Center;
+                                row1.Cells[z+3].Format.FirstLineIndent = 1;
+                                row1.Cells[z+3].AddParagraph(templist[z]);
+                            }
+                        }
+                        else
+                        {
+                            row1.Cells[3].Shading.Color = TableWhite;
+                            row1.Cells[3].VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                            row1.Cells[3].Format.Font.Size = 8;
+                            row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                            row1.Cells[3].Format.FirstLineIndent = 1;
+                            row1.Cells[3].AddParagraph(templist.FirstOrDefault());
+                            row1.Cells[3].MergeRight = templist.Count - 1;
+                        }
+
+                        row1.TopPadding = 1.5;
+                    }
+
+                    //table.SetEdge(0, table.Rows.Count - 1, 4, 1, Edge.Box, BorderStyle.Single, 0.75);
+                }
+            }
+
+            document.UseCmykColor = true;
+
+
+            // Create a renderer for PDF that uses Unicode font encoding
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
+
+            // Set the MigraDoc document
+            pdfRenderer.Document = document;
+
+            // Create the PDF document
+            pdfRenderer.RenderDocument();
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "ExportPlanificareOrar"; // Default file name
+            dlg.DefaultExt = ".pdf"; // Default file extension
+            dlg.Filter = "Pdf documents (.pdf)|*.pdf"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                // Save the PDF document...
+                pdfRenderer.Save(filename);
+            }
+
+            MessageBox.Show("Fisierul a fost exportat cu succes");
         }
 
         private void ButtonExportExcel_Click(object sender, RoutedEventArgs e)
@@ -448,7 +1477,7 @@ namespace OTTS_WPF.Planning
                 }
             }
 
-            var ByGroup = listexport.GroupBy(z => z.iID_GROUP).ToList();
+            var ByGroup = listexport.GroupBy(z => new { z.iID_GROUP_TYPE, z.iYEAR }).ToList();
 
             var HTMLBIG = "";
             HTMLBIG += "<html>";
