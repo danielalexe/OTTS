@@ -60,7 +60,6 @@ namespace DataControls
                 CComboValue = value;
             }
         }
-
         
     }
 }

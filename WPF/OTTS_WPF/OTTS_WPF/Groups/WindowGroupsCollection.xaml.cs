@@ -29,7 +29,14 @@ namespace OTTS_WPF.Groups
             InitializeComponent();
             BindComboGroupType();
             ReloadData();
+            CComboGroupType.CComboBox.SelectionChanged += CComboBoxGroupType_SelectionChanged;
         }
+
+        private void CComboBoxGroupType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
+        }
+
         private void BindComboGroupType()
         {
             List<DTOGroupType> list = new List<DTOGroupType>();

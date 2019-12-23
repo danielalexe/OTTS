@@ -30,6 +30,18 @@ namespace OTTS_WPF.Semigroups
             BindComboGroup();
             BindComboPriority();
             ReloadData();
+            CComboGroup.CComboBox.SelectionChanged += CComboBoxGroup_SelectionChanged;
+            CComboPriority.CComboBox.SelectionChanged += CComboBoxPriority_SelectionChanged;
+        }
+
+        private void CComboBoxPriority_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
+        }
+
+        private void CComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
         }
 
         private void BindComboGroup()

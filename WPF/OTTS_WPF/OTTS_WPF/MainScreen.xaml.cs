@@ -48,6 +48,25 @@ namespace OTTS_WPF
         private void ComboBoxSemester_DropDownClosed(object sender, EventArgs e)
         {
             PersistentData.SelectedSemester = ((DTOSemester)ComboBoxSemester.SelectedItem).iID_SEMESTER;
+            //Close entity ones
+            LowerDownMenu();
+
+            List<string> OpenedTabs = new List<string>();
+            //Must redraw all tabbed screens
+            if (TabControlMain.Items.Count > 0)
+            {
+                foreach (TabItem item in TabControlMain.Items)
+                {
+                    OpenedTabs.Add(item.Header.ToString().Replace(" ",""));
+                }
+            }
+            var SelectedIndex = TabControlMain.SelectedIndex;
+            TabControlMain.Items.Clear();
+            foreach (var item in OpenedTabs)
+            {
+                OpenWindow(item);
+            }
+            TabControlMain.SelectedItem = TabControlMain.Items[SelectedIndex];
         }
 
         private void BindComboBoxSemester()
@@ -121,61 +140,66 @@ namespace OTTS_WPF
             TabControlMain.SelectedItem = tp;
         }
 
+        private void OpenWindow(string WindowName)
+        {
+            switch (WindowName)
+            {
+                case "Planning":
+                    WindowPlanningCollection winPlanning = new WindowPlanningCollection();
+                    winPlanning.MainScreen = this;
+                    CreateTabItem(winPlanning);
+                    break;
+                case "Teachers":
+                    WindowTeachersCollection winTeachers = new WindowTeachersCollection();
+                    winTeachers.MainScreen = this;
+                    CreateTabItem(winTeachers);
+                    break;
+                case "TeachersLectures":
+                    WindowTeachersLecturesCollection winTeachersLectures = new WindowTeachersLecturesCollection();
+                    winTeachersLectures.MainScreen = this;
+                    CreateTabItem(winTeachersLectures);
+                    break;
+                case "Groups":
+                    WindowGroupsCollection winGroups = new WindowGroupsCollection();
+                    winGroups.MainScreen = this;
+                    CreateTabItem(winGroups);
+                    break;
+                case "Semigroups":
+                    WindowSemigroupsCollection winSemigroups = new WindowSemigroupsCollection();
+                    winSemigroups.MainScreen = this;
+                    CreateTabItem(winSemigroups);
+                    break;
+                case "Lectures":
+                    WindowLecturesCollection winLectures = new WindowLecturesCollection();
+                    winLectures.MainScreen = this;
+                    CreateTabItem(winLectures);
+                    break;
+                case "Modules":
+                    WindowModulesCollection winModules = new WindowModulesCollection();
+                    winModules.MainScreen = this;
+                    CreateTabItem(winModules);
+                    break;
+                case "Days":
+                    WindowDaysCollection winDays = new WindowDaysCollection();
+                    winDays.MainScreen = this;
+                    CreateTabItem(winDays);
+                    break;
+                case "Halls":
+                    WindowHallsCollection winHalls = new WindowHallsCollection();
+                    winHalls.MainScreen = this;
+                    CreateTabItem(winHalls);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             if (item!=null)
             {
-                switch (item.Name)
-                {
-                    case "Planning":
-                        WindowPlanningCollection winPlanning = new WindowPlanningCollection();
-                        winPlanning.MainScreen = this;
-                        CreateTabItem(winPlanning);
-                        break;
-                    case "Teachers":
-                        WindowTeachersCollection winTeachers = new WindowTeachersCollection();
-                        winTeachers.MainScreen = this;
-                        CreateTabItem(winTeachers);
-                        break;
-                    case "TeachersLectures":
-                        WindowTeachersLecturesCollection winTeachersLectures = new WindowTeachersLecturesCollection();
-                        winTeachersLectures.MainScreen = this;
-                        CreateTabItem(winTeachersLectures);
-                        break;
-                    case "Groups":
-                        WindowGroupsCollection winGroups = new WindowGroupsCollection();
-                        winGroups.MainScreen = this;
-                        CreateTabItem(winGroups);
-                        break;
-                    case "Semigroups":
-                        WindowSemigroupsCollection winSemigroups = new WindowSemigroupsCollection();
-                        winSemigroups.MainScreen = this;
-                        CreateTabItem(winSemigroups);
-                        break;
-                    case "Lectures":
-                        WindowLecturesCollection winLectures = new WindowLecturesCollection();
-                        winLectures.MainScreen = this;
-                        CreateTabItem(winLectures);
-                        break;
-                    case "Modules":
-                        WindowModulesCollection winModules = new WindowModulesCollection();
-                        winModules.MainScreen = this;
-                        CreateTabItem(winModules);
-                        break;
-                    case "Days":
-                        WindowDaysCollection winDays = new WindowDaysCollection();
-                        winDays.MainScreen = this;
-                        CreateTabItem(winDays);
-                        break;
-                    case "Halls":
-                        WindowHallsCollection winHalls = new WindowHallsCollection();
-                        winHalls.MainScreen = this;
-                        CreateTabItem(winHalls);
-                        break;
-                    default:
-                        break;
-                }                
+                OpenWindow(item.Name);
             }
         }
 

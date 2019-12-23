@@ -38,6 +38,18 @@ namespace OTTS_WPF.Planning
             BindComboSemigroup();
             BindComboGenerationNumber();
             ReloadData();
+            CComboGeneration.CComboBox.SelectionChanged += CComboBoxGeneration_SelectionChanged;
+            CComboSemigroup.CComboBox.SelectionChanged += CComboBoxSemigroup_SelectionChanged;
+        }
+
+        private void CComboBoxSemigroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
+        }
+
+        private void CComboBoxGeneration_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
         }
 
         private void BindComboSemigroup()

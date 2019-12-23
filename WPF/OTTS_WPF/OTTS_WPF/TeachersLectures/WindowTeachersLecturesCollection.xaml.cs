@@ -29,6 +29,12 @@ namespace OTTS_WPF.TeachersLectures
             InitializeComponent();
             BindComboLectureType();
             ReloadData();
+            CComboLectureType.CComboBox.SelectionChanged += CComboBoxLectureType_SelectionChanged;
+        }
+
+        private void CComboBoxLectureType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
         }
 
         private void BindComboLectureType()

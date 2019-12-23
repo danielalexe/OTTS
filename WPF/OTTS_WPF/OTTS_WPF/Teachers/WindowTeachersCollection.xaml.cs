@@ -29,6 +29,12 @@ namespace OTTS_WPF.Teachers
             InitializeComponent();
             BindComboGroup();
             ReloadData();
+            CComboGroup.CComboBox.SelectionChanged += CComboBoxGroup_SelectionChanged;
+        }
+
+        private void CComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReloadData();
         }
 
         private void BindComboGroup()
