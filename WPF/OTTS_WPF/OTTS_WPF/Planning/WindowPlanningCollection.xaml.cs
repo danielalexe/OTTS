@@ -21,6 +21,8 @@ using System.IO;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using MigraDoc.DocumentObjectModel.Tables;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace OTTS_WPF.Planning
 {
@@ -493,18 +495,46 @@ namespace OTTS_WPF.Planning
                     section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
                     section.PageSetup.BottomMargin = Unit.FromCentimeter(1.8);
 
+                    MigraDoc.DocumentObjectModel.Tables.Table table = new MigraDoc.DocumentObjectModel.Tables.Table();
+                    table = document.LastSection.AddTable();
+                    table.Style = "Table";
+
+                    // Before you can add a row, you must define the columns
+                    MigraDoc.DocumentObjectModel.Tables.Column column;
+                    column = table.AddColumn(Unit.FromCentimeter(9.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(9.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+
+                    MigraDoc.DocumentObjectModel.Tables.Row row1;
+                    row1 = table.AddRow();
+                    row1.Cells[0].Shading.Color = TableWhite;
+                    row1.Cells[0].Format.Font.Bold = true;
+                    row1.Cells[0].Format.Font.Size = 12;
+                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Left;
+                    row1.Cells[0].AddParagraph("Facultatea Litere și Științe");
+                    row1.Cells[1].Shading.Color = TableWhite;
+                    row1.Cells[1].Format.Font.Bold = true;
+                    row1.Cells[1].Format.Font.Size = 12;
+                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Right;
+                    row1.Cells[1].AddParagraph("2019-2020");
+
+
+
                     MigraDoc.DocumentObjectModel.Paragraph paragraphz = section.AddParagraph();
-                    paragraphz.AddText("Facultatea Litere și Științe");
-                    paragraphz.Format.Font.Size = 10;
-                    paragraphz.Format.Font.Bold = true;
-                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
-                    paragraphz = section.AddParagraph();
-                    paragraphz.AddText("2019-2020");
-                    paragraphz.Format.Font.Size = 10;
-                    paragraphz.Format.Font.Bold = true;
-                    paragraphz.Format.Alignment = ParagraphAlignment.Right;
-                    paragraphz.AddLineBreak();
-                    paragraphz = section.AddParagraph();
+                    //paragraphz.AddText();
+                    //paragraphz.Format.Font.Size = 10;
+                    //paragraphz.Format.Font.Bold = true;
+                    //paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    //paragraphz = section.AddParagraph();
+                    //paragraphz.AddText();
+                    //paragraphz.Format.Font.Size = 10;
+                    //paragraphz.Format.Font.Bold = true;
+                    //paragraphz.Format.Alignment = ParagraphAlignment.Right;
+                    //paragraphz.AddLineBreak();
+                    //paragraphz = section.AddParagraph();
                     if (TheSemiGroup.iID_GROUP_TYPE == 1)
                     {
                         paragraphz.AddText("Specializarea INFORMATICĂ");
@@ -541,7 +571,7 @@ namespace OTTS_WPF.Planning
                     paragraphz.AddLineBreak();
                     paragraphz.AddLineBreak();
 
-                    Table table = new Table();
+                    table = new MigraDoc.DocumentObjectModel.Tables.Table();
                     table = document.LastSection.AddTable();
                     table.Style = "Table";
                     table.Borders.Color = TableBorder;
@@ -551,7 +581,7 @@ namespace OTTS_WPF.Planning
                     table.Rows.LeftIndent = 0;
 
                     // Before you can add a row, you must define the columns
-                    Column column;
+                    //Column column;
                     column = table.AddColumn(Unit.FromCentimeter(1.5));
                     column.Format.Alignment = ParagraphAlignment.Center;
                     column.Format.Font.Size = 8;
@@ -565,7 +595,7 @@ namespace OTTS_WPF.Planning
                     column.Format.Alignment = ParagraphAlignment.Center;
                     column.Format.Font.Size = 8;
 
-                    Row row1;
+                    //Row row1;
                     row1 = table.AddRow();
 
                     row1.Cells[0].Borders.Top.Width = 0;
@@ -846,17 +876,43 @@ namespace OTTS_WPF.Planning
                     section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
                     section.PageSetup.BottomMargin = Unit.FromCentimeter(1.8);
 
+                    MigraDoc.DocumentObjectModel.Tables.Table table = new MigraDoc.DocumentObjectModel.Tables.Table();
+                    table = document.LastSection.AddTable();
+                    table.Style = "Table";
+
+                    // Before you can add a row, you must define the columns
+                    MigraDoc.DocumentObjectModel.Tables.Column column;
+                    column = table.AddColumn(Unit.FromCentimeter(9.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+                    column = table.AddColumn(Unit.FromCentimeter(9.5));
+                    column.Format.Alignment = ParagraphAlignment.Center;
+                    column.Format.Font.Size = 8;
+
+                    MigraDoc.DocumentObjectModel.Tables.Row row1;
+                    row1 = table.AddRow();
+                    row1.Cells[0].Shading.Color = TableWhite;
+                    row1.Cells[0].Format.Font.Bold = true;
+                    row1.Cells[0].Format.Font.Size = 12;
+                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Left;
+                    row1.Cells[0].AddParagraph("Facultatea Litere și Științe");
+                    row1.Cells[1].Shading.Color = TableWhite;
+                    row1.Cells[1].Format.Font.Bold = true;
+                    row1.Cells[1].Format.Font.Size = 12;
+                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Right;
+                    row1.Cells[1].AddParagraph("2019-2020");
+
                     MigraDoc.DocumentObjectModel.Paragraph paragraphz = section.AddParagraph();
-                    paragraphz.AddText("Facultatea Litere și Științe");
-                    paragraphz.Format.Font.Size = 10;
-                    paragraphz.Format.Font.Bold = true;
-                    paragraphz.Format.Alignment = ParagraphAlignment.Left;
-                    paragraphz = section.AddParagraph();
-                    paragraphz.AddText("2019-2020");
-                    paragraphz.Format.Font.Size = 10;
-                    paragraphz.Format.Font.Bold = true;
-                    paragraphz.Format.Alignment = ParagraphAlignment.Right;
-                    paragraphz.AddLineBreak();
+                    //paragraphz.AddText("Facultatea Litere și Științe");
+                    //paragraphz.Format.Font.Size = 10;
+                    //paragraphz.Format.Font.Bold = true;
+                    //paragraphz.Format.Alignment = ParagraphAlignment.Left;
+                    //paragraphz = section.AddParagraph();
+                    //paragraphz.AddText("2019-2020");
+                    //paragraphz.Format.Font.Size = 10;
+                    //paragraphz.Format.Font.Bold = true;
+                    //paragraphz.Format.Alignment = ParagraphAlignment.Right;
+                    //paragraphz.AddLineBreak();
                     if (OrderedByName.FirstOrDefault().iID_GROUP_TYPE == 1)
                     {
                         paragraphz.AddText("Specializarea INFORMATICĂ");
@@ -893,7 +949,7 @@ namespace OTTS_WPF.Planning
                     paragraphz.AddLineBreak();
                     paragraphz.AddLineBreak();
 
-                    Table table = new Table();
+                    table = new MigraDoc.DocumentObjectModel.Tables.Table();
                     table = document.LastSection.AddTable();
                     table.Style = "Table";
                     table.Borders.Color = TableBorder;
@@ -903,7 +959,7 @@ namespace OTTS_WPF.Planning
                     table.Rows.LeftIndent = 0;
 
                     // Before you can add a row, you must define the columns
-                    Column column;
+                    //Column column;
                     column = table.AddColumn(Unit.FromCentimeter(1.5));
                     column.Format.Alignment = ParagraphAlignment.Center;
                     column.Format.Font.Size = 8;
@@ -920,7 +976,7 @@ namespace OTTS_WPF.Planning
                         column.Format.Font.Size = 8;
                     }
 
-                    Row row1;
+                    //Row row1;
                     row1 = table.AddRow();
 
                     row1.Cells[0].Borders.Top.Width = 0;
@@ -1353,14 +1409,401 @@ namespace OTTS_WPF.Planning
                 string filename = dlg.FileName;
                 // Save the PDF document...
                 pdfRenderer.Save(filename);
+                MessageBox.Show("Fisierul a fost exportat cu succes");
             }
 
-            MessageBox.Show("Fisierul a fost exportat cu succes");
         }
 
         private void ButtonExportExcel_Click(object sender, RoutedEventArgs e)
         {
+            if (CComboGeneration.CComboBox.SelectedItem == null)
+            {
+                return;
+            }
 
+            var FilterGenerationNumber = ((DTOGenerationNumber)CComboGeneration.CComboBox.SelectedItem).iGENERATION_NUMBER;
+
+            List<DTOPlanningExport> listexport = new List<DTOPlanningExport>();
+
+            using (var db = new OTTSContext(PersistentData.ConnectionString))
+            {
+                var getSemigroups = db.SEMIGROUPS.Where(z => z.bACTIVE == true).ToList();
+                foreach (var getSemigroup in getSemigroups)
+                {
+                    DTOPlanningExport dtoexport = new DTOPlanningExport();
+                    dtoexport.iID_GROUP = getSemigroup.iID_GROUP;
+                    dtoexport.iID_SEMIGROUP = getSemigroup.iID_SEMIGROUP;
+                    dtoexport.nvSEMIGROUP_NAME = getSemigroup.nvNAME;
+                    dtoexport.iID_GROUP_TYPE = getSemigroup.GROUPS.iID_GROUP_TYPE;
+                    dtoexport.iYEAR = getSemigroup.GROUPS.iYEAR;
+
+
+                    List<DTOPlanningRow> list = new List<DTOPlanningRow>();
+
+                    var getDays = db.DAYS.ToList();
+                    var getModules = db.GROUPS_MODULES_LINK.Where(z => z.bACTIVE == true && z.iID_GROUP == getSemigroup.iID_GROUP).ToList();
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        DTOPlanningRow dto = new DTOPlanningRow();
+                        dto.MODULE_NAME = getModules[i].MODULES.nvNAME;
+                        list.Add(dto);
+                    }
+
+                    for (int i = 0; i < getModules.Count; i++)
+                    {
+                        for (int j = 0; j < getDays.Count; j++)
+                        {
+                            var idzi = getDays[j].iID_DAY;
+                            var idmodul = getModules[i].iID_MODULE;
+
+                            var getPlanificareZi = db.TIMETABLE_PLANNING.FirstOrDefault(z => z.bACTIVE == true &&
+                            z.iID_SEMIGROUP == getSemigroup.iID_SEMIGROUP
+                            &&
+                            z.iGENERATION_NUMBER == FilterGenerationNumber
+                            &&
+                            z.iID_DAY == idzi
+                            &&
+                            z.iID_SEMESTER == PersistentData.SelectedSemester
+                            &&
+                            z.iID_MODULE == idmodul);
+                            if (getPlanificareZi != null)
+                            {
+                                var Prelegere = getPlanificareZi.iID_LECTURE;
+                                var Profesor = getPlanificareZi.iID_TEACHER;
+                                var TipExecutie = getPlanificareZi.iID_LECTURE_TYPE;
+
+                                var TextDeAfisat = "";
+                                var getPrelegere = db.LECTURES.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE == Prelegere && z.iID_SEMESTER == PersistentData.SelectedSemester);
+                                if (getPrelegere != null)
+                                {
+                                    TextDeAfisat += getPrelegere.nvNAME;
+                                }
+                                var getTipExecutie = db.LECTURE_TYPE.FirstOrDefault(z => z.bACTIVE == true && z.iID_LECTURE_TYPE == TipExecutie);
+                                if (getTipExecutie != null)
+                                {
+                                    TextDeAfisat += " (" + getTipExecutie.nvNAME + ")";
+                                }
+                                var getProfesor = db.TEACHERS.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == Profesor);
+                                if (getProfesor != null)
+                                {
+                                    TextDeAfisat += " (" + getProfesor.nvSURNAME + " " + getProfesor.nvNAME + ")";
+                                }
+                                switch (j)
+                                {
+                                    case 0:
+                                        list[i].MONDAY = TextDeAfisat;
+                                        break;
+                                    case 1:
+                                        list[i].TUESDAY = TextDeAfisat;
+                                        break;
+                                    case 2:
+                                        list[i].WEDNESDAY = TextDeAfisat;
+                                        break;
+                                    case 3:
+                                        list[i].THURSDAY = TextDeAfisat;
+                                        break;
+                                    case 4:
+                                        list[i].FRIDAY = TextDeAfisat;
+                                        break;
+                                    case 5:
+                                        list[i].SATURDAY = TextDeAfisat;
+                                        break;
+                                    case 6:
+                                        list[i].SUNDAY = TextDeAfisat;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                //nu pune nimic
+                            }
+                        }
+                    }
+
+                    dtoexport.lLIST_EXPORT = list;
+                    listexport.Add(dtoexport);
+                }
+            }
+
+            //var ByGroup = listexport.GroupBy(z => new { z.iID_GROUP_TYPE, z.iYEAR }).ToList();
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "ExportPlanificareOrar"; // Default file name
+            dlg.DefaultExt = ".xlsx"; // Default file extension
+            dlg.Filter = "Excel documents (.xlsx)|*.xlsx"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                bool exists = System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(filename));
+                if (!exists)
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filename));
+                using (SpreadsheetDocument spreedDoc = SpreadsheetDocument.Create(filename, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook))
+                {
+                    WorkbookPart wbPart = spreedDoc.WorkbookPart;
+                    if (wbPart == null)
+                    {
+                        wbPart = spreedDoc.AddWorkbookPart();
+                        wbPart.Workbook = new Workbook();
+                    }
+
+                    foreach (var item in listexport)
+                    {
+                        string sheetName = item.nvSEMIGROUP_NAME;
+                        WorksheetPart worksheetPart = null;
+                        worksheetPart = wbPart.AddNewPart<WorksheetPart>();
+                        var sheetData = new SheetData();
+
+                        worksheetPart.Worksheet = new Worksheet(sheetData);
+
+                        if (wbPart.Workbook.Sheets == null)
+                        {
+                            wbPart.Workbook.AppendChild<Sheets>(new Sheets());
+                        }
+
+                        var sheet = new Sheet()
+                        {
+                            Id = wbPart.GetIdOfPart(worksheetPart),
+                            SheetId = 1,
+                            Name = sheetName
+                        };
+
+                        var workingSheet = ((WorksheetPart)wbPart.GetPartById(sheet.Id)).Worksheet;
+
+                        //DocumentFormat.OpenXml.Spreadsheet.Columns columns = new DocumentFormat.OpenXml.Spreadsheet.Columns();
+
+                        //columns.Append(new DocumentFormat.OpenXml.Spreadsheet.Column() { Min = 1, Max = 3, Width = 20, CustomWidth = true });
+                        //columns.Append(new DocumentFormat.OpenXml.Spreadsheet.Column() { Min = 4, Max = 4, Width = 30, CustomWidth = true });
+
+                        //workingSheet.Append(columns);
+
+
+                        int rowindex = 1;
+                        foreach (var module in item.lLIST_EXPORT)
+                        {
+                            DocumentFormat.OpenXml.Spreadsheet.Row row = new DocumentFormat.OpenXml.Spreadsheet.Row();
+                            row.RowIndex = (UInt32)rowindex;
+
+                            DocumentFormat.OpenXml.Spreadsheet.Cell c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            InlineString inlineString = new InlineString();
+                            DocumentFormat.OpenXml.Spreadsheet.Text t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = "Luni";
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MODULE_NAME;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MONDAY == null ? "" : module.MONDAY;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+
+                            sheetData.AppendChild(row);
+                            rowindex++;
+                        }
+                        foreach (var module in item.lLIST_EXPORT)
+                        {
+                            DocumentFormat.OpenXml.Spreadsheet.Row row = new DocumentFormat.OpenXml.Spreadsheet.Row();
+                            row.RowIndex = (UInt32)rowindex;
+
+                            DocumentFormat.OpenXml.Spreadsheet.Cell c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            InlineString inlineString = new InlineString();
+                            DocumentFormat.OpenXml.Spreadsheet.Text t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = "Marți";
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MODULE_NAME;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.TUESDAY==null?"":module.TUESDAY;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+
+                            sheetData.AppendChild(row);
+                            rowindex++;
+                        }
+                        foreach (var module in item.lLIST_EXPORT)
+                        {
+                            DocumentFormat.OpenXml.Spreadsheet.Row row = new DocumentFormat.OpenXml.Spreadsheet.Row();
+                            row.RowIndex = (UInt32)rowindex;
+
+                            DocumentFormat.OpenXml.Spreadsheet.Cell c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            InlineString inlineString = new InlineString();
+                            DocumentFormat.OpenXml.Spreadsheet.Text t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = "Miercuri";
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MODULE_NAME;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.WEDNESDAY==null?"":module.WEDNESDAY;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+
+                            sheetData.AppendChild(row);
+                            rowindex++;
+                        }
+                        foreach (var module in item.lLIST_EXPORT)
+                        {
+                            DocumentFormat.OpenXml.Spreadsheet.Row row = new DocumentFormat.OpenXml.Spreadsheet.Row();
+                            row.RowIndex = (UInt32)rowindex;
+
+                            DocumentFormat.OpenXml.Spreadsheet.Cell c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            InlineString inlineString = new InlineString();
+                            DocumentFormat.OpenXml.Spreadsheet.Text t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = "Joi";
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MODULE_NAME;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.THURSDAY==null?"":module.THURSDAY;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+
+                            sheetData.AppendChild(row);
+                            rowindex++;
+                        }
+                        foreach (var module in item.lLIST_EXPORT)
+                        {
+                            DocumentFormat.OpenXml.Spreadsheet.Row row = new DocumentFormat.OpenXml.Spreadsheet.Row();
+                            row.RowIndex = (UInt32)rowindex;
+
+                            DocumentFormat.OpenXml.Spreadsheet.Cell c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            InlineString inlineString = new InlineString();
+                            DocumentFormat.OpenXml.Spreadsheet.Text t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = "Vineri";
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.MODULE_NAME;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = Helpers.HelperModules.GetModuleInterval(module.MODULE_NAME);
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+                            c1 = new DocumentFormat.OpenXml.Spreadsheet.Cell();
+                            c1.DataType = CellValues.InlineString;
+                            inlineString = new InlineString();
+                            t = new DocumentFormat.OpenXml.Spreadsheet.Text();
+                            t.Text = module.FRIDAY==null?"":module.FRIDAY;
+                            inlineString.AppendChild(t);
+                            c1.AppendChild(inlineString);
+                            row.AppendChild(c1);
+
+                            sheetData.AppendChild(row);
+                            rowindex++;
+                        }
+
+                        wbPart.Workbook.Sheets.AppendChild(sheet);
+                    }
+
+                    //Set Border
+                    //wbPark
+
+                    wbPart.Workbook.Save();
+                }
+
+                MessageBox.Show("Fisierul a fost exportat cu succes");
+            }
         }
 
         private void ButtonExportHtml_Click(object sender, RoutedEventArgs e)
@@ -1955,8 +2398,8 @@ namespace OTTS_WPF.Planning
                 {
                     w.Write(HTMLBIG);
                 }
+                MessageBox.Show("Fisierul a fost exportat cu succes");
             }
-            MessageBox.Show("Fisierul a fost exportat cu succes");
         }
     }
 }
