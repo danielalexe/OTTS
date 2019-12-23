@@ -39,12 +39,12 @@ namespace OTTS_WPF.Teachers
             {
                 foreach (var item in list)
                 {
-                    if (item.PRIORITY != 0)
+                    if (item.PRIORITY != "N/A")
                     {
                         var getPreferredHall = db.TEACHER_PREFERRED_HALLS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_HALL == item.iID_HALL && z.bACTIVE==true);
                         if (getPreferredHall != null)
                         {
-                            getPreferredHall.iPRIORITY = item.PRIORITY;
+                            getPreferredHall.iPRIORITY = Convert.ToInt32(item.PRIORITY);
 
                             getPreferredHall.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                             getPreferredHall.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -60,7 +60,7 @@ namespace OTTS_WPF.Teachers
 
                             tph.iID_HALL = item.iID_HALL;
                             tph.iID_TEACHER = ID_TEACHER;
-                            tph.iPRIORITY = item.PRIORITY;
+                            tph.iPRIORITY = Convert.ToInt32(item.PRIORITY);
 
                             db.TEACHER_PREFERRED_HALLS.Add(tph);
                             db.SaveChanges();
@@ -96,13 +96,13 @@ namespace OTTS_WPF.Teachers
                     {
                         dto.HALL_NAME = item.nvNAME;
                         dto.iID_HALL = item.iID_HALL;
-                        dto.PRIORITY = getPrefferedHall.iPRIORITY;
+                        dto.PRIORITY = getPrefferedHall.iPRIORITY.ToString();
                     }
                     else
                     {
                         dto.HALL_NAME = item.nvNAME;
                         dto.iID_HALL = item.iID_HALL;
-                        dto.PRIORITY = 0;
+                        dto.PRIORITY = "N/A";
                     }
                     list.Add(dto);
                 }

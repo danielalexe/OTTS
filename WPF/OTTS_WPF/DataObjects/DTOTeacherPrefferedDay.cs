@@ -10,6 +10,6 @@ namespace DataObjects
     {
         public int iID_DAY { get; set; }
         public string DAY_NAME { get; set; }
-        public int PRIORITY { get; set; }
+        public string PRIORITY { get; set; }
     }
 }

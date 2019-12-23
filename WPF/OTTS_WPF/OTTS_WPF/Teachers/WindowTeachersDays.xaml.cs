@@ -39,12 +39,12 @@ namespace OTTS_WPF.Teachers
             {
                 foreach (var item in list)
                 {
-                    if (item.PRIORITY != 0)
+                    if (item.PRIORITY != "N/A")
                     {
                         var getPreferredDay = db.TEACHER_PREFERRED_DAYS.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_DAY == item.iID_DAY && z.bACTIVE == true);
                         if (getPreferredDay != null)
                         {
-                            getPreferredDay.iPRIORITY = item.PRIORITY;
+                            getPreferredDay.iPRIORITY = Convert.ToInt32(item.PRIORITY);
 
                             getPreferredDay.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                             getPreferredDay.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -60,7 +60,7 @@ namespace OTTS_WPF.Teachers
 
                             tpd.iID_DAY = item.iID_DAY;
                             tpd.iID_TEACHER = ID_TEACHER;
-                            tpd.iPRIORITY = item.PRIORITY;
+                            tpd.iPRIORITY = Convert.ToInt32(item.PRIORITY);
 
                             db.TEACHER_PREFERRED_DAYS.Add(tpd);
                             db.SaveChanges();
@@ -96,13 +96,13 @@ namespace OTTS_WPF.Teachers
                     {
                         dto.DAY_NAME = item.nvNAME;
                         dto.iID_DAY = item.iID_DAY;
-                        dto.PRIORITY = getPreferredDay.iPRIORITY;
+                        dto.PRIORITY = getPreferredDay.iPRIORITY.ToString();
                     }
                     else
                     {
                         dto.DAY_NAME = item.nvNAME;
                         dto.iID_DAY = item.iID_DAY;
-                        dto.PRIORITY = 0;
+                        dto.PRIORITY = "N/A";
                     }
                     list.Add(dto);
                 }

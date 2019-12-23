@@ -39,12 +39,12 @@ namespace OTTS_WPF.Teachers
             {
                 foreach (var item in list)
                 {
-                    if (item.PRIORITY_BACHELOR != 0)
+                    if (item.PRIORITY_BACHELOR != "N/A")
                     {
                         var getTeacherModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==1);
                         if (getTeacherModule != null)
                         {
-                            getTeacherModule.iPRIORITY = item.PRIORITY_BACHELOR;
+                            getTeacherModule.iPRIORITY = Convert.ToInt32(item.PRIORITY_BACHELOR);
 
                             getTeacherModule.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                             getTeacherModule.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -60,19 +60,19 @@ namespace OTTS_WPF.Teachers
 
                             tpm.iID_MODULE = item.iID_MODULE;
                             tpm.iID_TEACHER = ID_TEACHER;
-                            tpm.iPRIORITY = item.PRIORITY_BACHELOR;
+                            tpm.iPRIORITY = Convert.ToInt32(item.PRIORITY_BACHELOR);
                             tpm.iID_GROUP_TYPE = 1;
 
                             db.TEACHER_PREFERRED_MODULES.Add(tpm);
                             db.SaveChanges();
                         }
                     }
-                    if (item.PRIORITY_MASTERS != 0)
+                    if (item.PRIORITY_MASTERS != "N/A")
                     {
                         var getTeacherModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==2);
                         if (getTeacherModule != null)
                         {
-                            getTeacherModule.iPRIORITY = item.PRIORITY_MASTERS;
+                            getTeacherModule.iPRIORITY = Convert.ToInt32(item.PRIORITY_MASTERS);
 
                             getTeacherModule.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                             getTeacherModule.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -88,7 +88,7 @@ namespace OTTS_WPF.Teachers
 
                             tpm.iID_MODULE = item.iID_MODULE;
                             tpm.iID_TEACHER = ID_TEACHER;
-                            tpm.iPRIORITY = item.PRIORITY_MASTERS;
+                            tpm.iPRIORITY = Convert.ToInt32(item.PRIORITY_MASTERS);
                             tpm.iID_GROUP_TYPE = 2;
 
                             db.TEACHER_PREFERRED_MODULES.Add(tpm);
@@ -125,20 +125,20 @@ namespace OTTS_WPF.Teachers
                     var getPreferredModuleBachelor = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==1);
                     if (getPreferredModuleBachelor != null)
                     {
-                        dto.PRIORITY_BACHELOR = getPreferredModuleBachelor.iPRIORITY;
+                        dto.PRIORITY_BACHELOR = getPreferredModuleBachelor.iPRIORITY.ToString();
                     }
                     else
                     {
-                        dto.PRIORITY_BACHELOR = 0;
+                        dto.PRIORITY_BACHELOR = "N/A";
                     }
                     var getPreferredModuleMasters = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==2);
                     if (getPreferredModuleMasters != null)
                     {
-                        dto.PRIORITY_MASTERS = getPreferredModuleMasters.iPRIORITY;
+                        dto.PRIORITY_MASTERS = getPreferredModuleMasters.iPRIORITY.ToString();
                     }
                     else
                     {
-                        dto.PRIORITY_MASTERS = 0;
+                        dto.PRIORITY_MASTERS = "N/A";
                     }
 
                     list.Add(dto);

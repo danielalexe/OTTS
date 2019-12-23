@@ -10,6 +10,6 @@ namespace DataObjects
     {
         public int iID_HALL { get; set; }
         public string HALL_NAME { get; set; }
-        public int PRIORITY { get; set; }
+        public string PRIORITY { get; set; }
     }
 }

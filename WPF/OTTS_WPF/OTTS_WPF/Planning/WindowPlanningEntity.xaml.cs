@@ -227,15 +227,15 @@ namespace OTTS_WPF.Planning
                                     {
                                         DTOTeacher dto = new DTOTeacher();
                                         dto.iID_TEACHER = item.iID_TEACHER;
-                                        dto.MASTERS_PRIORITY = 999;
+                                        dto.MASTERS_PRIORITY = "999";
                                         var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                         if (getPrioritate!=null)
                                         {
-                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                         }
                                         Prioritati.Add(dto);
                                     }
-                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                     //ST2
                                     var CleansedPrioriati = new List<DTOTeacher>();
                                     foreach (var item in Prioritati)
@@ -309,15 +309,15 @@ namespace OTTS_WPF.Planning
                                     {
                                         DTOTeacher dto = new DTOTeacher();
                                         dto.iID_TEACHER = item.iID_TEACHER;
-                                        dto.MASTERS_PRIORITY = 999;
+                                        dto.MASTERS_PRIORITY = "999";
                                         var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                         if (getPrioritate != null)
                                         {
-                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                         }
                                         Prioritati.Add(dto);
                                     }
-                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                     //ST2
                                     var CleansedPrioriati = new List<DTOTeacher>();
                                     foreach (var item in Prioritati)
@@ -391,15 +391,15 @@ namespace OTTS_WPF.Planning
                                     {
                                         DTOTeacher dto = new DTOTeacher();
                                         dto.iID_TEACHER = item.iID_TEACHER;
-                                        dto.MASTERS_PRIORITY = 999;
+                                        dto.MASTERS_PRIORITY = "999";
                                         var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                         if (getPrioritate != null)
                                         {
-                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                            dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                         }
                                         Prioritati.Add(dto);
                                     }
-                                    Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                    Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                     //ST2
                                     var CleansedPrioriati = new List<DTOTeacher>();
                                     foreach (var item in Prioritati)
@@ -898,15 +898,15 @@ namespace OTTS_WPF.Planning
                                                             {
                                                                 DTOTeacher dto = new DTOTeacher();
                                                                 dto.iID_TEACHER = item.iID_TEACHER;
-                                                                dto.MASTERS_PRIORITY = 999;
+                                                                dto.MASTERS_PRIORITY = "999";
                                                                 var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                                                 if (getPrioritate != null)
                                                                 {
-                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                                                 }
                                                                 Prioritati.Add(dto);
                                                             }
-                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                                             //ST2
                                                             var CleansedPrioriati = new List<DTOTeacher>();
                                                             foreach (var item in Prioritati)
@@ -994,15 +994,15 @@ namespace OTTS_WPF.Planning
                                                             {
                                                                 DTOTeacher dto = new DTOTeacher();
                                                                 dto.iID_TEACHER = item.iID_TEACHER;
-                                                                dto.MASTERS_PRIORITY = 999;
+                                                                dto.MASTERS_PRIORITY = "999";
                                                                 var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                                                 if (getPrioritate != null)
                                                                 {
-                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                                                 }
                                                                 Prioritati.Add(dto);
                                                             }
-                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                                             //ST2
                                                             var CleansedPrioriati = new List<DTOTeacher>();
                                                             foreach (var item in Prioritati)
@@ -1091,15 +1091,15 @@ namespace OTTS_WPF.Planning
                                                             {
                                                                 DTOTeacher dto = new DTOTeacher();
                                                                 dto.iID_TEACHER = item.iID_TEACHER;
-                                                                dto.MASTERS_PRIORITY = 999;
+                                                                dto.MASTERS_PRIORITY = "999";
                                                                 var getPrioritate = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == parsedsemigrupa.GROUPS.iID_GROUP_TYPE);
                                                                 if (getPrioritate != null)
                                                                 {
-                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY;
+                                                                    dto.MASTERS_PRIORITY = getPrioritate.iPRIORITY.ToString();
                                                                 }
                                                                 Prioritati.Add(dto);
                                                             }
-                                                            Prioritati = Prioritati.OrderBy(z => z.MASTERS_PRIORITY).ToList();
+                                                            Prioritati = Prioritati.OrderBy(z => int.Parse(z.MASTERS_PRIORITY)).ToList();
                                                             //ST2
                                                             var CleansedPrioriati = new List<DTOTeacher>();
                                                             foreach (var item in Prioritati)

@@ -94,20 +94,20 @@ namespace OTTS_WPF.Teachers
                         var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 1);
                         if (getBachelorPriority!=null)
                         {
-                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY;
+                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY.ToString();
                         }
                         else
                         {
-                            item.BACHELOR_PRIORITY = 0;
+                            item.BACHELOR_PRIORITY = "N/A";
                         }
                         var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 2);
                         if (getMastersPriority!=null)
                         {
-                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY;
+                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY.ToString();
                         }
                         else
                         {
-                            item.MASTERS_PRIORITY = 0;
+                            item.MASTERS_PRIORITY = "N/A";
                         }
                     }
                     DataGridTeachers.ItemsSource = getTeachers;
@@ -151,20 +151,20 @@ namespace OTTS_WPF.Teachers
                         var getBachelorPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 1);
                         if (getBachelorPriority != null)
                         {
-                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY;
+                            item.BACHELOR_PRIORITY = getBachelorPriority.iPRIORITY.ToString();
                         }
                         else
                         {
-                            item.BACHELOR_PRIORITY = 0;
+                            item.BACHELOR_PRIORITY = "N/A";
                         }
                         var getMastersPriority = db.TEACHERS_GROUP_TYPES_PRIORITY.FirstOrDefault(z => z.bACTIVE == true && z.iID_TEACHER == item.iID_TEACHER && z.iID_GROUP_TYPE == 2);
                         if (getMastersPriority != null)
                         {
-                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY;
+                            item.MASTERS_PRIORITY = getMastersPriority.iPRIORITY.ToString();
                         }
                         else
                         {
-                            item.MASTERS_PRIORITY = 0;
+                            item.MASTERS_PRIORITY = "N/A";
                         }
                     }
                     DataGridTeachers.ItemsSource = getTeachers;

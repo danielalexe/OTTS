@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Daniel Alexe")]
 [assembly: AssemblyProduct("Open TimeTable Software")]
-[assembly: AssemblyCopyright("Copyright © 2019 Daniel Alexe")]
+[assembly: AssemblyCopyright("Copyright © 2020 Daniel Alexe")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
