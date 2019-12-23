@@ -15,7 +15,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="LoginScreen" MinHeight="580" Height="600" MinWidth="780" Width="1080" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+        Title="Open Time Table Software" MinHeight="580" Height="600" MinWidth="780" Width="1080" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
