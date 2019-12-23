@@ -241,6 +241,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="datetime" />
           <Property Name="iCREATE_USER" Type="int" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="int" />
+          <Property Name="iID_GROUP_TYPE" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TEACHERS">
           <Key>
@@ -1019,6 +1020,7 @@
           <Property Name="dtLASTMODIFIED_DATE" Type="DateTime" Precision="3" />
           <Property Name="iCREATE_USER" Type="Int32" Nullable="false" />
           <Property Name="iLASTMODIFIED_USER" Type="Int32" />
+          <Property Name="iID_GROUP_TYPE" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MODULES" Relationship="Self.FK_TEACHER_PREFERRED_MODULES_MODULES" FromRole="TEACHER_PREFERRED_MODULES" ToRole="MODULES" />
           <NavigationProperty Name="TEACHERS" Relationship="Self.FK_TEACHERS_PREFERRED_MODULES_TEACHERS" FromRole="TEACHER_PREFERRED_MODULES" ToRole="TEACHERS" />
         </EntityType>
@@ -1765,6 +1767,7 @@
                 <ScalarProperty Name="dtLASTMODIFIED_DATE" ColumnName="dtLASTMODIFIED_DATE" />
                 <ScalarProperty Name="iCREATE_USER" ColumnName="iCREATE_USER" />
                 <ScalarProperty Name="iLASTMODIFIED_USER" ColumnName="iLASTMODIFIED_USER" />
+                <ScalarProperty Name="iID_GROUP_TYPE" ColumnName="iID_GROUP_TYPE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

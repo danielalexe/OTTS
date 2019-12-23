@@ -39,12 +39,12 @@ namespace OTTS_WPF.Teachers
             {
                 foreach (var item in list)
                 {
-                    if (item.PRIORITY != 0)
+                    if (item.PRIORITY_BACHELOR != 0)
                     {
-                        var getTeacherModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true);
+                        var getTeacherModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==1);
                         if (getTeacherModule != null)
                         {
-                            getTeacherModule.iPRIORITY = item.PRIORITY;
+                            getTeacherModule.iPRIORITY = item.PRIORITY_BACHELOR;
 
                             getTeacherModule.dtLASTMODIFIED_DATE = DateTime.UtcNow;
                             getTeacherModule.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
@@ -60,7 +60,36 @@ namespace OTTS_WPF.Teachers
 
                             tpm.iID_MODULE = item.iID_MODULE;
                             tpm.iID_TEACHER = ID_TEACHER;
-                            tpm.iPRIORITY = item.PRIORITY;
+                            tpm.iPRIORITY = item.PRIORITY_BACHELOR;
+                            tpm.iID_GROUP_TYPE = 1;
+
+                            db.TEACHER_PREFERRED_MODULES.Add(tpm);
+                            db.SaveChanges();
+                        }
+                    }
+                    if (item.PRIORITY_MASTERS != 0)
+                    {
+                        var getTeacherModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==2);
+                        if (getTeacherModule != null)
+                        {
+                            getTeacherModule.iPRIORITY = item.PRIORITY_MASTERS;
+
+                            getTeacherModule.dtLASTMODIFIED_DATE = DateTime.UtcNow;
+                            getTeacherModule.iLASTMODIFIED_USER = PersistentData.LoggedUser.iID_USER;
+
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            TEACHER_PREFERRED_MODULES tpm = new TEACHER_PREFERRED_MODULES();
+                            tpm.iCREATE_USER = PersistentData.LoggedUser.iID_USER;
+                            tpm.dtCREATE_DATE = DateTime.UtcNow;
+                            tpm.bACTIVE = true;
+
+                            tpm.iID_MODULE = item.iID_MODULE;
+                            tpm.iID_TEACHER = ID_TEACHER;
+                            tpm.iPRIORITY = item.PRIORITY_MASTERS;
+                            tpm.iID_GROUP_TYPE = 2;
 
                             db.TEACHER_PREFERRED_MODULES.Add(tpm);
                             db.SaveChanges();
@@ -91,19 +120,27 @@ namespace OTTS_WPF.Teachers
                 foreach (var item in getModules)
                 {
                     DTOTeacherPrefferedModule dto = new DTOTeacherPrefferedModule();
-                    var getPreferredModule = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true);
-                    if (getPreferredModule != null)
+                    dto.MODULE_NAME = item.nvNAME;
+                    dto.iID_MODULE = item.iID_MODULE;
+                    var getPreferredModuleBachelor = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==1);
+                    if (getPreferredModuleBachelor != null)
                     {
-                        dto.MODULE_NAME = item.nvNAME;
-                        dto.iID_MODULE = item.iID_MODULE;
-                        dto.PRIORITY = getPreferredModule.iPRIORITY;
+                        dto.PRIORITY_BACHELOR = getPreferredModuleBachelor.iPRIORITY;
                     }
                     else
                     {
-                        dto.MODULE_NAME = item.nvNAME;
-                        dto.iID_MODULE = item.iID_MODULE;
-                        dto.PRIORITY = 0;
+                        dto.PRIORITY_BACHELOR = 0;
                     }
+                    var getPreferredModuleMasters = db.TEACHER_PREFERRED_MODULES.FirstOrDefault(z => z.iID_TEACHER == ID_TEACHER && z.iID_MODULE == item.iID_MODULE && z.bACTIVE==true && z.iID_GROUP_TYPE==2);
+                    if (getPreferredModuleMasters != null)
+                    {
+                        dto.PRIORITY_MASTERS = getPreferredModuleMasters.iPRIORITY;
+                    }
+                    else
+                    {
+                        dto.PRIORITY_MASTERS = 0;
+                    }
+
                     list.Add(dto);
                 }
                 
@@ -136,7 +173,7 @@ namespace OTTS_WPF.Teachers
 
         private void DataGridTeachers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.Column.Header.ToString() != "PRIORITY")
+            if (!e.Column.Header.ToString().StartsWith("PRIORITY"))
             {
                 e.Column.IsReadOnly = true;
             }

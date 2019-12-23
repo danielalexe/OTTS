@@ -473,7 +473,7 @@ namespace OTTS_WPF.Planning
                             {
                                 //stabilire module si zile in functie de profesor
                                 var getPrioritatiZileProfesor = db.TEACHER_PREFERRED_DAYS.Where(z =>z.bACTIVE==true && z.iID_TEACHER == ordine.iID_TEACHER).OrderBy(i => i.iPRIORITY).ToList();
-                                var getPrioritatiModuleProfesor = db.TEACHER_PREFERRED_MODULES.Where(z =>z.bACTIVE==true && z.iID_TEACHER == ordine.iID_TEACHER).OrderBy(i => i.iPRIORITY).ToList();
+                                var getPrioritatiModuleProfesor = db.TEACHER_PREFERRED_MODULES.Where(z =>z.bACTIVE==true && z.iID_TEACHER == ordine.iID_TEACHER && z.iID_GROUP_TYPE==prelegere.GROUPS.iID_GROUP_TYPE).OrderBy(i => i.iPRIORITY).ToList();
                                 //todo ar trebuii sa am undeva sa pos sa le iau specific pentru tipul de grupa #46
                                 
                                 List<DAYS> getZile = new List<DAYS>();

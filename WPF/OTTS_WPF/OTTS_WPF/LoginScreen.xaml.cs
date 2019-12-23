@@ -29,7 +29,7 @@ namespace OTTS_WPF
     /// </summary>
     public partial class LoginScreen : Window
     {
-        private static int iDBVersion = 3;
+        private static int iDBVersion = 4;
         public LoginScreen()
         {
             InitializeComponent();
@@ -265,6 +265,10 @@ namespace OTTS_WPF
                             PersistentData.LoggedUser.iID_USER = 1;
                             PersistentData.LoggedUser.nvUSERNUME = "Online";
                         }
+                        Hide();
+                        MainScreen mainmenu = new MainScreen();
+                        mainmenu.SourceScreen = this;
+                        mainmenu.Show();
                     }
                     else
                     {
@@ -294,7 +298,10 @@ namespace OTTS_WPF
                             PersistentData.LoggedUser.iID_USER = 1;
                             PersistentData.LoggedUser.nvUSERNUME = "Online";
                         }
-                        
+                        Hide();
+                        MainScreen mainmenu = new MainScreen();
+                        mainmenu.SourceScreen = this;
+                        mainmenu.Show();
                     }
                 }
                 else

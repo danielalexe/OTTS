@@ -10,6 +10,7 @@ namespace DataObjects
     {
         public int iID_MODULE { get; set; }
         public string MODULE_NAME { get; set; }
-        public int PRIORITY { get; set; }
+        public int PRIORITY_BACHELOR { get; set; }
+        public int PRIORITY_MASTERS { get; set; }
     }
 }

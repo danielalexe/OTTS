@@ -23,6 +23,7 @@ namespace DataLink
         public Nullable<System.DateTime> dtLASTMODIFIED_DATE { get; set; }
         public int iCREATE_USER { get; set; }
         public Nullable<int> iLASTMODIFIED_USER { get; set; }
+        public int iID_GROUP_TYPE { get; set; }
     
         public virtual MODULES MODULES { get; set; }
         public virtual TEACHERS TEACHERS { get; set; }
