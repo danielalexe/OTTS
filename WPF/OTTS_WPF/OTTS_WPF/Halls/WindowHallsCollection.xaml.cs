@@ -156,5 +156,15 @@ namespace OTTS_WPF.Halls
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu definiti salile disponibile ale departamentului. Momentan acestea nu sunt folosite la planificare.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Halls Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

@@ -152,5 +152,15 @@ namespace OTTS_WPF.Modules
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu definiti modulele din aplicatie pentru a se putea planifica prelegerile in timpul lor.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Modules Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

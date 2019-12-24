@@ -202,6 +202,9 @@
     <Compile Include="Helpers\EnumWindowType.cs" />
     <Compile Include="Helpers\HelperModules.cs" />
     <Compile Include="Helpers\PersistentData.cs" />
+    <Compile Include="HelpScreen.xaml.cs">
+      <DependentUpon>HelpScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Lectures\WindowLecturesCollection.xaml.cs">
       <DependentUpon>WindowLecturesCollection.xaml</DependentUpon>
     </Compile>
@@ -295,6 +298,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Halls\WindowHallsEntity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HelpScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -440,7 +447,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="OTTS_MOD.ico" />
+    <Resource Include="OTTS_MOD.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

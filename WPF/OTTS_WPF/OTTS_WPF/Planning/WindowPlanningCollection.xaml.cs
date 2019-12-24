@@ -2413,5 +2413,16 @@ namespace OTTS_WPF.Planning
                 MessageBox.Show("Fisierul a fost exportat cu succes");
             }
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn bara de sus a acestui meniu puteti efectua urmatoarele actiuni: Export Html, Export Excel, Export Pdf, Generare de Orare si Stergerea tuturor orarelor generate pana in acest moment.\r\n" +
+                "\tDe asemenea mai jos puteti vedea o planificare prin filtrarea pe baza numarului atasat generarii si a semigrupei ce doriti sa o vedeti.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Planning Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

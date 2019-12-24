@@ -359,5 +359,15 @@ namespace OTTS_WPF.Teachers
                 }
             }
         }
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu se pot efectua urmatoarele actiuni: Asociere Prioritati Sali Profesor, Asociere Prioritati Module Profesor, Asociere Prioritati Zile Profesor, Adaugare/Editare/Stergere Profesor.\r\n" +
+                "\tPrioritatile sunt in ordine crescatoare si astfel prioritatea 0 este cea mai mare.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Teachers Collection Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

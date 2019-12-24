@@ -217,7 +217,9 @@
     <Content Include="Offline\Schemas\2.Update from v0.2.0 to v0.2.1.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Offline\Schemas\3.Update from v0.2.1 to v0.2.2.sql" />
+    <Content Include="Offline\Schemas\3.Update from v0.2.1 to v0.2.2.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

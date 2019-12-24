@@ -254,5 +254,16 @@ namespace OTTS_WPF.Groups
                 }
             }
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu aveti urmatoarele actiuni: Specificarea modulelor disponibile pentru o grupa, Specificarea lecturilor disponibile pentru o grupa, Adaugare/Editare/Stergere grupa.\r\n" +
+                "\tDe asemenea puteti vizualiza filtrat in functie de numele grupei, tipul grupei, numarul de studenti sau anul din care grupa face parte.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Groups Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

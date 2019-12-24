@@ -212,5 +212,17 @@ namespace OTTS_WPF.TeachersLectures
         {
             LoadData();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu puteti adauga/modifica o legatura profesor-prelegere.\r\n" +
+                "\tPrin ore se intelege numarul de ore al prelegerii.\r\n" +
+                "\tPrin alocare maxima se intelege de cate ori poate fi programat profesorul pentru respectiva prelegere. (Din cauza statului de plata)\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Teachers Lectures Entity Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

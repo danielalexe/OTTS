@@ -256,5 +256,16 @@ namespace OTTS_WPF.Semigroups
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu puteti defini semigrupele si sa le alocati prioritatea la planificare.\r\n" +
+                "\tPrioritatile sunt in ordine crescatoare si astfel prioritatea 0 este cea mai mare.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Semigroups Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

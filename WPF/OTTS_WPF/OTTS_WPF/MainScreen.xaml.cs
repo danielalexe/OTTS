@@ -247,5 +247,18 @@ namespace OTTS_WPF
             aboutUs.MainScreen = this;
             CreateTabItem(aboutUs);
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn partea din stanga se afla meniul din care puteti sa deschideti ferestre cu privire la toate functionalitatile aplicatiei.\r\n" +
+                "\tIn partea de sus puteti schimba semestrul folosind combo box-ul. De asemenea langa combo box se afla 3 puncte pentru a accesa ajutorul meniului principal, sa va delogati sau sa inchideti aplicatia.\r\n" +
+                "\tDe asemenea in partea centrala a aplicatiei aveti un sistem cu tab-uri in care puteti deschide mai multe meniuri simultan si sa navigati prin ele folosind taburile.\r\n" +
+                "\tUn alt aspect al acestei aplicatii este acela ca totul se realizeaza in fereastra curenta. Astfel in cazul modificarii unor anumite entitati este posibil sa se deschida un meniu peste cel din tab ce poate fi dat jos folosind sageata de sus.";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Main Menu Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

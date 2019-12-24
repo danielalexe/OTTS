@@ -50,6 +50,11 @@
 
                     </materialDesign:PackIcon>
                 </Button>
+                <Button x:Name="ButtonHelp" Click="ButtonHelp_Click" Margin="5 0 0 0" Height="50">
+                    <materialDesign:PackIcon Kind="Help" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
+
+                    </materialDesign:PackIcon>
+                </Button>
                 <Button x:Name="ButtonClose" Click="ButonClose_Click" Margin="5 0 5 0" Height="50">
                     <materialDesign:PackIcon Kind="Close" Width="25" Height="25" Foreground="White" VerticalAlignment="Center">
 

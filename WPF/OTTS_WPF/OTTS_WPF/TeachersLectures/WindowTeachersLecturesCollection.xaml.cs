@@ -208,5 +208,16 @@ namespace OTTS_WPF.TeachersLectures
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu puteti asocia prelegerile la profesori.\r\n" +
+                "\tDe asemenea puteti filtra in functie de numele si prenumele profesorului sau a tipului de prelegere\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Teachers Lectures Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

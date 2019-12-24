@@ -153,5 +153,16 @@ namespace OTTS_WPF.Days
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu definiti zilele in care se desfasoara prelegeri.\r\n" +
+                "\tPrioritatile asociate sunt general valabile pentru toate grupele din aplicatie si de asemenea sunt in ordine crescatoare, prioritatea 0 este cea mai mare.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Days Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

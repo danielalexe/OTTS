@@ -223,5 +223,15 @@ namespace OTTS_WPF.Lectures
         {
             RenderColumns();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu definiti prelegerile din aplicatie spre a fi asociate profesorilor si grupelor.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Lectures Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

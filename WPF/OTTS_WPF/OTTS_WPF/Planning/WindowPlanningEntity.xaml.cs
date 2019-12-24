@@ -1235,5 +1235,16 @@ namespace OTTS_WPF.Planning
         {
             CloseWindow();
         }
+
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var HelpText = "\tIn acest meniu puteti selecta tipul de generator ce va fi utilizat si sa specificati cate generari doriti sa faceti.\r\n" +
+                "\tPentru a incepe generarea/generarile apasati pe butonul cu tarnacop.\r\n";
+            HelpScreen help = new HelpScreen();
+            help.TitleHelp.Text = "Planning Generation Help";
+            help.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            help.TextHelp.Text = HelpText;
+            help.Show();
+        }
     }
 }

@@ -119,6 +119,8 @@
                         </ComboBox>
                         <materialDesign:PopupBox Grid.Row="0" Grid.Column="2" Foreground="White" Width="30" Height="30" StaysOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel Width="150">
+                                <Button x:Name="ButtonHelp" Content="Help" Click="ButtonHelp_Click" />
+                                <Separator/>
                                 <Button x:Name="ButtonAboutUs" Content="About Us" Click="ButtonAboutUs_Click" />
                                 <Separator/>
                                 <Button x:Name="ButtonLogout" Content="Logout" Click="ButtonLogout_Click" />
